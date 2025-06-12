@@ -157,6 +157,7 @@
   </div>
 
   <div id="msg"></div>
+  <div id="loading" class="text-sm text-blue-600"></div>
 
   <script>
     let productsCache = [];
@@ -164,15 +165,23 @@
     document.getElementById('form').onsubmit = async (e) => {
       e.preventDefault();
       const fd = new FormData(form);
-      fd.set('unitAmount', Math.round(parseFloat(form.price.value)*100));
+      const priceVal=parseFloat(form.price.value);
+      if(isNaN(priceVal)||priceVal<=0){alert('Enter valid price');return;}
+      fd.set('unitAmount', Math.round(priceVal*100));
       if(form.estimatedTime.value) fd.set('estimatedTime',form.estimatedTime.value);
-      const res = await fetch('/api/products', {
-        method: 'POST',
-        body: fd
-      }).then(r=>r.json());
-      document.getElementById('msg').textContent = 'Added product ' + res.name;
-      form.reset();
-      loadList();
+      const submitBtn=form.querySelector('button[type="submit"]');
+      const loading=document.getElementById('loading');
+      submitBtn.disabled=true;submitBtn.textContent='Uploading...';loading.textContent='Uploading...';
+      try{
+        const res = await fetch('/api/products', {method: 'POST',body: fd});
+        const data = await res.json().catch(()=>({}));
+        if(!res.ok){alert(data.error||'Server error');return;}
+        document.getElementById('msg').textContent = 'Added product ' + data.name;
+        form.reset();
+        loadList();
+      }finally{
+        submitBtn.disabled=false;submitBtn.textContent='Add';loading.textContent='';
+      }
     };
 
     // tab logic
