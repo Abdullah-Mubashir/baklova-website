@@ -73,7 +73,17 @@
       </div>
     </div>
   </main>
-  <footer class="bg-amber-700 text-white py-4 text-center text-sm"> 2025 Baklava House</footer>
+  <footer class="bg-amber-700 text-white py-8 text-center text-sm flex flex-col items-center gap-4">
+    <div id="subscribeStrip" class="bg-amber-100 p-4 rounded flex flex-col sm:flex-row items-center gap-2 max-w-lg w-full">
+      <div class="text-sm font-medium flex-1">Get deals & news in your inbox</div>
+      <form id="stripForm" class="flex gap-2 w-full sm:w-auto">
+        <input name="email" type="email" placeholder="Email address" required class="border p-2 flex-grow rounded" />
+        <button class="bg-amber-700 text-white px-3 rounded">Subscribe</button>
+      </form>
+      <div id="stripMsg" class="text-green-700 text-xs"></div>
+    </div>
+    <span> 2025 Baklava House</span>
+  </footer>
   <script>
     const formatPrice=(c,curr)=>new Intl.NumberFormat('en-US',{style:'currency',currency:curr}).format(c/100);
     let productsCache=[];
@@ -220,6 +230,19 @@
       document.getElementById('subMsg').textContent='Thank you!';
       localStorage.setItem('subSeen','1');
       setTimeout(()=>document.getElementById('subModal').style.display='none',1000);
+    };
+    // inline subscribe strip handler
+    document.getElementById('stripForm').onsubmit=async e=>{
+      e.preventDefault();
+      const fd=new FormData(e.target);
+      const body=Object.fromEntries(fd.entries());
+      const res=await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      if(res.ok){
+        document.getElementById('stripMsg').textContent='Thank you!';
+        e.target.reset();
+      }else{
+        alert('Subscribe failed');
+      }
     };
   </script>
 </body>

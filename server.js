@@ -8,13 +8,44 @@ import multerS3 from 'multer-s3';
 import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import fs from 'fs';
 import crypto from 'crypto';
+import nodemailer from 'nodemailer';
 
 dotenv.config();
 
 // ensure uploads dir exists
 // if (!fs.existsSync('public/uploads')) fs.mkdirSync('public/uploads', { recursive: true });
 
-const s3 = new S3Client({ region: process.env.AWS_REGION, credentials: { accessKeyId: process.env.AWS_ACCESS_KEY, secretAccessKey: process.env.AWS_SECRET_KEY } });
+const s3 = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_KEY
+  }
+});
+
+// setup mail transporter once
+let mailer = null;
+if (process.env.SMTP_HOST) {
+  mailer = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT || 465),
+    secure: (process.env.SMTP_PORT || '465') === '465',
+    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
+  });
+}
+
+async function sendWelcome(to) {
+  if (!mailer) return;
+  try {
+    await mailer.sendMail({
+      from: process.env.EMAIL_FROM || process.env.SMTP_USER,
+      to,
+      subject: 'Thanks for subscribing',
+      html: '<p>Thank you for subscribing to Baklava House! We will keep you updated with news and sweet deals.</p>'
+    });
+  } catch (e) { console.error('email send error', e); }
+}
+
 const storage = multerS3({
   s3,
   bucket: process.env.S3_BUCKET_NAME,
@@ -503,6 +534,7 @@ app.post('/api/subscribe', async (req, res) => {
   };
   db.data.subscribers.push(enc);
   await saveDb();
+  if (email) await sendWelcome(email);
   res.json({ ok: true });
 });
 
