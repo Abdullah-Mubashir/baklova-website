@@ -5,7 +5,7 @@ import { Low } from 'lowdb';
 import { JSONFile } from 'lowdb/node';
 import multer from 'multer';
 import multerS3 from 'multer-s3';
-import { S3Client } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import fs from 'fs';
 import crypto from 'crypto';
 
@@ -54,7 +54,9 @@ app.use(express.json());
 app.use(express.static('public'));
 
 // Setup DB (simple JSON DB for demo)
-const adapter = new JSONFile('db.json');
+// Use persistent disk on Render if mounted at /data; fallback to local file for dev
+const DB_PATH = process.env.DB_PATH || (fs.existsSync('/data') ? '/data/db.json' : 'db.json');
+const adapter = new JSONFile(DB_PATH);
 const db = new Low(adapter, { products: [], orders: [] });
 await db.read();
 if (!db.data) { db.data = { products: [], orders: [] }; }
@@ -63,8 +65,37 @@ db.data.orders ||= [];
 db.data.interactions ||= {};
 db.data.subscribers ||= [];
 
-// helper save
-const saveDb = async () => { await db.write(); };
+// try load persisted db.json from S3 so data survives restarts without paid disk
+async function fetchRemoteDb() {
+  try {
+    const obj = await s3.send(new GetObjectCommand({
+      Bucket: process.env.S3_BUCKET_NAME,
+      Key: 'db.json'
+    }));
+    const chunks = [];
+    for await (const chunk of obj.Body) chunks.push(chunk);
+    fs.writeFileSync('db.json', Buffer.concat(chunks));
+    console.log('Loaded db.json from S3');
+  } catch (err) {
+    console.log('No remote db.json found – starting fresh');
+  }
+}
+await fetchRemoteDb();
+
+// save locally then push copy to S3
+const saveDb = async () => {
+  await db.write();
+  try {
+    const data = fs.readFileSync('db.json');
+    await s3.send(new PutObjectCommand({
+      Bucket: process.env.S3_BUCKET_NAME,
+      Key: 'db.json',
+      Body: data,
+      ACL: 'private',
+      ContentType: 'application/json'
+    }));
+  } catch (e) { console.error('Failed to upload db.json', e); }
+};
 
 // encryption helpers
 const ENC_SECRET = process.env.SUB_SECRET || 'default_sub_secret_key_please_change';
