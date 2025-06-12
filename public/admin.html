@@ -57,7 +57,7 @@
     <input id="image2" name="image2" type="file" accept="image/*" required />
     <input id="media" name="media" type="file" accept="image/gif,video/*" />
     <input type="number" name="estimatedTime" placeholder="Estimated time (min)" class="border p-2 w-full mt-2" />
-    <button class="bg-amber-700 text-white px-3 py-1 rounded">Add</button>
+    <button id="submitBtn" class="bg-amber-700 text-white px-3 py-1 rounded" type="submit">Add</button>
   </form>
 
   <!-- Manage -->
@@ -169,7 +169,7 @@
       if(isNaN(priceVal)||priceVal<=0){alert('Enter valid price');return;}
       fd.set('unitAmount', Math.round(priceVal*100));
       if(form.estimatedTime.value) fd.set('estimatedTime',form.estimatedTime.value);
-      const submitBtn=form.querySelector('button[type="submit"]');
+      const submitBtn=document.getElementById('submitBtn');
       const loading=document.getElementById('loading');
       submitBtn.disabled=true;submitBtn.textContent='Uploading...';loading.textContent='Uploading...';
       try{
