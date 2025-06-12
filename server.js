@@ -107,6 +107,8 @@ async function fetchRemoteDb() {
     for await (const chunk of obj.Body) chunks.push(chunk);
     fs.writeFileSync('db.json', Buffer.concat(chunks));
     console.log('Loaded db.json from S3');
+    await db.read();
+    db.data.subscribers ||= [];
   } catch (err) {
     console.log('No remote db.json found – starting fresh');
   }
@@ -527,6 +529,7 @@ app.post('/api/subscribe', async (req, res) => {
   const { email, phone } = req.body;
   if (!email && !phone) return res.status(400).json({ error: 'missing' });
   await db.read();
+  db.data.subscribers ||= [];
   const enc = {
     email: email ? encrypt(email) : null,
     phone: phone ? encrypt(phone) : null,
