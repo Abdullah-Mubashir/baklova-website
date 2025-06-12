@@ -138,6 +138,17 @@ function encrypt(text) {
   return { iv: iv.toString('hex'), tag: tag.toString('hex'), data: enc.toString('hex') };
 }
 
+function decrypt(obj){
+  if(!obj||!obj.iv) return '';
+  const iv=Buffer.from(obj.iv,'hex');
+  const tag=Buffer.from(obj.tag,'hex');
+  const data=Buffer.from(obj.data,'hex');
+  const decipher=crypto.createDecipheriv('aes-256-gcm',key,iv);
+  decipher.setAuthTag(tag);
+  const dec=Buffer.concat([decipher.update(data),decipher.final()]);
+  return dec.toString('utf8');
+}
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // Admin – Add product & price
