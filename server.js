@@ -21,7 +21,9 @@ const storage = multerS3({
   acl: 'public-read',
   contentType: multerS3.AUTO_CONTENT_TYPE,
   key: (req, file, cb) => {
-    const key = Date.now() + '-' + file.originalname;
+    // Sanitize filename: replace spaces and any unsafe characters
+    const safeName = file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const key = Date.now() + '-' + safeName;
     cb(null, key);
   }
 });
