@@ -1,0 +1,27 @@
+{
+  "name": "baklova-stripe-app",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Simple admin & storefront using Stripe",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "prisma": "prisma",
+    "migrate": "prisma migrate dev --name init"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "lowdb": "^6.0.1",
+    "multer": "^1.4.5-lts",
+    "openai": "^4.104.0",
+    "prisma": "^5.9.1",
+    "@prisma/client": "^5.9.1",
+    "stripe": "^15.0.0",
+    "@aws-sdk/client-s3": "^3.520.0",
+    "multer-s3": "^3.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Your Order</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-6 max-w-lg mx-auto">
+  <h1 class="text-2xl font-bold mb-4">Order Status</h1>
+  <div id="details" class="mb-4"></div>
+  <div id="timer" class="text-xl font-mono"></div>
+  <a class="underline mt-6 inline-block" href="/">Back to menu</a>
+
+<script>
+const urlParams=new URLSearchParams(location.search);
+const sessionId=urlParams.get('session');
+if(!sessionId){document.body.innerHTML='No order';}
+let overdue=false;
+let done=false;
+async function fetchStatus(){
+  const res=await fetch('/api/order-status/'+sessionId);
+  if(!res.ok) return;
+  const o=await res.json();
+  done=o.status==='done';
+  const list=o.items.map(i=>`${i.name} (${i.quantity}x)`).join(', ');
+  document.getElementById('details').textContent=`Items: ${list}`;
+  if(done){
+    let expire=parseInt(localStorage.getItem('lastOrderExpire')||'0');
+    if(!expire){expire=Date.now()+4*60*60*1000;localStorage.setItem('lastOrderExpire',expire);}
+    updateCountdown();
+    return;
+  }
+  const total=o.prepMinutes? o.prepMinutes*60000 : 240000;
+  const elapsed=Date.now()-o.created;
+  const remaining=total-elapsed;
+  if(remaining>0){
+    document.getElementById('timer').textContent='Time remaining: '+format(Math.max(0,remaining));
+  }else{
+    overdue=true;
+    document.getElementById('timer').textContent='Overdue: '+format(Math.abs(remaining));
+  }
+}
+function format(ms){
+  const s=Math.floor(ms/1000);
+  const m=Math.floor(s/60);
+  const sec=s%60;
+  return `${pad(m)}:${pad(sec)}`;
+}
+function pad(n){return n.toString().padStart(2,'0');}
+function updateCountdown(){
+  const exp=parseInt(localStorage.getItem('lastOrderExpire')||'0');
+  if(!exp){document.getElementById('timer').textContent='Order ready to pickup';return;}
+  const diff=exp-Date.now();
+  if(diff<=0){localStorage.removeItem('lastOrderSession');localStorage.removeItem('lastOrderExpire');location.href='/';return;}
+  document.getElementById('timer').textContent='Pickup window: '+format(diff);
+}
+setInterval(()=>{if(done) updateCountdown(); else fetchStatus();},1000);
+fetchStatus();
+</script>
+</body>
+</html>

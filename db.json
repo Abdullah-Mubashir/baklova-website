@@ -1,0 +1,228 @@
+{
+  "products": [
+    {
+      "id": "prod_STX3mil7vICQL2",
+      "priceId": "price_1RZ1mGA3g8IaVSP2OKcUrB6Z",
+      "name": "baklov3",
+      "description": "cool",
+      "unitAmount": 900,
+      "currency": "usd",
+      "stock": true,
+      "estimatedTime": 4,
+      "category": "Desserts",
+      "cost": 0,
+      "media": [
+        {
+          "url": "http://localhost:3000/uploads/1749698509145-bak_logo.jpeg",
+          "type": "image"
+        },
+        {
+          "url": "http://localhost:3000/uploads/1749698768065-apple-vision-pro-release-dezeen_dezeen_2364_col_7.webp",
+          "type": "image"
+        }
+      ],
+      "image": "http://localhost:3000/uploads/1749698768065-apple-vision-pro-release-dezeen_dezeen_2364_col_7.webp"
+    },
+    {
+      "id": "prod_STcmO7xaL3Dvpo",
+      "priceId": "price_1RZ0umA3g8IaVSP2lGZL8Xae",
+      "name": "o3proi",
+      "description": "o9i3",
+      "unitAmount": 200,
+      "currency": "usd",
+      "image": "http://localhost:3000/uploads/1749613235719-AD_4nXdwjDNdwEWAzaSpUTsqf5V5A0bwgHk82CZUFsAXNjtst1xANb3GNLFInBQdewLKQ5Y3lyzuVRBDl6VQpHYncpDEvO-SEyh1_5tBCEQNEqEpYSnaq1vaexVwx70_4J58RC7Wp1A5.png",
+      "estimatedTime": 0,
+      "category": "Specials"
+    },
+    {
+      "id": "prod_STppISWeDiauSi",
+      "priceId": "price_1RZ1j6A3g8IaVSP2myNA7U5B",
+      "name": "item08",
+      "description": "i36",
+      "unitAmount": 200,
+      "currency": "usd",
+      "image": "http://localhost:3000/uploads/1749698572591-BonnieArbittier_001_wurzbach_road_international_plaza_baklovah_pasha_restaurant_dessert_10-27-2017-1.jpg-2.webp",
+      "media": [
+        {
+          "url": "http://localhost:3000/uploads/1749698572591-BonnieArbittier_001_wurzbach_road_international_plaza_baklovah_pasha_restaurant_dessert_10-27-2017-1.jpg-2.webp",
+          "type": "image"
+        }
+      ],
+      "stock": true,
+      "estimatedTime": 2,
+      "cost": 0
+    },
+    {
+      "id": "prod_STv3epSj0rLnAb",
+      "name": "new timer",
+      "priceId": "price_1RYxXYA3g8IaVSP23JVkwtoh",
+      "unitAmount": 200,
+      "currency": "usd",
+      "image": "http://localhost:3000/uploads/1749681223404-apple-vision-pro-release-dezeen_dezeen_2364_col_7.webp",
+      "media": [
+        {
+          "url": "http://localhost:3000/uploads/1749681223404-apple-vision-pro-release-dezeen_dezeen_2364_col_7.webp",
+          "type": "image"
+        },
+        {
+          "url": "http://localhost:3000/uploads/1749681223405-Caper-Self-Checkout-Shopping-Cart.png.webp",
+          "type": "image"
+        }
+      ],
+      "estimatedTime": 4,
+      "stock": true
+    },
+    {
+      "id": "prod_STzFal9NL7Jmv5",
+      "name": "baklov3 + item08 Deal",
+      "priceId": "price_1RZ1d7A3g8IaVSP2rIvOgvFf",
+      "unitAmount": 2300,
+      "currency": "usd",
+      "image": "http://localhost:3000/uploads/1749661794639-apple-vision-pro-release-dezeen_dezeen_2364_col_7.webp",
+      "media": [
+        {
+          "url": "http://localhost:3000/uploads/1749661794639-apple-vision-pro-release-dezeen_dezeen_2364_col_7.webp",
+          "type": "image"
+        }
+      ],
+      "estimatedTime": 8,
+      "stock": true,
+      "category": "Deals",
+      "isDeal": true,
+      "originalPrice": 11,
+      "cost": 0
+    }
+  ],
+  "orders": [
+    {
+      "id": 1749594405715,
+      "sessionId": "cs_test_b18gpliUrzxCH7HGf7fKnXLVzSOM3UPYm0rAKwTxpVMqmoWtxULOQdg0qD",
+      "items": [
+        {
+          "priceId": "price_1RYa9KA3g8IaVSP2k2B76gp2",
+          "name": "item3",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 1
+        },
+        {
+          "priceId": "price_1RYZzhA3g8IaVSP2swrTyOa6",
+          "name": "baklov3",
+          "unitAmount": 300,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "id": 1749594660466,
+      "sessionId": "cs_test_b1PYamjrx8de2wWpltjyHBvjIMnFitWrqlnGJWoXjGSL8KxQIRSY0LxqcF",
+      "items": [
+        {
+          "priceId": "price_1RYa9KA3g8IaVSP2k2B76gp2",
+          "name": "item3",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 1
+        },
+        {
+          "priceId": "price_1RYZzhA3g8IaVSP2swrTyOa6",
+          "name": "baklov3",
+          "unitAmount": 300,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "id": 1749594792132,
+      "sessionId": "cs_test_b1dIuIGfKxDBJnIeI0lm8DbIZKY5BtDsjtyu1ss9gwAyzW0K7q68PloN1j",
+      "items": [
+        {
+          "priceId": "price_1RYZzhA3g8IaVSP2swrTyOa6",
+          "name": "baklov3",
+          "unitAmount": 300,
+          "currency": "usd",
+          "quantity": 1
+        },
+        {
+          "priceId": "price_1RYa9KA3g8IaVSP2k2B76gp2",
+          "name": "item3",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "done"
+    },
+    {
+      "id": 1749613252696,
+      "sessionId": "cs_test_a1MeQpNOC0HGx9cCvoNnrA0GgCli2CVYJR6f6rTyZHv362hZrjnKLUDGHs",
+      "items": [
+        {
+          "priceId": "price_1RYfWiA3g8IaVSP2a3gBa5MI",
+          "name": "o3pro",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "id": 1749614818404,
+      "sessionId": "cs_test_a1lAZcZB6ye7RPcPro2eAA681XPEn2mLbdddcgqxHzCtETM7OGWWI7fAao",
+      "items": [
+        {
+          "priceId": "price_1RYfkzA3g8IaVSP2em5ijIHS",
+          "name": "o3proi",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "done",
+      "created": 1749614818404
+    },
+    {
+      "id": 1749697095042,
+      "sessionId": "cs_test_a1wfAEcBFVS6ghBHVfH7cWaniE2u5sPahVVIRVLQanoAU150Wlw2UQbZws",
+      "items": [
+        {
+          "priceId": "price_1RZ1GbA3g8IaVSP2AFneANRg",
+          "name": "baklov3 + item08 Deal",
+          "unitAmount": 2300,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "pending",
+      "created": 1749697095042,
+      "prepMinutes": 4
+    }
+  ],
+  "interactions": {
+    "prod_STppISWeDiauSi": {
+      "views": 9,
+      "adds": 2
+    },
+    "prod_STcmO7xaL3Dvpo": {
+      "views": 4,
+      "adds": 1
+    },
+    "prod_STX3mil7vICQL2": {
+      "views": 3,
+      "adds": 0
+    },
+    "prod_STv3epSj0rLnAb": {
+      "views": 3,
+      "adds": 0
+    },
+    "prod_STzFal9NL7Jmv5": {
+      "views": 1,
+      "adds": 1
+    }
+  }
+}

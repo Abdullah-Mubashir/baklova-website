@@ -1,0 +1,17 @@
+# Node
+node_modules/
+
+# Env secrets
+.env
+
+# Logs
+npm-debug.log*
+
+# Uploads (local cache)
+public/uploads/
+
+# Prisma generated
+prisma/migrations/
+
+# macOS
+.DS_Store

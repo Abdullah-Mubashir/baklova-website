@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id            String   @id
+  name          String
+  description   String?
+  priceId       String
+  unitAmount    Int
+  cost          Int @default(0)
+  category      String
+  estimatedTime Int @default(0)
+  stock         Boolean @default(true)
+  image         String?
+  media         Media[]
+  isDeal        Boolean @default(false)
+  originalPrice Int?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Media {
+  id        Int      @id @default(autoincrement())
+  url       String
+  type      String
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+}
+
+model Order {
+  id          String   @id
+  stripeId    String
+  amount      Int
+  status      String
+  items       Json
+  createdAt   DateTime @default(now())
+}
+
+model Subscriber {
+  id        Int      @id @default(autoincrement())
+  emailEnc  String?
+  phoneEnc  String?
+  ts        BigInt
+}

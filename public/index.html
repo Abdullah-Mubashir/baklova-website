@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Baklava House</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .fade{opacity:0;transform:translateY(20px);transition:all .4s ease}.fade.show{opacity:1;transform:none}
+    #mediaModal .inner{max-width:900px;width:100%;}
+    #mediaModal .slide{min-width:0;}
+  </style>
+</head>
+<body class="bg-amber-50 min-h-screen flex flex-col">
+  <header class="bg-amber-700 text-white p-4 flex justify-between"><span class="font-bold">Baklava House</span><nav><a href="/" class="mr-4">Menu</a><a href="/order.html" id="orderTab" style="display:none;">Placed Order</a></nav></header>
+  <section class="bg-[url('https://images.unsplash.com/photo-1514970742119-d4cdd14fbf6e?auto=format&fit=crop&w=1950&q=80')] bg-center bg-cover h-64 flex items-center justify-center text-white">
+    <div class="bg-black/50 p-6 rounded">
+      <h2 class="text-3xl font-semibold">Fresh, Flaky, Sweet</h2>
+      <p class="mt-2">Order authentic baklava delivered to your door.</p>
+    </div>
+  </section>
+  <main class="flex-1 max-w-5xl mx-auto px-4 py-10">
+    <h2 class="text-2xl font-semibold mb-6">Menu</h2>
+    <div class="flex flex-wrap items-center gap-4 mb-4">
+      <div class="space-x-3" id="catTabs">
+        <button data-cat="All" class="cat font-semibold underline">All</button>
+        <button data-cat="Desserts" class="cat">Desserts</button>
+        <button data-cat="Specials" class="cat">Specials</button>
+        <button data-cat="Ice Cream" class="cat">Ice Cream</button>
+        <button data-cat="Cake" class="cat">Cake</button>
+        <button data-cat="Deals" class="cat">Deals</button>
+      </div>
+      <input id="search" class="border p-2 flex-grow md:flex-none md:w-64" placeholder="Search items..." />
+    </div>
+    <div id="products" class="grid gap-6 sm:grid-cols-2 md:grid-cols-3"></div>
+    <!-- Media Modal -->
+    <div id="mediaModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
+      <div class="inner bg-white rounded shadow-lg overflow-hidden relative flex flex-col md:flex-row">
+        <button id="closeMedia" class="absolute top-2 right-2 z-10">✕</button>
+        <div class="relative md:w-2/3">
+          <button id="prevSlide" class="absolute left-0 top-1/2 -translate-y-1/2 bg-white/70 px-2">‹</button>
+          <button id="nextSlide" class="absolute right-0 top-1/2 -translate-y-1/2 bg-white/70 px-2">›</button>
+          <div id="slides" class="overflow-hidden"></div>
+        </div>
+        <div id="mediaInfo" class="p-6 md:w-1/3 flex flex-col gap-2"></div>
+      </div>
+    </div>
+    <!-- Subscribe Modal -->
+    <div id="subModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
+      <div class="bg-white p-6 w-full max-w-sm space-y-3 relative">
+        <button id="closeSub" class="absolute top-1 right-2">x</button>
+        <h3 class="text-xl font-semibold">Stay in touch</h3>
+        <p class="text-sm">Get news and deals directly!</p>
+        <form id="subForm" class="space-y-2">
+          <input name="email" type="email" placeholder="Email address" class="border p-2 w-full" />
+          <input name="phone" placeholder="Phone number" class="border p-2 w-full" />
+          <button class="bg-amber-700 text-white px-4 py-2 w-full">Subscribe</button>
+        </form>
+        <div id="subMsg" class="text-center text-green-600"></div>
+      </div>
+    </div>
+    <!-- Cart Button -->
+    <button id="cartBtn" class="fixed bottom-6 right-6 bg-amber-700 text-white rounded-full w-14 h-14 shadow-lg text-xl">🛒</button>
+    <!-- Cart Drawer -->
+    <div id="cartDrawer" class="fixed top-0 right-0 w-80 max-w-full h-full bg-white shadow-lg transform translate-x-full transition-transform duration-300 flex flex-col">
+      <div class="p-4 border-b flex justify-between items-center">
+        <h3 class="font-semibold text-lg">Your Cart</h3>
+        <button id="closeCart">✕</button>
+      </div>
+      <div id="cartItems" class="flex-1 overflow-y-auto p-4 space-y-4"></div>
+      <div class="p-4 border-t">
+        <div class="flex justify-between mb-3"><span>Total</span><span id="cartTotal" class="font-bold"></span></div>
+        <button id="checkoutBtn" class="w-full bg-amber-700 text-white py-2 rounded">Checkout</button>
+      </div>
+    </div>
+  </main>
+  <footer class="bg-amber-700 text-white py-4 text-center text-sm"> 2025 Baklava House</footer>
+  <script>
+    const formatPrice=(c,curr)=>new Intl.NumberFormat('en-US',{style:'currency',currency:curr}).format(c/100);
+    let productsCache=[];
+    async function load(){
+      const res=await fetch('/api/products');
+      productsCache=await res.json();
+      renderProducts(productsCache);
+    }
+    let allProducts=[];let currentCat='All';
+    fetch('/api/products').then(r=>r.json()).then(data=>{allProducts=data;applyFilters();});
+    function renderProducts(items){
+      productsCache=items;
+      const container=document.getElementById('products');
+      container.innerHTML='';
+      items.forEach((p,i)=>{
+        const div=document.createElement('div');
+        div.className='fade bg-white shadow rounded p-4 flex flex-col';
+        div.dataset.idx=i;
+        div.innerHTML=`<img src="${(p.media?.[0]?.url)||p.image||'https://via.placeholder.com/300x200'}" class="h-32 w-full object-cover rounded mb-2" />
+          <h3 class="text-lg font-semibold mb-2">${p.name}</h3>
+          <p class="text-sm flex-grow">${p.description||''}</p>
+          <div class="mt-4 flex justify-between items-center">
+            ${p.isDeal?`<span><span class='line-through text-gray-500 mr-1'>${formatPrice(p.originalPrice*100,'usd')}</span><span class='font-bold text-amber-700'>${formatPrice(p.unitAmount,p.currency)}</span></span>`:`<span class='font-bold text-amber-700'>${formatPrice(p.unitAmount,p.currency)}</span>`}
+            <button data-price="${p.priceId}" class="bg-amber-700 text-white px-3 py-1 rounded hover:bg-amber-800">Buy</button>
+            <button data-price="${p.priceId}" data-id="${p.id}" data-name="${p.name}" data-pricecents="${p.unitAmount}" data-currency="${p.currency}" class="add bg-amber-700 text-white px-3 py-1 rounded hover:bg-amber-800">Add</button>
+          </div>`;
+        container.appendChild(div);
+        div.querySelector('img').onclick=()=>openMedia(i);
+        // fade in stagger
+        setTimeout(()=>div.classList.add('show'),100*i);
+      });
+      document.querySelectorAll('button[data-price]').forEach(btn=>{
+        btn.onclick=()=>{addToCart(btn.dataset);fetch('/api/track-add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({productId:btn.dataset.price ? p.id : ''})});};
+      });
+      document.querySelectorAll('.add').forEach(btn=>{
+        btn.onclick=()=>{addToCart(btn.dataset);fetch('/api/track-add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({productId:btn.dataset.id})});};
+      });
+      setupCartUI();
+    }
+    function applyFilters(){
+      const term=document.getElementById('search').value.toLowerCase();
+      const items=allProducts.filter(p=> (currentCat==='All'||p.category===currentCat) && p.name.toLowerCase().includes(term) );
+      renderProducts(items);
+    }
+    document.querySelectorAll('.cat').forEach(b=>b.onclick=()=>{
+      document.querySelectorAll('.cat').forEach(c=>c.classList.remove('underline'));
+      b.classList.add('underline');
+      currentCat=b.dataset.cat;
+      applyFilters();
+    });
+    document.getElementById('search').oninput=applyFilters;
+
+    let cart=[];
+    // load cart from localStorage if exists
+    try{
+      const stored=localStorage.getItem('cart');
+      if(stored) cart=JSON.parse(stored);
+    }catch(e){console.warn('cart parse',e);}
+
+    function saveCart(){
+      localStorage.setItem('cart',JSON.stringify(cart));
+    }
+
+    function addToCart(data){
+      const existing=cart.find(i=>i.priceId===data.price);
+      if(existing){existing.quantity++;}else{
+        cart.push({priceId:data.price,name:data.name,unitAmount:Number(data.pricecents),currency:data.currency,quantity:1});
+      }
+      saveCart();
+      renderCart();
+    }
+
+    function renderCart(){
+      const list=document.getElementById('cartItems');
+      list.innerHTML='';
+      let total=0;
+      cart.forEach((item,idx)=>{
+        total+=item.unitAmount*item.quantity;
+        const row=document.createElement('div');
+        row.className='flex justify-between items-center';
+        row.innerHTML=`<div><div>${item.name}</div><div class="text-sm text-gray-500">${formatPrice(item.unitAmount,item.currency)}</div></div>
+          <div class="flex items-center gap-1"><button class="dec border px-1" data-idx="${idx}">-</button><span>${item.quantity}</span><button class="inc border px-1" data-idx="${idx}">+</button></div>`;
+        list.appendChild(row);
+      });
+      document.getElementById('cartTotal').textContent=formatPrice(total,'usd');
+
+      // listeners
+      list.querySelectorAll('.inc').forEach(b=>b.onclick=()=>{cart[b.dataset.idx].quantity++;saveCart();renderCart();});
+      list.querySelectorAll('.dec').forEach(b=>b.onclick=()=>{const i=cart[b.dataset.idx];i.quantity--;if(i.quantity<=0)cart.splice(b.dataset.idx,1);saveCart();renderCart();});
+    }
+
+    function setupCartUI(){
+      const drawer=document.getElementById('cartDrawer');
+      document.getElementById('cartBtn').onclick=()=>drawer.classList.toggle('translate-x-full');
+      document.getElementById('closeCart').onclick=()=>drawer.classList.add('translate-x-full');
+      document.getElementById('checkoutBtn').onclick=async()=>{
+        if(!cart.length)return alert('Cart is empty');
+        const res=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:cart})}).then(r=>r.json());
+        localStorage.setItem('lastOrderSession',res.sessionId);
+        location.href=res.url;
+      };
+    }
+
+    function openMedia(idx){
+      const prod=productsCache[idx];
+      // track view
+      fetch('/api/track-view',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({productId:prod.id})});
+      const modal=document.getElementById('mediaModal');
+      const slidesContainer=document.getElementById('slides');
+      slidesContainer.innerHTML='';
+      const media=prod.media && prod.media.length?prod.media:[{url:prod.image,type:'image'}];
+      document.getElementById('mediaInfo').innerHTML=`<h3 class="text-xl font-semibold">${prod.name}</h3>${prod.isDeal?`<p class='text-lg'><span class='line-through text-gray-500 mr-1'>${formatPrice(prod.originalPrice*100,'usd')}</span><span class='text-amber-700 font-bold'>${formatPrice(prod.unitAmount,'usd')}</span></p>`:`<p class='text-amber-700 font-bold text-lg'>${formatPrice(prod.unitAmount,'usd')}</p>`}<p class="text-sm">${prod.description||''}</p>`;
+      media.forEach((m,j)=>{
+        const slide=document.createElement('div');
+        slide.className='slide';
+        slide.style.display=j===0?'block':'none';
+        if(m.type==='video'){
+          slide.innerHTML=`<video src="${m.url}" autoplay loop muted playsinline class="w-full h-64 object-cover"></video>`;
+        }else{
+          slide.innerHTML=`<img src="${m.url}" class="w-full h-64 object-cover" />`;
+        }
+        slidesContainer.appendChild(slide);
+      });
+      let active=0;
+      function show(idx){
+        slidesContainer.querySelectorAll('.slide').forEach((s,i)=>s.style.display=i===idx?'block':'none');
+      }
+      document.getElementById('prevSlide').onclick=()=>{active=(active-1+media.length)%media.length;show(active);} ;
+      document.getElementById('nextSlide').onclick=()=>{active=(active+1)%media.length;show(active);} ;
+      document.getElementById('closeMedia').onclick=()=>modal.classList.add('hidden');
+      modal.classList.remove('hidden');
+    }
+
+    // subscribe popup once
+    if(!localStorage.getItem('subSeen')){
+      const modal=document.getElementById('subModal');modal.style.display='flex';
+    }
+    document.getElementById('closeSub').onclick=()=>{document.getElementById('subModal').style.display='none';localStorage.setItem('subSeen','1');};
+    document.getElementById('subForm').onsubmit=async e=>{
+      e.preventDefault();
+      const fd=new FormData(e.target);
+      const body=Object.fromEntries(fd.entries());
+      await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      document.getElementById('subMsg').textContent='Thank you!';
+      localStorage.setItem('subSeen','1');
+      setTimeout(()=>document.getElementById('subModal').style.display='none',1000);
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin - Add Product</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 500px; margin: 2rem auto; }
+    input, textarea { width: 100%; padding: 8px; margin: 5px 0; }
+    button { padding: 8px 14px; }
+    .font-sans { font-family: Arial, sans-serif; }
+    .max-w-5xl { max-width: 500px; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .p-6 { padding: 1.5rem; }
+    .text-2xl { font-size: 1.5rem; }
+    .font-bold { font-weight: bold; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .border-b { border-bottom: 1px solid #ccc; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .border-b-2 { border-bottom-width: 2px; }
+    .border-amber-700 { border-color: #ffc107; }
+    .space-y-2 { margin-top: 0.5rem; margin-bottom: 0.5rem; }
+    .bg-amber-700 { background-color: #ffc107; }
+    .text-white { color: #fff; }
+    .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+    .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+    .rounded { border-radius: 0.25rem; }
+    .w-full { width: 100%; }
+    .text-sm { font-size: 0.875rem; }
+    .text-left { text-align: left; }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="font-sans max-w-5xl mx-auto p-6">
+  <h1 class="text-2xl font-bold mb-4">Admin</h1>
+  <div class="mb-6 border-b">
+    <button id="tabAdd" class="px-4 py-2 border-b-2 border-amber-700">Add Product</button>
+    <button id="tabManage" class="px-4 py-2">Manage Products</button>
+    <button id="tabStats" class="px-4 py-2">Interaction Data</button>
+    <button id="tabAnalytics" class="px-4 py-2">Analytics</button>
+    <button id="tabInsights" class="px-4 py-2">Insights</button>
+    <button id="dealBtn" class="border p-2">Add Deal</button>
+  </div>
+
+  <!-- Add Product -->
+  <form id="form" enctype="multipart/form-data" class="space-y-2" style="display:block;">
+    <label class="block text-sm font-medium">Name <input id="name" name="name" placeholder="Name" class="border p-2 w-full" required /></label>
+    <label class="block text-sm font-medium">Description <textarea id="description" name="description" placeholder="Description" class="border p-2 w-full"></textarea></label>
+    <label class="block text-sm font-medium">Category <select name="category" class="border p-2 w-full">
+      <option>Desserts</option><option>Specials</option><option>Ice Cream</option><option>Cake</option>
+    </select></label>
+    <label class="block text-sm font-medium">Price ($) <input id="price" name="price" placeholder="e.g. 9.99" class="border p-2 w-full" required /></label>
+    <label class="block text-sm font-medium">Cost ($) <input id="cost" name="cost" placeholder="e.g. 3.25" class="border p-2 w-full" /></label>
+    <input id="image1" name="image1" type="file" accept="image/*" required />
+    <input id="image2" name="image2" type="file" accept="image/*" required />
+    <input id="media" name="media" type="file" accept="image/gif,video/*" />
+    <input type="number" name="estimatedTime" placeholder="Estimated time (min)" class="border p-2 w-full mt-2" />
+    <button class="bg-amber-700 text-white px-3 py-1 rounded">Add</button>
+  </form>
+
+  <!-- Manage -->
+  <div id="manage" style="display:none;">
+    <table class="w-full text-sm" id="prodTable">
+      <thead>
+        <tr>
+          <th class="text-left">Image</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Est. Time</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <!-- Edit Modal -->
+    <div id="modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#0006;align-items:center;justify-content:center;">
+      <div style="background:#fff;padding:1rem;min-width:300px;">
+        <h3>Edit Product</h3>
+        <form id="editForm" enctype="multipart/form-data" class="space-y-2">
+          <label class="block text-sm font-medium">Name <input name="name" placeholder="Name" class="border p-2 w-full" /></label>
+          <label class="block text-sm font-medium">Price ($) <input name="price" placeholder="Price" class="border p-2 w-full" /></label>
+          <label class="block text-sm font-medium">Cost ($) <input name="cost" placeholder="Cost" class="border p-2 w-full" /></label>
+          <label class="block text-sm font-medium">Category <select name="category" class="border p-2 w-full mt-2"><option>Desserts</option><option>Specials</option><option>Ice Cream</option><option>Cake</option></select></label>
+          <label class="block text-sm font-medium">Estimated time (min) <input type="number" name="estimatedTime" class="border p-2 w-full mt-2" /></label>
+          <label class="block text-sm font-medium">Image 1 <input name="image1" type="file" accept="image/*" /></label>
+          <label class="block text-sm font-medium">Image 2 <input name="image2" type="file" accept="image/*" /></label>
+          <label class="block text-sm font-medium">GIF/Video <input name="media" type="file" accept="image/gif,video/*" /></label>
+          <button class="bg-amber-700 text-white px-3 py-1 rounded">Save</button>
+          <button type="button" id="closeModal">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div id="stats" style="display:none;">
+    <h2 class="text-lg font-semibold mb-2">User Interaction</h2>
+    <table class="w-full text-sm" id="statsTable"><thead><tr><th>Name</th><th>Views</th><th>Adds</th><th>Est. Time (min)</th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <!-- Analytics -->
+  <div id="analytics" style="display:none;">
+    <h2 class="text-lg font-semibold mb-2">Last 30 Days Summary</h2>
+    <div>Gross: <span id="revGross" class="font-semibold"></span></div>
+    <div>Refunds: <span id="revRefund" class="font-semibold"></span></div>
+    <div>Net: <span id="revNet" class="font-semibold"></span></div>
+    <div>Profit: <span id="revProfit" class="font-semibold"></span></div>
+    <table class="w-full text-sm border">
+      <thead><tr class="bg-amber-100"><th class="p-2 text-left">Product</th><th class="p-2">Qty Sold</th></tr></thead>
+      <tbody id="anaBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Insights -->
+  <div id="insights" style="display:none;">
+    <h2 class="text-lg font-semibold mb-2">Insights (30 days)</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div>
+        <canvas id="dailyChart" height="150"></canvas>
+      </div>
+      <div>
+        <canvas id="weeklyChart" height="150"></canvas>
+      </div>
+      <div>
+        <h3 class="font-medium">Top Products</h3>
+        <table class="w-full text-sm border mt-2"><thead><tr class="bg-amber-100"><th class="p-1 text-left">Product</th><th class="p-1">Qty</th><th class="p-1">$</th></tr></thead><tbody id="topBody"></tbody></table>
+      </div>
+      <div>
+        <h3 class="font-medium">Customers</h3>
+        <p id="custStats"></p>
+        <h3 class="font-medium mt-4">Orders by Hour</h3>
+        <canvas id="hourChart" height="150"></canvas>
+        <h3 class="font-medium mt-4">Orders by Weekday</h3>
+        <canvas id="dayChart" height="150"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deal Modal -->
+  <div id="dealModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
+    <div class="bg-white p-4 w-full max-w-md space-y-2 relative">
+      <button id="closeDeal" class="absolute top-1 right-2">x</button>
+      <h3 class="font-semibold">Create Deal</h3>
+      <form id="dealForm" class="space-y-2" enctype="multipart/form-data">
+        <label class="block text-sm font-medium">Item 1 <select name="prod1Id" id="dealProd1" class="border p-2 w-full"></select></label>
+        <label class="block text-sm font-medium">Item 2 <select name="prod2Id" id="dealProd2" class="border p-2 w-full"></select></label>
+        <div id="dealOrig" class="text-sm text-gray-600"></div>
+        <label class="block text-sm font-medium">Deal Price ($) <input name="unitAmount" placeholder="e.g 12.99" class="border p-2 w-full" required /></label>
+        <label class="block text-sm font-medium">Deal Image <input name="image" type="file" accept="image/*" /></label>
+        <button class="bg-amber-600 text-white px-4 py-2 w-full">Create</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="msg"></div>
+
+  <script>
+    let productsCache = [];
+
+    document.getElementById('form').onsubmit = async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      fd.set('unitAmount', Math.round(parseFloat(form.price.value)*100));
+      if(form.estimatedTime.value) fd.set('estimatedTime',form.estimatedTime.value);
+      const res = await fetch('/api/products', {
+        method: 'POST',
+        body: fd
+      }).then(r=>r.json());
+      document.getElementById('msg').textContent = 'Added product ' + res.name;
+      form.reset();
+      loadList();
+    };
+
+    // tab logic
+    const sections={form,manage,stats,analytics,insights};
+    function show(sec){Object.values(sections).forEach(s=>s.style.display='none');sec.style.display='block';[tabAdd,tabManage,tabStats,tabAnalytics,tabInsights].forEach(t=>t.classList.remove('border-amber-700'));}
+    tabAdd.onclick=()=>{show(form);tabAdd.classList.add('border-amber-700');};
+    tabManage.onclick=()=>{show(manage);tabManage.classList.add('border-amber-700');loadList();};
+    tabStats.onclick=()=>{show(stats);tabStats.classList.add('border-amber-700');loadStats();};
+    tabAnalytics.onclick=()=>{show(analytics);tabAnalytics.classList.add('border-amber-700');loadAnalytics();};
+    tabInsights.onclick=()=>{show(insights);tabInsights.classList.add('border-amber-700');loadInsights();};
+
+    async function loadList(){
+      const tbody=document.querySelector('#prodTable tbody');
+      tbody.innerHTML='';
+      productsCache=await fetch('/api/products?all=1').then(r=>r.json());
+      productsCache.forEach(p=>{
+        const thumb=p.media?.[0]?.url||p.image||'';
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td><img src="${thumb}" width="50" /></td><td>${p.name}</td><td>${p.category||''}</td><td>$${(p.unitAmount/100).toFixed(2)}</td><td>${p.estimatedTime||''}</td><td>${p.stock===false?'Out':'In'}</td><td><button data-id="${p.id}" class="toggle">${p.stock===false?'In Stock':'Out Stock'}</button> <button data-id="${p.id}" class="del">Delete</button> <button data-id="${p.id}" class="edit">Edit</button></td>`;
+        tbody.appendChild(tr);
+      });
+      tbody.querySelectorAll('.toggle').forEach(b=>b.onclick=async()=>{
+        const id=b.dataset.id;
+        await fetch('/api/products/'+id,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({stock:b.textContent==='Out Stock'?false:true})});
+        loadList();
+      });
+      tbody.querySelectorAll('.del').forEach(b=>b.onclick=async()=>{const id=b.dataset.id;await fetch('/api/products/'+id,{method:'DELETE'});loadList();});
+      tbody.querySelectorAll('.edit').forEach(b=>b.onclick=()=>openEdit(b.dataset.id));
+    }
+
+    async function loadStats(){
+      const tbody=document.querySelector('#statsTable tbody');
+      tbody.innerHTML='';
+      const data=await fetch('/api/interaction-data').then(r=>r.json());
+      data.sort((a,b)=>b.views-a.views);
+      data.forEach(d=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td>${d.name}</td><td>${d.views}</td><td>${d.adds}</td><td>${d.estimatedTime}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function loadAnalytics(){
+      const res=await fetch('/api/stripe-summary');
+      const data=await res.json();
+      document.getElementById('revGross').innerText='$'+data.gross.toFixed(2);
+      document.getElementById('revRefund').innerText='$'+data.refunds.toFixed(2);
+      document.getElementById('revNet').innerText='$'+data.net.toFixed(2);
+      if(document.getElementById('revProfit')){
+        document.getElementById('revProfit').innerText='$'+data.profit.toFixed(2);
+      }
+      const tbody=document.getElementById('anaBody');
+      tbody.innerHTML='';
+      Object.entries(data.counts).forEach(([name,qty])=>{
+        const tr=document.createElement('tr');tr.innerHTML=`<td class="border p-2">${name}</td><td class="border p-2 text-center">${qty}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function loadInsights(){
+      const data=await fetch('/api/insights').then(r=>r.json());
+      document.getElementById('custStats').textContent=`New: ${data.newCust} | Returning: ${data.returning}`;
+      const topBody=document.getElementById('topBody');topBody.innerHTML='';
+      data.top.forEach(t=>{topBody.innerHTML+=`<tr><td class="border p-1">${t.name}</td><td class="border p-1 text-center">${t.qty}</td><td class="border p-1 text-center">$${t.rev.toFixed(2)}</td></tr>`});
+      renderLine('dailyChart',data.daily,'$');
+      renderLine('weeklyChart',data.weekly,'$');
+      renderBar('hourChart',Array.from({length:24},(_,i)=>i),data.hourly);
+      renderBar('dayChart',['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],data.weekday);
+    }
+
+    function renderLine(id,obj,prefix=''){const labels=Object.keys(obj).sort();const vals=labels.map(k=>obj[k]/100);chart(id,'line',labels,vals,prefix);}    
+    function renderBar(id,labels,vals){chart(id,'bar',labels,vals,'');}
+    function chart(id,type,labels,data,prefix){const ctx=document.getElementById(id).getContext('2d');if(window[id]) window[id].destroy();window[id]=new Chart(ctx,{type,data:{labels,datasets:[{data,backgroundColor:'rgba(243, 171, 71,0.4)',borderColor:'#c2410c',fill:true}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true, ticks:{callback:v=>prefix?prefix+v.toFixed(2):v}}}}});}
+
+    const modal=document.getElementById('modal');
+    const editForm=document.getElementById('editForm');
+    const closeModal=document.getElementById('closeModal');
+
+    function openEdit(id){
+      const prod = productsCache.find(p=>p.id===id);
+      if(!prod) return;
+      modal.style.display='flex';
+      // show existing images
+      let previewDiv=editForm.querySelector('#prevImgs');
+      if(!previewDiv){previewDiv=document.createElement('div');previewDiv.id='prevImgs';previewDiv.className='flex gap-2 flex-wrap';editForm.insertBefore(previewDiv,editForm.firstChild);} 
+      previewDiv.innerHTML=prod.media?.map(m=>`<img src="${m.url}" class="w-16 h-16 object-cover" />`).join('')||'';
+
+      editForm.name.value=prod.name;
+      editForm.price.value=(prod.unitAmount/100).toFixed(2);
+      editForm.cost.value=(prod.cost||0).toFixed(2);
+      editForm.category.value=prod.category;
+      const estLabel=editForm.querySelector('[name="estimatedTime"]').parentElement;
+      if(prod.isDeal){estLabel.style.display='none';}else{estLabel.style.display='block';editForm.estimatedTime.value=prod.estimatedTime||'';}
+      editForm.onsubmit=async e=>{
+        e.preventDefault();
+        const fd=new FormData(editForm);
+        fd.set('name', fd.get('name'));
+        if(fd.get('price')) fd.set('unitAmount', Math.round(parseFloat(fd.get('price'))*100));
+        fd.delete('price');
+        if(editForm.estimatedTime.value) fd.set('estimatedTime',editForm.estimatedTime.value);
+        await fetch('/api/products/'+id,{method:'PATCH',body:fd});
+        modal.style.display='none';
+        loadList();
+      };
+    }
+
+    closeModal.onclick=()=>{modal.style.display='none';};
+
+    const dealBtn=document.getElementById('dealBtn');
+    const dealModal=document.getElementById('dealModal');
+    dealBtn.onclick=async()=>{
+      if(!productsCache.length){productsCache=await fetch('/api/products?all=1').then(r=>r.json());}
+      const p=productsCache.filter(pr=>!pr.isDeal);
+      const sel1=document.getElementById('dealProd1');
+      const sel2=document.getElementById('dealProd2');
+      sel1.innerHTML=sel2.innerHTML=p.map(pr=>`<option value="${pr.id}">${pr.name}</option>`).join('');
+      const updateOrig=()=>{
+        const pr1=productsCache.find(x=>x.id===sel1.value);
+        const pr2=productsCache.find(x=>x.id===sel2.value);
+        if(pr1&&pr2){document.getElementById('dealOrig').innerText='Original total $'+(((pr1.unitAmount+pr2.unitAmount)/100).toFixed(2));}
+      };
+      sel1.onchange=updateOrig;
+      sel2.onchange=updateOrig;
+      updateOrig();
+      dealModal.style.display='flex';
+    };
+    document.getElementById('closeDeal').onclick=()=>dealModal.style.display='none';
+    document.getElementById('dealForm').onsubmit=async e=>{
+      e.preventDefault();
+      const fd=new FormData(e.target);
+      const res=await fetch('/api/deals',{method:'POST',body:fd}).then(r=>r.json());
+      dealModal.style.display='none';
+      await loadList();
+    };
+  </script>
+</body>
+</html>

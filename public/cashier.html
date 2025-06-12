@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cashier</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+  <div class="flex gap-4 mb-4">
+    <button id="tabNew" class="px-4 py-2 border-b-2 border-gray-800">New Orders</button>
+    <button id="tabHist" class="px-4 py-2">All Orders</button>
+  </div>
+  <!-- New -->
+  <div id="newSec">
+    <h1 class="text-2xl font-bold mb-4">New Orders</h1>
+    <div id="orders" class="space-y-4"></div>
+  </div>
+  <!-- History -->
+  <div id="histSec" style="display:none;">
+    <input id="search" class="border p-2 mb-3 w-full" placeholder="Search order id…" />
+    <div id="history" class="space-y-4"></div>
+  </div>
+
+<script>
+  const fmt = (c)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'usd'}).format(c/100);
+  function fmtTime(ms){
+    const m=Math.floor(ms/60000),s=Math.floor(ms/1000)%60;
+    return m+':' + s.toString().padStart(2,'0');
+  }
+  async function load(){
+    const orders = await fetch('/api/orders').then(r=>r.json());
+    const container=document.getElementById('orders');
+    container.innerHTML='';
+    orders.forEach(o=>{
+      const div=document.createElement('div');
+      div.className='bg-white p-4 shadow rounded';
+      div.innerHTML=`<div class="flex justify-between items-center mb-2"><span>Order #${o.id}</span><button data-id="${o.id}" class="done bg-green-600 text-white px-3 py-1 rounded">Done</button></div>`;
+      o.items.forEach(it=>{
+        if(it.name.includes(' + ') && it.name.endsWith(' Deal')){
+          const names=it.name.replace(' Deal','').split(' + ');
+          names.forEach(n=>{div.innerHTML+=`<div class="text-sm">${it.quantity} x ${n}</div>`;});
+        }else{
+          div.innerHTML+=`<div class="text-sm">${it.quantity} x ${it.name}</div>`;
+        }
+      });
+      const timeDiv=document.createElement('div');
+      timeDiv.className='mt-2 font-semibold';
+      div.appendChild(timeDiv);
+      function tick(){
+        const total=o.prepMinutes?o.prepMinutes*60000:240000;
+        const remaining= total - (Date.now()-o.created);
+        if(remaining>0){timeDiv.textContent='Remaining: '+fmtTime(remaining);timeDiv.classList.remove('text-red-600');}
+        else{timeDiv.textContent='Overdue: '+fmtTime(-remaining);timeDiv.classList.add('text-red-600');}
+      }
+      tick();
+      setInterval(tick,1000);
+      container.appendChild(div);
+    });
+    document.querySelectorAll('.done').forEach(b=>b.onclick=async()=>{
+      await fetch('/api/orders/'+b.dataset.id+'/done',{method:'POST'});
+      load();
+    });
+  }
+  load();
+  setInterval(load,5000);
+
+  async function loadHist(){
+    const list=await fetch('/api/orders/history').then(r=>r.json());
+    const container=document.getElementById('history');
+    container.innerHTML='';
+    const term=document.getElementById('search').value.trim();
+    list.filter(o=>!term||String(o.id).includes(term)).forEach(o=>{
+      const div=document.createElement('div');div.className='bg-white p-4 shadow rounded';
+      div.innerHTML=`<div class="flex justify-between items-center mb-2"><span>Order #${o.id}</span><button data-id="${o.id}" class="refund bg-red-600 text-white px-3 py-1 rounded">Refund</button></div>`;
+      o.items.forEach(it=>{
+        if(it.name.includes(' + ') && it.name.endsWith(' Deal')){
+          const names=it.name.replace(' Deal','').split(' + ');
+          names.forEach(n=>{div.innerHTML+=`<div class="text-sm">${it.quantity} x ${n}</div>`;});
+        }else{
+          div.innerHTML+=`<div class="text-sm">${it.quantity} x ${it.name}</div>`;
+        }
+      });
+      if(o.refunded){div.querySelector('.refund').disabled=true;div.querySelector('.refund').textContent='Refunded';}
+      container.appendChild(div);
+    });
+    document.querySelectorAll('.refund').forEach(b=>b.onclick=async()=>{
+      if(!confirm('Refund this order?')) return;
+      await fetch(`/api/orders/${b.dataset.id}/refund`,{method:'POST'});
+      loadHist();
+    });
+  }
+  document.getElementById('search').oninput=()=>loadHist();
+
+  // tab logic
+  const tabNew=document.getElementById('tabNew');const tabHist=document.getElementById('tabHist');const newSec=document.getElementById('newSec');const histSec=document.getElementById('histSec');
+  tabNew.onclick=()=>{newSec.style.display='block';histSec.style.display='none';tabNew.classList.add('border-gray-800');tabHist.classList.remove('border-gray-800');};
+  tabHist.onclick=()=>{histSec.style.display='block';newSec.style.display='none';tabHist.classList.add('border-gray-800');tabNew.classList.remove('border-gray-800');loadHist();};
+</script>
+</body>
+</html>
