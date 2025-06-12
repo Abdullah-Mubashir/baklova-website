@@ -34,15 +34,12 @@ if (process.env.SMTP_HOST) {
   });
 }
 
-async function sendWelcome(to) {
+async function sendWelcome(to, isWelcome = true, customSubj, customBody) {
   if (!mailer) return;
+  const subj = isWelcome ? 'Thanks for subscribing' : (customSubj || '');
+  const html = isWelcome ? '<p>Thank you for subscribing to Baklava House! We will keep you updated with news and sweet deals.</p>' : (customBody || '');
   try {
-    await mailer.sendMail({
-      from: process.env.EMAIL_FROM || process.env.SMTP_USER,
-      to,
-      subject: 'Thanks for subscribing',
-      html: '<p>Thank you for subscribing to Baklava House! We will keep you updated with news and sweet deals.</p>'
-    });
+    await mailer.sendMail({ from: process.env.EMAIL_FROM || process.env.SMTP_USER, to, subject: subj, html });
   } catch (e) { console.error('email send error', e); }
 }
 
@@ -539,6 +536,24 @@ app.post('/api/subscribe', async (req, res) => {
   await saveDb();
   if (email) await sendWelcome(email);
   res.json({ ok: true });
+});
+
+// send ad to all subscribers
+app.post('/api/send-ad', async (req, res) => {
+  const { subject, body } = req.body || {};
+  if (!subject || !body) return res.status(400).json({ error: 'missing' });
+  if (!mailer) return res.status(500).json({ error: 'email not configured' });
+  await db.read();
+  db.data.subscribers ||= [];
+  const emails = db.data.subscribers.map(s => s.email ? decrypt(s.email) : null).filter(Boolean);
+  let sent = 0, failed = 0;
+  for (const to of emails) {
+    try {
+      await sendWelcome(to, false, subject, body); // reuse, extended below
+      sent++;
+    } catch (e) { failed++; }
+  }
+  res.json({ sent, failed });
 });
 
 const PORT = process.env.PORT || 3000;

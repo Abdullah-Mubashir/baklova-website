@@ -35,9 +35,10 @@
 </head>
 <body class="font-sans max-w-5xl mx-auto p-6">
   <h1 class="text-2xl font-bold mb-4">Admin</h1>
-  <div class="mb-6 border-b">
-    <button id="tabAdd" class="px-4 py-2 border-b-2 border-amber-700">Add Product</button>
-    <button id="tabManage" class="px-4 py-2">Manage Products</button>
+  <div class="flex gap-4 text-sm mb-4">
+    <button data-tab="add" class="tabBtn font-semibold">Add Product</button>
+    <button data-tab="manage" class="tabBtn">Manage Products</button>
+    <button data-tab="send" class="tabBtn">Send Ad</button>
     <button id="tabStats" class="px-4 py-2">Interaction Data</button>
     <button id="tabAnalytics" class="px-4 py-2">Analytics</button>
     <button id="tabInsights" class="px-4 py-2">Insights</button>
@@ -61,7 +62,7 @@
   </form>
 
   <!-- Manage -->
-  <div id="manage" style="display:none;">
+  <div id="manage" class="tab hidden">
     <table class="w-full text-sm" id="prodTable">
       <thead>
         <tr>
@@ -94,6 +95,15 @@
         </form>
       </div>
     </div>
+  </div>
+
+  <!-- Send Ad -->
+  <div id="send" class="tab hidden space-y-3">
+    <h3 class="text-lg font-semibold">Send Email Blast</h3>
+    <input id="adSubject" placeholder="Subject" class="border p-2 w-full" />
+    <textarea id="adBody" rows="6" placeholder="Email HTML or text" class="border p-2 w-full"></textarea>
+    <button id="sendAdBtn" class="bg-amber-700 text-white px-4 py-2 rounded">Send</button>
+    <div id="adMsg" class="text-green-700 text-sm"></div>
   </div>
 
   <!-- Stats -->
@@ -185,13 +195,25 @@
     };
 
     // tab logic
-    const sections={form,manage,stats,analytics,insights};
-    function show(sec){Object.values(sections).forEach(s=>s.style.display='none');sec.style.display='block';[tabAdd,tabManage,tabStats,tabAnalytics,tabInsights].forEach(t=>t.classList.remove('border-amber-700'));}
-    tabAdd.onclick=()=>{show(form);tabAdd.classList.add('border-amber-700');};
-    tabManage.onclick=()=>{show(manage);tabManage.classList.add('border-amber-700');loadList();};
-    tabStats.onclick=()=>{show(stats);tabStats.classList.add('border-amber-700');loadStats();};
-    tabAnalytics.onclick=()=>{show(analytics);tabAnalytics.classList.add('border-amber-700');loadAnalytics();};
-    tabInsights.onclick=()=>{show(insights);tabInsights.classList.add('border-amber-700');loadInsights();};
+    const sections={form,manage,stats,analytics,insights,send};
+    const tabs=document.querySelectorAll('.tabBtn');
+    function show(sec){Object.values(sections).forEach(s=>s.style.display='none');sec.style.display='block';tabs.forEach(t=>t.classList.remove('font-semibold'));}
+    tabs.forEach(b=>b.onclick=()=>{
+      b.classList.add('font-semibold');
+      document.querySelectorAll('.tab').forEach(t=>t.classList.add('hidden'));
+      document.getElementById(b.dataset.tab).classList.remove('hidden');
+    });
+    // send ad
+    document.getElementById('sendAdBtn').onclick=async()=>{
+      const subj=document.getElementById('adSubject').value.trim();
+      const body=document.getElementById('adBody').value.trim();
+      if(!subj||!body){alert('Subject and body required');return;}
+      const btn=document.getElementById('sendAdBtn');btn.disabled=true;btn.textContent='Sending...';
+      const res=await fetch('/api/send-ad',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subject:subj,body})});
+      if(res.ok){document.getElementById('adMsg').textContent='Sent!';}
+      else alert('Send failed');
+      btn.disabled=false;btn.textContent='Send';
+    };
 
     async function loadList(){
       const tbody=document.querySelector('#prodTable tbody');
