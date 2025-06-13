@@ -270,9 +270,10 @@
       for(const sid of ids){
         try{
           const o=await fetch('/api/order-status/'+sid).then(r=>r.json());
-          let status='Making';
-          if(o.status==='paid') status='Ready for pickup';
-          if(o.status==='done') status='Completed';
+          let status='In queue';
+          if(o.status==='paid') status='Making';
+          if(o.status==='done') status='Ready for pickup';
+          if(o.status==='refunded') status='Refunded';
           if(o.status==='icecream-hold') status='Waiting (press I\'m here)';
           rows.push(`<div class="border p-2"><div>Order #${o.id}</div><div>Status: ${status}</div></div>`);
         }catch{}
