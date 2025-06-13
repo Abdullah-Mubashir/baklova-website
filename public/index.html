@@ -148,13 +148,14 @@
 
     let cart=[];
     // load cart from localStorage if exists
-    try{
-      const stored=localStorage.getItem('cart');
-      if(stored) cart=JSON.parse(stored);
-    }catch(e){console.warn('cart parse',e);}
+    let stored=null;
+    try{stored=localStorage.getItem('cart');}catch{}
+    if(!stored){const m=document.cookie.match(/(^|;)\s*cart=([^;]+)/);if(m)stored=decodeURIComponent(m[2]);}
+    if(stored){try{cart=JSON.parse(stored);}catch{}}
 
     function saveCart(){
-      localStorage.setItem('cart',JSON.stringify(cart));
+      try{localStorage.setItem('cart',JSON.stringify(cart));}catch{}
+      document.cookie='cart='+encodeURIComponent(JSON.stringify(cart))+';path=/;max-age=172800';
     }
 
     function addToCart(data){
@@ -193,6 +194,7 @@
         if(!cart.length)return alert('Cart is empty');
         const res=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:cart})}).then(r=>r.json());
         localStorage.setItem('lastOrderSession',res.sessionId);
+        cart=[];saveCart();
         location.href=res.url;
       };
     }

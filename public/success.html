@@ -4,6 +4,9 @@
   const urlParams=new URLSearchParams(location.search);
   const sessionId=urlParams.get('session_id');
   if(sessionId){
+    // clear saved cart so next order starts fresh
+    try{localStorage.removeItem('cart');}catch{}
+    document.cookie='cart=;path=/;max-age=0';
     await fetch('/api/session-complete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sessionId})});
     const order=await fetch('/api/order-status/'+sessionId).then(r=>r.json());
     if(order.status==='icecream-hold'){
