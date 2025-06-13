@@ -94,14 +94,19 @@
       await fetch(`/api/orders/${b.dataset.id}/refund`,{method:'POST'});
       loadHist();
     });
-    // line refund
+    // line refund via dropdown
     document.querySelectorAll('.refundLine').forEach(b=>b.onclick=()=>{
-      const qty=prompt(`Refund how many of ${b.dataset.name}? (max ${b.dataset.qty})`);
-      const n=parseInt(qty);
-      if(!n||n<1||n>parseInt(b.dataset.qty)) return;
-      fetch(`/api/orders/${b.closest('div').querySelector('.refund').dataset.id}/refund-line`,{
-        method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({priceId:b.dataset.pid,qty:n})}).then(()=>loadHist());
+      const max=parseInt(b.dataset.qty);
+      const sel=document.createElement('select');
+      for(let i=1;i<=max;i++){const o=document.createElement('option');o.value=i;o.textContent=i;sel.appendChild(o);} 
+      const ok=document.createElement('button');ok.textContent='OK';ok.className='ml-2 px-2 py-0.5 border';
+      b.after(sel);sel.after(ok);b.disabled=true;
+      ok.onclick=()=>{
+        const n=parseInt(sel.value);
+        fetch(`/api/orders/${b.closest('div').querySelector('.refund').dataset.id}/refund-line`,{
+          method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({priceId:b.dataset.pid,qty:n})}).then(()=>loadHist());
+      };
     });
   }
   document.getElementById('search').oninput=()=>loadHist();

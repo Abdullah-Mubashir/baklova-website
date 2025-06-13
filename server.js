@@ -552,8 +552,9 @@ app.post('/api/orders/:id/refund-line', async (req, res) => {
   const refundQty = Math.min(qty, line.quantity);
   if (refundQty <= 0) return res.status(400).json({ error: 'qty' });
   const prod = db.data.products.find(p => p.priceId === priceId);
-  if (!prod) return res.status(400).json({ error: 'product not found' });
-  const amount = prod.unitAmount * refundQty;
+  const unit = prod?.unitAmount ?? line.unitAmount ?? 0;
+  if (!unit) return res.status(400).json({ error: 'price unknown' });
+  const amount = unit * refundQty;
   try {
     const session = await stripe.checkout.sessions.retrieve(order.sessionId, { expand: ['payment_intent'] });
     await stripe.refunds.create({ payment_intent: session.payment_intent.id, amount, metadata: { item: prod.name, qty: refundQty } });
