@@ -24,7 +24,7 @@
   <!-- Refund Log -->
   <div id="logSec" style="display:none;">
     <h2 class="text-lg font-semibold mb-2">Recent Refunds</h2>
-    <table class="w-full text-sm" id="logTable"><thead><tr><th>ID</th><th>Amount</th><th>Created</th><th>Available</th><th>Description</th></tr></thead><tbody></tbody></table>
+    <table class="w-full text-sm" id="logTable"><thead><tr><th>ID</th><th>Type</th><th>Amount</th><th>Fee</th><th>Net</th><th>Created</th><th>Available</th><th>Description</th></tr></thead><tbody></tbody></table>
   </div>
 
 <script>
@@ -131,7 +131,7 @@
     const list=await fetch('/api/refund-log').then(r=>r.json());
     list.forEach(t=>{
       const tr=document.createElement('tr');
-      tr.innerHTML=`<td>${t.id}</td><td>${(t.amount/100).toFixed(2)}</td><td>${new Date(t.created).toLocaleString()}</td><td>${new Date(t.available_on).toLocaleDateString()}</td><td>${t.description}</td>`;
+      tr.innerHTML=`<td>${t.id}</td><td>${t.type}</td><td>${(t.amount/100).toFixed(2)}</td><td>${(t.fee/100).toFixed(2)}</td><td>${(t.net/100).toFixed(2)}</td><td>${new Date(t.created).toLocaleString()}</td><td>${new Date(t.available_on).toLocaleDateString()}</td><td>${t.description}</td>`;
       rows.appendChild(tr);
     });
   }

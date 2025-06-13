@@ -634,17 +634,19 @@ app.post('/api/orders/:id/arrived', async (req, res) => {
 app.get('/api/refund-log', async (_req, res) => {
   try {
     const list = await stripe.balanceTransactions.list({ limit: 50 });
-    const refunds = list.data.filter(t => t.type === 'refund').map(t => ({
+    const tx = list.data.map(t => ({
       id: t.id,
+      type: t.type,
       amount: t.amount,
       currency: t.currency,
       net: t.net,
+      fee: t.fee,
       created: t.created * 1000,
       available_on: t.available_on * 1000,
       description: t.description || '',
-      fee: t.fee
+      source: t.source
     }));
-    res.json(refunds);
+    res.json(tx);
   } catch (e) { console.error(e); res.status(500).json({ error: 'stripe' }); }
 });
 
