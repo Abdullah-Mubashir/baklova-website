@@ -13,6 +13,15 @@
         btn.disabled=true;await fetch('/api/orders/'+order.id+'/arrived',{method:'POST'});btn.textContent='Notified!';
       };
     }
+    // helper to persist orders with cookie fallback
+    function storeOrder(id){
+      let arr=[];
+      try{arr=JSON.parse(localStorage.getItem('orders')||'[]');}catch{}
+      if(!Array.isArray(arr)) arr=[];
+      if(!arr.includes(id)){arr.push(id);try{localStorage.setItem('orders',JSON.stringify(arr));}catch{} }
+      document.cookie='orders='+encodeURIComponent(JSON.stringify(arr))+';path=/;max-age=2592000';
+    }
+    storeOrder(sessionId);
   }
 })();
 </script></body></html>

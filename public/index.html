@@ -72,6 +72,16 @@
         <button id="checkoutBtn" class="w-full bg-amber-700 text-white py-2 rounded">Checkout</button>
       </div>
     </div>
+    <!-- My Orders button -->
+    <button id="myOrdersBtn" class="fixed bottom-4 right-4 bg-amber-700 text-white px-4 py-2 rounded-full shadow">My Orders</button>
+    <!-- Orders Modal -->
+    <div id="ordersModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
+      <div class="bg-white p-4 w-full max-w-md space-y-3 relative">
+        <button id="closeOrders" class="absolute top-1 right-2">x</button>
+        <h3 class="text-lg font-semibold">Your Orders</h3>
+        <div id="ordersList" class="space-y-2 text-sm"></div>
+      </div>
+    </div>
   </main>
   <footer class="bg-amber-700 text-white py-8 text-center text-sm flex flex-col items-center gap-4">
     <div id="subscribeStrip" class="bg-amber-100 p-4 rounded flex flex-col sm:flex-row items-center gap-2 max-w-lg w-full">
@@ -244,6 +254,31 @@
         alert('Subscribe failed');
       }
     };
+
+    const btnMy=document.getElementById('myOrdersBtn');const modal=document.getElementById('ordersModal');const closeO=document.getElementById('closeOrders');
+    btnMy.onclick=()=>{modal.classList.remove('hidden');loadMy();};closeO.onclick=()=>modal.classList.add('hidden');
+
+    async function loadMy(){
+      const listDiv=document.getElementById('ordersList');listDiv.innerHTML='Loading...';
+      const ids=(function(){
+        try{return JSON.parse(localStorage.getItem('orders')||'[]');}catch{}
+        const m=document.cookie.match(/(^|;)\s*orders=([^;]+)/);
+        return m?JSON.parse(decodeURIComponent(m[2])):[];
+      })();
+      if(!ids.length){listDiv.textContent='No orders yet.';return;}
+      const rows=[];
+      for(const sid of ids){
+        try{
+          const o=await fetch('/api/order-status/'+sid).then(r=>r.json());
+          let status='Making';
+          if(o.status==='paid') status='Ready for pickup';
+          if(o.status==='done') status='Completed';
+          if(o.status==='icecream-hold') status='Waiting (press I\'m here)';
+          rows.push(`<div class="border p-2"><div>Order #${o.id}</div><div>Status: ${status}</div></div>`);
+        }catch{}
+      }
+      listDiv.innerHTML=rows.join('');
+    }
   </script>
 </body>
 </html>
