@@ -35,18 +35,17 @@
 </head>
 <body class="font-sans max-w-5xl mx-auto p-6">
   <h1 class="text-2xl font-bold mb-4">Admin</h1>
-  <div class="flex gap-4 text-sm mb-4">
+  <div class="flex flex-wrap gap-3 text-sm mb-4">
     <button data-tab="add" class="tabBtn font-semibold">Add Product</button>
     <button data-tab="manage" class="tabBtn">Manage Products</button>
     <button data-tab="send" class="tabBtn">Send Ad</button>
-    <button id="tabStats" class="px-4 py-2">Interaction Data</button>
-    <button id="tabAnalytics" class="px-4 py-2">Analytics</button>
-    <button id="tabInsights" class="px-4 py-2">Insights</button>
-    <button id="dealBtn" class="border p-2">Add Deal</button>
+    <button data-tab="stats" class="tabBtn">Interaction Data</button>
+    <button data-tab="analytics" class="tabBtn">Analytics</button>
+    <button data-tab="insights" class="tabBtn">Insights</button>
   </div>
 
   <!-- Add Product -->
-  <form id="form" enctype="multipart/form-data" class="space-y-2" style="display:block;">
+  <form id="form" enctype="multipart/form-data" class="space-y-2 tab" >
     <label class="block text-sm font-medium">Name <input id="name" name="name" placeholder="Name" class="border p-2 w-full" required /></label>
     <label class="block text-sm font-medium">Description <textarea id="description" name="description" placeholder="Description" class="border p-2 w-full"></textarea></label>
     <label class="block text-sm font-medium">Category <select name="category" class="border p-2 w-full">
@@ -107,13 +106,13 @@
   </div>
 
   <!-- Stats -->
-  <div id="stats" style="display:none;">
+  <div id="stats" class="tab hidden">
     <h2 class="text-lg font-semibold mb-2">User Interaction</h2>
     <table class="w-full text-sm" id="statsTable"><thead><tr><th>Name</th><th>Views</th><th>Adds</th><th>Est. Time (min)</th></tr></thead><tbody></tbody></table>
   </div>
 
   <!-- Analytics -->
-  <div id="analytics" style="display:none;">
+  <div id="analytics" class="tab hidden">
     <h2 class="text-lg font-semibold mb-2">Last 30 Days Summary</h2>
     <div>Gross: <span id="revGross" class="font-semibold"></span></div>
     <div>Refunds: <span id="revRefund" class="font-semibold"></span></div>
@@ -126,7 +125,7 @@
   </div>
 
   <!-- Insights -->
-  <div id="insights" style="display:none;">
+  <div id="insights" class="tab hidden">
     <h2 class="text-lg font-semibold mb-2">Insights (30 days)</h2>
     <div class="grid md:grid-cols-2 gap-6">
       <div>
@@ -194,26 +193,19 @@
       }
     };
 
-    // tab logic
-    const sections={form,manage,stats,analytics,insights,send};
     const tabs=document.querySelectorAll('.tabBtn');
-    function show(sec){Object.values(sections).forEach(s=>s.style.display='none');sec.style.display='block';tabs.forEach(t=>t.classList.remove('font-semibold'));}
-    tabs.forEach(b=>b.onclick=()=>{
-      b.classList.add('font-semibold');
+    tabs.forEach(btn=>btn.addEventListener('click',()=>{
+      tabs.forEach(b=>b.classList.remove('font-semibold','border-b-2','border-amber-700'));
+      btn.classList.add('font-semibold','border-b-2','border-amber-700');
       document.querySelectorAll('.tab').forEach(t=>t.classList.add('hidden'));
-      document.getElementById(b.dataset.tab).classList.remove('hidden');
-    });
-    // send ad
-    document.getElementById('sendAdBtn').onclick=async()=>{
-      const subj=document.getElementById('adSubject').value.trim();
-      const body=document.getElementById('adBody').value.trim();
-      if(!subj||!body){alert('Subject and body required');return;}
-      const btn=document.getElementById('sendAdBtn');btn.disabled=true;btn.textContent='Sending...';
-      const res=await fetch('/api/send-ad',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subject:subj,body})});
-      if(res.ok){document.getElementById('adMsg').textContent='Sent!';}
-      else alert('Send failed');
-      btn.disabled=false;btn.textContent='Send';
-    };
+      const active=document.getElementById(btn.dataset.tab);
+      active.classList.remove('hidden');
+      // lazy loads
+      if(btn.dataset.tab==='manage') loadList();
+      if(btn.dataset.tab==='stats') loadStats();
+      if(btn.dataset.tab==='analytics') loadAnalytics();
+      if(btn.dataset.tab==='insights') loadInsights();
+    }));
 
     async function loadList(){
       const tbody=document.querySelector('#prodTable tbody');
