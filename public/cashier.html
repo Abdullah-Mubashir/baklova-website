@@ -79,14 +79,13 @@
         }else{
           div.innerHTML+=`<div class="text-sm">${it.quantity} x ${it.name}</div>`;
         }
+        if(it.quantity>0){
+          const b=document.createElement('button');b.textContent='Refund';b.className='refundLine text-blue-600 ml-2 text-xs';
+          b.dataset.pid=it.priceId;b.dataset.name=it.name;b.dataset.qty=it.quantity;
+          div.appendChild(b);
+        }
       });
       if(o.refunded){div.querySelector('.refund').disabled=true;div.querySelector('.refund').textContent='Refunded';}
-      // add per item refund buttons
-      o.items.forEach(it=>{
-        const b=document.createElement('button');b.textContent='Refund';b.className='refundLine text-blue-600 ml-2 text-xs';
-        b.dataset.pid=it.priceId;b.dataset.name=it.name;b.dataset.unit=it.unitAmount||0;b.dataset.qty=it.quantity;
-        div.appendChild(b);
-      });
       container.appendChild(div);
     });
     document.querySelectorAll('.refund').forEach(b=>b.onclick=async()=>{
@@ -105,7 +104,10 @@
         const n=parseInt(sel.value);
         fetch(`/api/orders/${b.closest('div').querySelector('.refund').dataset.id}/refund-line`,{
           method:'POST',headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({priceId:b.dataset.pid,qty:n})}).then(()=>loadHist());
+          body:JSON.stringify({priceId:b.dataset.pid,qty:n})}).then(r=>{
+          if(!r.ok){r.json().then(d=>alert(d.error||'Error'));}
+          loadHist();
+        });
       };
     });
   }

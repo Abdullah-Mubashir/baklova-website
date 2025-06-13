@@ -532,6 +532,9 @@ app.post('/api/orders/:id/refund', async (req, res) => {
   try {
     const session = await stripe.checkout.sessions.retrieve(order.sessionId, { expand: ['payment_intent'] });
     const pi = session.payment_intent;
+    const remaining = session.payment_intent.amount_received - session.payment_intent.amount_refunded;
+    if(remaining<=0) return res.status(400).json({error:'already_refunded'});
+    if(session.payment_intent.amount_refunded>=session.payment_intent.amount) return res.status(400).json({error:'already_refunded'});
     await stripe.refunds.create({ payment_intent: pi.id });
     order.refunded = true;
     order.status = 'refunded';
@@ -557,6 +560,9 @@ app.post('/api/orders/:id/refund-line', async (req, res) => {
   const amount = unit * refundQty;
   try {
     const session = await stripe.checkout.sessions.retrieve(order.sessionId, { expand: ['payment_intent'] });
+    const remaining = session.payment_intent.amount_received - session.payment_intent.amount_refunded;
+    if(remaining<=0) return res.status(400).json({error:'already_refunded'});
+    if(amount>remaining) return res.status(400).json({error:'exceeds_remaining'});
     await stripe.refunds.create({ payment_intent: session.payment_intent.id, amount, metadata: { item: prod.name, qty: refundQty } });
     // mark refunded qty
     line.quantity -= refundQty;
