@@ -630,5 +630,23 @@ app.post('/api/orders/:id/arrived', async (req, res) => {
   res.sendStatus(200);
 });
 
+// recent balance transactions (refund log)
+app.get('/api/refund-log', async (_req, res) => {
+  try {
+    const list = await stripe.balanceTransactions.list({ limit: 50 });
+    const refunds = list.data.filter(t => t.type === 'refund').map(t => ({
+      id: t.id,
+      amount: t.amount,
+      currency: t.currency,
+      net: t.net,
+      created: t.created * 1000,
+      available_on: t.available_on * 1000,
+      description: t.description || '',
+      fee: t.fee
+    }));
+    res.json(refunds);
+  } catch (e) { console.error(e); res.status(500).json({ error: 'stripe' }); }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -9,6 +9,7 @@
   <div class="flex gap-4 mb-4">
     <button id="tabNew" class="px-4 py-2 border-b-2 border-gray-800">New Orders</button>
     <button id="tabHist" class="px-4 py-2">All Orders</button>
+    <button id="tabLog" class="px-4 py-2">Refund Log</button>
   </div>
   <!-- New -->
   <div id="newSec">
@@ -19,6 +20,11 @@
   <div id="histSec" style="display:none;">
     <input id="search" class="border p-2 mb-3 w-full" placeholder="Search order id…" />
     <div id="history" class="space-y-4"></div>
+  </div>
+  <!-- Refund Log -->
+  <div id="logSec" style="display:none;">
+    <h2 class="text-lg font-semibold mb-2">Recent Refunds</h2>
+    <table class="w-full text-sm" id="logTable"><thead><tr><th>ID</th><th>Amount</th><th>Created</th><th>Available</th><th>Description</th></tr></thead><tbody></tbody></table>
   </div>
 
 <script>
@@ -115,8 +121,20 @@
 
   // tab logic
   const tabNew=document.getElementById('tabNew');const tabHist=document.getElementById('tabHist');const newSec=document.getElementById('newSec');const histSec=document.getElementById('histSec');
-  tabNew.onclick=()=>{newSec.style.display='block';histSec.style.display='none';tabNew.classList.add('border-gray-800');tabHist.classList.remove('border-gray-800');};
-  tabHist.onclick=()=>{histSec.style.display='block';newSec.style.display='none';tabHist.classList.add('border-gray-800');tabNew.classList.remove('border-gray-800');loadHist();};
+  const tabLog=document.getElementById('tabLog');const logSec=document.getElementById('logSec');
+  tabNew.onclick=()=>{newSec.style.display='block';histSec.style.display='none';logSec.style.display='none';tabNew.classList.add('border-gray-800');tabHist.classList.remove('border-gray-800');tabLog.classList.remove('border-gray-800');};
+  tabHist.onclick=()=>{histSec.style.display='block';newSec.style.display='none';logSec.style.display='none';tabHist.classList.add('border-gray-800');tabNew.classList.remove('border-gray-800');tabLog.classList.remove('border-gray-800');loadHist();};
+  tabLog.onclick=()=>{logSec.style.display='block';newSec.style.display='none';histSec.style.display='none';tabLog.classList.add('border-gray-800');tabNew.classList.remove('border-gray-800');tabHist.classList.remove('border-gray-800');loadLog();};
+
+  async function loadLog(){
+    const rows=document.querySelector('#logTable tbody');rows.innerHTML='';
+    const list=await fetch('/api/refund-log').then(r=>r.json());
+    list.forEach(t=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td>${t.id}</td><td>${(t.amount/100).toFixed(2)}</td><td>${new Date(t.created).toLocaleString()}</td><td>${new Date(t.available_on).toLocaleDateString()}</td><td>${t.description}</td>`;
+      rows.appendChild(tr);
+    });
+  }
 </script>
 </body>
 </html>
