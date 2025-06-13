@@ -91,6 +91,28 @@
       "isDeal": true,
       "originalPrice": 11,
       "cost": 0
+    },
+    {
+      "id": "prod_SUHeKiIB8xdgMU",
+      "name": "i9i8",
+      "priceId": "price_1RZMPVA3g8IaVSP2PIpWH7o5",
+      "unitAmount": 400,
+      "currency": "usd",
+      "image": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1749765315839-36383.jpg",
+      "media": [
+        {
+          "url": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1749765315839-36383.jpg",
+          "type": "image"
+        },
+        {
+          "url": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1749765316172-36383.jpg",
+          "type": "image"
+        }
+      ],
+      "estimatedTime": 2,
+      "category": "Ice Cream",
+      "stock": true,
+      "cost": 2
     }
   ],
   "orders": [
@@ -201,12 +223,36 @@
       "status": "pending",
       "created": 1749697095042,
       "prepMinutes": 4
+    },
+    {
+      "id": 1749778113974,
+      "sessionId": "cs_test_b1ceCXA6nZEgcHcm0bCzxPwI9BzRFE41TWuF2iCgqMLoj4a0Y50ArfmGs1",
+      "items": [
+        {
+          "priceId": "price_1RZ1j6A3g8IaVSP2myNA7U5B",
+          "name": "item08",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 1
+        },
+        {
+          "priceId": "price_1RZMPVA3g8IaVSP2PIpWH7o5",
+          "name": "i9i8",
+          "unitAmount": 400,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "done",
+      "created": 1749778113974,
+      "prepMinutes": 4,
+      "hasIceCream": true
     }
   ],
   "interactions": {
     "prod_STppISWeDiauSi": {
       "views": 9,
-      "adds": 2
+      "adds": 3
     },
     "prod_STcmO7xaL3Dvpo": {
       "views": 4,
@@ -214,7 +260,7 @@
     },
     "prod_STX3mil7vICQL2": {
       "views": 3,
-      "adds": 0
+      "adds": 1
     },
     "prod_STv3epSj0rLnAb": {
       "views": 3,
@@ -223,6 +269,30 @@
     "prod_STzFal9NL7Jmv5": {
       "views": 1,
       "adds": 1
+    },
+    "prod_SUHeKiIB8xdgMU": {
+      "views": 2,
+      "adds": 1
     }
-  }
+  },
+  "subscribers": [
+    {
+      "email": {
+        "iv": "cdd66707071abd9baf650d26",
+        "tag": "11012ab6875ec4342c83cd07ccda9782",
+        "data": "2818df18bec3f86505f309e02c7e87a1106cc0aef060a138713abd45"
+      },
+      "phone": null,
+      "ts": 1749770997981
+    },
+    {
+      "email": {
+        "iv": "4f0b8b4b02268466f93df58a",
+        "tag": "ca53b3cd80be8c24020acd38dd3cc9df",
+        "data": "4b053a161b7ae463223943d5058150c55dd2dbb1fcbc31eec4bec21c57b3"
+      },
+      "phone": null,
+      "ts": 1749771294846
+    }
+  ]
 }

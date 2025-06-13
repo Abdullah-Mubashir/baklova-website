@@ -540,6 +540,32 @@ app.post('/api/orders/:id/refund', async (req, res) => {
   } catch (e) { console.error(e); res.status(500).json({ error: 'stripe refund error' }); }
 });
 
+// refund specific item quantity
+app.post('/api/orders/:id/refund-line', async (req, res) => {
+  const { priceId, qty } = req.body || {};
+  if (!priceId || !qty) return res.status(400).json({ error: 'missing' });
+  await db.read();
+  const order = db.data.orders.find(o => o.id == req.params.id);
+  if (!order) return res.status(404).json({ error: 'not found' });
+  const line = order.items.find(i => i.priceId === priceId);
+  if (!line) return res.status(400).json({ error: 'item not in order' });
+  const refundQty = Math.min(qty, line.quantity);
+  if (refundQty <= 0) return res.status(400).json({ error: 'qty' });
+  const prod = db.data.products.find(p => p.priceId === priceId);
+  if (!prod) return res.status(400).json({ error: 'product not found' });
+  const amount = prod.unitAmount * refundQty;
+  try {
+    const session = await stripe.checkout.sessions.retrieve(order.sessionId, { expand: ['payment_intent'] });
+    await stripe.refunds.create({ payment_intent: session.payment_intent.id, amount, metadata: { item: prod.name, qty: refundQty } });
+    // mark refunded qty
+    line.quantity -= refundQty;
+    if (!order.refunds) order.refunds = [];
+    order.refunds.push({ priceId, qty: refundQty, amount, ts: Date.now() });
+    await saveDb();
+    res.json({ status: 'refunded', amount });
+  } catch (e) { console.error(e); res.status(500).json({ error: 'stripe' }); }
+});
+
 app.post('/api/subscribe', async (req, res) => {
   const { email, phone } = req.body;
   if (!email && !phone) return res.status(400).json({ error: 'missing' });

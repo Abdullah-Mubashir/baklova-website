@@ -81,12 +81,27 @@
         }
       });
       if(o.refunded){div.querySelector('.refund').disabled=true;div.querySelector('.refund').textContent='Refunded';}
+      // add per item refund buttons
+      o.items.forEach(it=>{
+        const b=document.createElement('button');b.textContent='Refund';b.className='refundLine text-blue-600 ml-2 text-xs';
+        b.dataset.pid=it.priceId;b.dataset.name=it.name;b.dataset.unit=it.unitAmount||0;b.dataset.qty=it.quantity;
+        div.appendChild(b);
+      });
       container.appendChild(div);
     });
     document.querySelectorAll('.refund').forEach(b=>b.onclick=async()=>{
       if(!confirm('Refund this order?')) return;
       await fetch(`/api/orders/${b.dataset.id}/refund`,{method:'POST'});
       loadHist();
+    });
+    // line refund
+    document.querySelectorAll('.refundLine').forEach(b=>b.onclick=()=>{
+      const qty=prompt(`Refund how many of ${b.dataset.name}? (max ${b.dataset.qty})`);
+      const n=parseInt(qty);
+      if(!n||n<1||n>parseInt(b.dataset.qty)) return;
+      fetch(`/api/orders/${b.closest('div').querySelector('.refund').dataset.id}/refund-line`,{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({priceId:b.dataset.pid,qty:n})}).then(()=>loadHist());
     });
   }
   document.getElementById('search').oninput=()=>loadHist();
