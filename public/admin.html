@@ -45,7 +45,7 @@
   </div>
 
   <!-- Add Product -->
-  <form id="form" enctype="multipart/form-data" class="space-y-2 tab" >
+  <form id="form" enctype="multipart/form-data" class="space-y-2 tab hidden" >
     <label class="block text-sm font-medium">Name <input id="name" name="name" placeholder="Name" class="border p-2 w-full" required /></label>
     <label class="block text-sm font-medium">Description <textarea id="description" name="description" placeholder="Description" class="border p-2 w-full"></textarea></label>
     <label class="block text-sm font-medium">Category <select name="category" class="border p-2 w-full">
@@ -206,6 +206,9 @@
       if(btn.dataset.tab==='analytics') loadAnalytics();
       if(btn.dataset.tab==='insights') loadInsights();
     }));
+
+    // set default active tab
+    tabs[0].click();
 
     async function loadList(){
       const tbody=document.querySelector('#prodTable tbody');

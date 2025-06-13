@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>Success</title><script src="https://cdn.tailwindcss.com"></script></head><body class="flex flex-col items-center justify-center h-screen"><h1 class="text-2xl mb-4">Thank you for your order!</h1><p class="mb-4">Your payment was successful.</p><a href="/" class="underline mb-6">Back to store</a><script>
+<html><head><meta charset="utf-8"><title>Success</title><script src="https://cdn.tailwindcss.com"></script></head><body class="flex flex-col items-center justify-center h-screen"><h1 class="text-2xl mb-4">Thank you for your order!</h1><p id="msg" class="mb-4">Your payment was successful.</p><button id="hereBtn" class="bg-amber-700 text-white px-4 py-2 rounded mb-4 hidden">I'm here</button><a href="/" class="underline mb-6">Back to store</a><script>
 (async()=>{
   const urlParams=new URLSearchParams(location.search);
   const sessionId=urlParams.get('session_id');
   if(sessionId){
     await fetch('/api/session-complete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sessionId})});
+    const order=await fetch('/api/order-status/'+sessionId).then(r=>r.json());
+    if(order.status==='icecream-hold'){
+      document.getElementById('msg').textContent='Your ice cream will be prepared fresh. Press the button when you arrive.';
+      const btn=document.getElementById('hereBtn');btn.classList.remove('hidden');
+      btn.onclick=async()=>{
+        btn.disabled=true;await fetch('/api/orders/'+order.id+'/arrived',{method:'POST'});btn.textContent='Notified!';
+      };
+    }
   }
 })();
 </script></body></html>

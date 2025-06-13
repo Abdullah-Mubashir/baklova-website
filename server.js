@@ -320,6 +320,12 @@ app.post('/api/checkout', async (req, res) => {
       if (prod && prod.estimatedTime) prep += prod.estimatedTime * (it.quantity || 1);
     });
 
+    // check if order contains ice cream
+    const hasIceCream = orderItems.some(it => {
+      const prod = db.data.products.find(p => p.priceId === it.priceId);
+      return prod && prod.category && prod.category.toLowerCase().includes('ice');
+    });
+
     // Save order locally with pending status
     const order = {
       id: Date.now(),
@@ -327,7 +333,8 @@ app.post('/api/checkout', async (req, res) => {
       items: orderItems,
       status: 'pending',
       created: Date.now(),
-      prepMinutes: prep
+      prepMinutes: prep,
+      hasIceCream
     };
     db.data.orders.push(order);
     await saveDb();
@@ -355,7 +362,7 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res)
     await db.read();
     const order = db.data.orders.find(o => o.sessionId === sessionId);
     if (order) {
-      order.status = 'paid';
+      order.status = order.hasIceCream ? 'icecream-hold' : 'paid';
       await saveDb();
     }
   }
@@ -398,10 +405,10 @@ app.post('/api/session-complete', async (req, res) => {
   await db.read();
   if (!db.data) db.data = { products: [], orders: [] };
   const order = db.data.orders.find(o => o.sessionId === sessionId);
-  if (order) { 
-    order.status = 'paid'; 
-    await saveDb(); 
-    return res.json({ success: true }); 
+  if (order) {
+    order.status = order.hasIceCream ? 'icecream-hold' : 'paid';
+    await saveDb();
+    return res.json({ ok: true });
   }
   res.status(404).json({ error: 'Order not found' });
 });
@@ -565,6 +572,18 @@ app.post('/api/send-ad', async (req, res) => {
     } catch (e) { failed++; }
   }
   res.json({ sent, failed });
+});
+
+// customer arrived for ice cream order
+app.post('/api/orders/:id/arrived', async (req, res) => {
+  await db.read();
+  const order = db.data.orders.find(o => String(o.id) === req.params.id);
+  if (!order) return res.status(404).end();
+  if (order.status === 'icecream-hold') {
+    order.status = 'paid';
+    await saveDb();
+  }
+  res.sendStatus(200);
 });
 
 const PORT = process.env.PORT || 3000;
