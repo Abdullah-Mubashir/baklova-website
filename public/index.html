@@ -152,6 +152,7 @@
     try{stored=localStorage.getItem('cart');}catch{}
     if(!stored){const m=document.cookie.match(/(^|;)\s*cart=([^;]+)/);if(m)stored=decodeURIComponent(m[2]);}
     if(stored){try{cart=JSON.parse(stored);}catch{}}
+    document.addEventListener('DOMContentLoaded',renderCart);
 
     function saveCart(){
       try{localStorage.setItem('cart',JSON.stringify(cart));}catch{}
@@ -188,7 +189,7 @@
 
     function setupCartUI(){
       const drawer=document.getElementById('cartDrawer');
-      document.getElementById('cartBtn').onclick=()=>drawer.classList.toggle('translate-x-full');
+      document.getElementById('cartBtn').onclick=()=>{drawer.classList.toggle('translate-x-full');renderCart();};
       document.getElementById('closeCart').onclick=()=>drawer.classList.add('translate-x-full');
       document.getElementById('checkoutBtn').onclick=async()=>{
         if(!cart.length)return alert('Cart is empty');

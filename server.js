@@ -34,14 +34,14 @@ if (process.env.SMTP_HOST) {
   });
 }
 
-async function sendWelcome(to, isWelcome = true, customSubj, customBody) {
-  if (!mailer) return;
-  const subj = isWelcome ? 'Thanks for subscribing' : (customSubj || '');
-  const html = isWelcome ? '<p>Thank you for subscribing to Baklava House! We will keep you updated with news and sweet deals.</p>' : (customBody || '');
-  try {
-    await mailer.sendMail({ from: process.env.EMAIL_FROM || process.env.SMTP_USER, to, subject: subj, html });
-  } catch (e) { console.error('email send error', e); }
+async function sendMail(to, subject, html){ if(!mailer) return; try{ await mailer.sendMail({ from: process.env.EMAIL_FROM || process.env.SMTP_USER, to, subject, html }); }catch(e){console.error('email send error',e);} }
+// legacy wrapper
+async function sendWelcome(to,isWelcome=true,customSubj,customBody){
+  const subj=isWelcome?'Thanks for subscribing':(customSubj||'');
+  const html=isWelcome?'<p>Thank you for subscribing to Baklava House! We will keep you updated with news and sweet deals.</p>':(customBody||'');
+  return sendMail(to,subj,html);
 }
+
 
 const storage = multerS3({
   s3,
@@ -393,6 +393,11 @@ app.post('/api/orders/:id/done', async (req, res) => {
   if (order) {
     order.status = 'done';
     await saveDb();
+    if (order.email) {
+      const subj = 'Baklava House – Order #' + order.id + ' ready for pickup';
+      const body = `<p>Your order <strong>#${order.id}</strong> is now ready for pickup! See you soon.</p>`;
+      sendMail(order.email, subj, body);
+    }
     return res.json({ success: true });
   }
   res.status(404).json({ error: 'Order not found' });
@@ -406,8 +411,16 @@ app.post('/api/session-complete', async (req, res) => {
   if (!db.data) db.data = { products: [], orders: [] };
   const order = db.data.orders.find(o => o.sessionId === sessionId);
   if (order) {
+    const sess = await stripe.checkout.sessions.retrieve(sessionId, { expand: ['customer_details'] });
+    const email = sess.customer_details?.email;
+    order.email = email || null;
     order.status = order.hasIceCream ? 'icecream-hold' : 'paid';
     await saveDb();
+    if (email) {
+      const subj = 'Baklava House – Order #' + order.id + ' received';
+      const body = `<p>Hi there!</p><p>We’ve received your order <strong>#${order.id}</strong>. We’ll email you again when it’s ready for pickup.</p><p>Thanks for choosing Baklava House!</p>`;
+      sendMail(email, subj, body);
+    }
     return res.json({ ok: true });
   }
   res.status(404).json({ error: 'Order not found' });
