@@ -4,24 +4,31 @@
   <meta charset="UTF-8" />
   <title>Baklava House</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
   <style>
-    .fade{opacity:0;transform:translateY(20px);transition:all .4s ease}.fade.show{opacity:1;transform:none}
     #mediaModal .inner{max-width:900px;width:100%;}
     #mediaModal .slide{min-width:0;}
   </style>
 </head>
 <body class="bg-amber-50 min-h-screen flex flex-col">
-  <header class="bg-amber-700 text-white p-4 flex justify-between"><span class="font-bold">Baklava House</span><nav><a href="/" class="mr-4">Menu</a><a href="/order.html" id="orderTab" style="display:none;">Placed Order</a></nav></header>
-  <section class="bg-[url('https://images.unsplash.com/photo-1514970742119-d4cdd14fbf6e?auto=format&fit=crop&w=1950&q=80')] bg-center bg-cover h-64 flex items-center justify-center text-white">
-    <div class="bg-black/50 p-6 rounded">
+  <header class="bg-amber-700 text-white p-4 flex justify-between items-center">
+    <span class="font-bold text-xl">Baklava House</span>
+    <nav>
+      <a href="/" class="mr-4">Menu</a>
+      <a href="/order.html" id="orderTab" style="display:none;">Placed Order</a>
+    </nav>
+  </header>
+  <section class="hero-section bg-[url('https://images.unsplash.com/photo-1514970742119-d4cdd14fbf6e?auto=format&fit=crop&w=1950&q=80')] bg-center bg-cover h-64 flex items-center justify-center text-white">
+    <div class="hero-content bg-black/50 p-6 rounded text-center">
       <h2 class="text-3xl font-semibold">Fresh, Flaky, Sweet</h2>
       <p class="mt-2">Order authentic baklava delivered to your door.</p>
     </div>
   </section>
   <main class="flex-1 max-w-5xl mx-auto px-4 py-10">
     <h2 class="text-2xl font-semibold mb-6">Menu</h2>
-    <div class="flex flex-wrap items-center gap-4 mb-4">
-      <div class="space-x-3" id="catTabs">
+    <div class="flex flex-wrap items-center gap-4 mb-6">
+      <div class="category-tabs" id="catTabs">
         <button data-cat="All" class="cat font-semibold underline">All</button>
         <button data-cat="Desserts" class="cat">Desserts</button>
         <button data-cat="Specials" class="cat">Specials</button>
@@ -59,7 +66,7 @@
       </div>
     </div>
     <!-- Cart Button -->
-    <button id="cartBtn" class="fixed bottom-6 right-6 bg-amber-700 text-white rounded-full w-14 h-14 shadow-lg text-xl">🛒</button>
+    <button id="cartBtn" class="fixed bottom-6 right-6 bg-amber-700 text-white rounded-full w-14 h-14 shadow-lg text-xl flex items-center justify-center">🛒</button>
     <!-- Cart Drawer -->
     <div id="cartDrawer" class="fixed top-0 right-0 w-80 max-w-full h-full bg-white shadow-lg transform translate-x-full transition-transform duration-300 flex flex-col">
       <div class="p-4 border-b flex justify-between items-center">
@@ -73,7 +80,7 @@
       </div>
     </div>
     <!-- My Orders button -->
-    <button id="myOrdersBtn" class="fixed bottom-4 right-4 bg-amber-700 text-white px-4 py-2 rounded-full shadow">My Orders</button>
+    <button id="myOrdersBtn" class="fixed bottom-24 right-6 bg-amber-700 text-white px-4 py-2 rounded-full shadow">My Orders</button>
     <!-- Orders Modal -->
     <div id="ordersModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
       <div class="bg-white p-4 w-full max-w-md space-y-3 relative">
@@ -110,9 +117,9 @@
       container.innerHTML='';
       items.forEach((p,i)=>{
         const div=document.createElement('div');
-        div.className='fade bg-white shadow rounded p-4 flex flex-col';
+        div.className='fade product-card bg-white shadow rounded p-4 flex flex-col';
         div.dataset.idx=i;
-        div.innerHTML=`<img src="${(p.media?.[0]?.url)||p.image||'https://via.placeholder.com/300x200'}" class="h-32 w-full object-cover rounded mb-2" />
+        div.innerHTML=`<img src="${(p.media?.[0]?.url)||p.image||'https://via.placeholder.com/300x200'}" class="product-image h-32 w-full object-cover rounded mb-2" />
           <h3 class="text-lg font-semibold mb-2">${p.name}</h3>
           <p class="text-sm flex-grow">${p.description||''}</p>
           <div class="mt-4 flex justify-between items-center">

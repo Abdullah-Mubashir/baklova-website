@@ -4,12 +4,14 @@
   <meta charset="UTF-8" />
   <title>Cashier</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/cashier.css">
 </head>
-<body class="bg-gray-100 min-h-screen p-6">
-  <div class="flex gap-4 mb-4">
-    <button id="tabNew" class="px-4 py-2 border-b-2 border-gray-800">New Orders <span id="newCount" class="inline-block ml-1 bg-red-600 text-white rounded-full px-2 text-xs">0</span></button>
-    <button id="tabHist" class="px-4 py-2">All Orders</button>
-    <button id="tabLog" class="px-4 py-2">Refund Log</button>
+<body class="min-h-screen p-6">
+  <div class="tab-nav">
+    <button id="tabNew" class="tab-button active">New Orders <span id="newCount" class="badge">0</span></button>
+    <button id="tabHist" class="tab-button">All Orders</button>
+    <button id="tabLog" class="tab-button">Refund Log</button>
   </div>
   <!-- New -->
   <div id="newSec">
@@ -18,54 +20,67 @@
   </div>
   <!-- History -->
   <div id="histSec" style="display:none;">
-    <input id="search" class="border p-2 mb-3 w-full" placeholder="Search order id…" />
+    <input id="search" class="search-input" placeholder="Search order id…" />
     <div id="history" class="space-y-4"></div>
   </div>
   <!-- Refund Log -->
   <div id="logSec" style="display:none;">
     <h2 class="text-lg font-semibold mb-2">Recent Refunds</h2>
-    <table class="w-full text-sm" id="logTable"><thead><tr><th>ID</th><th>Type</th><th>Amount</th><th>Fee</th><th>Net</th><th>Created</th><th>Available</th><th>Description</th></tr></thead><tbody></tbody></table>
+    <div class="table-container">
+      <table class="w-full text-sm" id="logTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Fee</th>
+            <th>Net</th>
+            <th>Created</th>
+            <th>Available</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </div>
 
 <script>
+  const BASE = location.protocol==='file:' ? 'http://localhost:3000' : '';
+
   const fmt = (c)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'usd'}).format(c/100);
   function fmtTime(ms){
     const m=Math.floor(ms/60000),s=Math.floor(ms/1000)%60;
     return m+':' + s.toString().padStart(2,'0');
   }
   async function load(){
-    const orders = await fetch('/api/orders').then(r=>r.json());
+    const orders = await fetch(`${BASE}/api/orders`).then(r=>r.json());
     const container=document.getElementById('orders');
     container.innerHTML='';
     const active=orders.filter(o=>o.state!=='hold');
       document.getElementById('newCount').textContent=active.length;
       active.forEach(o=>{
       const div=document.createElement('div');
-      div.className='p-4 shadow rounded '+(o.hasIceCream?'bg-yellow-100':'bg-white');
-      div.innerHTML=`<div class="flex justify-between items-center mb-2"><span>Order #${o.id}</span><button data-id="${o.id}" class="done bg-green-600 text-white px-3 py-1 rounded">Done</button></div>`;
-      o.items.forEach(it=>{
-        if(it.name.includes(' + ') && it.name.endsWith(' Deal')){
-          const names=it.name.replace(' Deal','').split(' + ');
-          names.forEach(n=>{div.innerHTML+=`<div class="text-sm">${it.quantity} x ${n}</div>`;});
-        }else{
-          div.innerHTML+=`<div class="text-sm">${it.quantity} x ${it.name}</div>`;
-        }
-      });
-      const timeDiv=document.createElement('div');
-      timeDiv.className='mt-2 font-semibold';
-      div.appendChild(timeDiv);
-      function tick(){
-        const total=o.prepMinutes?o.prepMinutes*60000:240000;
-        const remaining= total - (Date.now()-o.created);
-        if(remaining>0){timeDiv.textContent='Remaining: '+fmtTime(remaining);timeDiv.classList.remove('text-red-600');}
-        else{timeDiv.textContent='Overdue: '+fmtTime(-remaining);timeDiv.classList.add('text-red-600');}
-      }
-      tick();
-      setInterval(tick,1000);
+      div.className='order-card';
+      if(o.items.some(i=>i.name.toLowerCase().includes('ice cream'))) div.className+=' ice-cream';
+      
+      const items=o.items.map(i=>`<div class="order-item"><span class="item-name">${i.name}</span><span><span class="item-qty">${i.quantity}</span></span></div>`).join('');
+      
+      div.innerHTML=`
+        <div class="order-header">
+          <span class="order-id">Order #${o.id}</span>
+          <span class="order-time">${new Date(o.created).toLocaleTimeString()}</span>
+        </div>
+        <div class="order-items">${items}</div>
+        <div class="order-total">Total: ${fmt(o.amount)}</div>
+        <div class="text-right mb-3">Est. time: ${fmtTime(o.estTime||0)}</div>
+        <div class="text-right">
+          <button class="done btn btn-primary" data-id="${o.id}">Mark as Done</button>
+        </div>`;
       container.appendChild(div);
     });
     document.querySelectorAll('.done').forEach(b=>b.onclick=async()=>{
-      await fetch('/api/orders/'+b.dataset.id+'/done',{method:'POST'});
+      await fetch(`${BASE}/api/orders/${b.dataset.id}/done`,{method:'POST'});
       load();
     });
   }
@@ -73,36 +88,36 @@
   setInterval(load,5000);
 
   async function loadHist(){
-    const list=await fetch('/api/orders/history').then(r=>r.json());
+    const list=await fetch(`${BASE}/api/orders/history`).then(r=>r.json());
     const container=document.getElementById('history');
     container.innerHTML='';
     const term=document.getElementById('search').value.trim();
     list.filter(o=>!term||String(o.id).includes(term)).forEach(o=>{
-      const div=document.createElement('div');div.className='bg-white p-4 shadow rounded';
-      div.innerHTML=`<div class="flex justify-between items-center mb-2"><span>Order #${o.id}</span><button data-id="${o.id}" class="refund bg-red-600 text-white px-3 py-1 rounded">Refund</button></div>`;
-      o.items.forEach(it=>{
-        if(it.name.includes(' + ') && it.name.endsWith(' Deal')){
-          const names=it.name.replace(' Deal','').split(' + ');
-          names.forEach(n=>{div.innerHTML+=`<div class="text-sm">${it.quantity} x ${n}</div>`;});
-        }else{
-          div.innerHTML+=`<div class="text-sm">${it.quantity} x ${it.name}</div>`;
-        }
-        if(it.quantity>0){
-          const b=document.createElement('button');b.textContent='Refund';b.className='refundLine text-blue-600 ml-2 text-xs';
-          b.dataset.pid=it.priceId;b.dataset.name=it.name;b.dataset.qty=it.quantity;
-          div.appendChild(b);
-        }
-      });
-      if(o.refunded){div.querySelector('.refund').disabled=true;div.querySelector('.refund').textContent='Refunded';}
+      const div=document.createElement('div');
+      div.className='order-card';
+      const items=o.items.map(i=>`<div class="order-item"><span class="item-name">${i.name}</span><span><span class="item-qty">${i.quantity}</span></span></div>`).join('');
+      div.innerHTML=`
+        <div class="order-header">
+          <span class="order-id">Order #${o.id}</span>
+          <span class="order-time">${new Date(o.created).toLocaleString()}</span>
+        </div>
+        <div class="order-items">${items}</div>
+        <div class="order-total">Total: ${fmt(o.amount)}</div>
+        <div class="text-right mb-3">Status: ${o.state}</div>
+        <div class="text-right">
+          ${o.state!=='refunded'?`<button class="refund btn btn-danger" data-id="${o.id}">Full Refund</button>`:''}
+        </div>
+        <div class="mt-3 space-y-2">
+          ${o.items.map(i=>`${i.quantity>0?`<div class="flex items-center justify-between"><span>${i.name} (${i.quantity})</span><button class="refund-line btn btn-outline text-amber-700" data-pid="${i.priceId}">Refund Item</button></div>`:''}`).join('')}
+        </div>`;
       container.appendChild(div);
     });
     document.querySelectorAll('.refund').forEach(b=>b.onclick=async()=>{
       if(!confirm('Refund this order?')) return;
-      await fetch(`/api/orders/${b.dataset.id}/refund`,{method:'POST'});
+      await fetch(`${BASE}/api/orders/${b.dataset.id}/refund`,{method:'POST'});
       loadHist();
     });
-    // line refund via dropdown
-    document.querySelectorAll('.refundLine').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('.refund-line').forEach(b=>b.onclick=()=>{
       const max=parseInt(b.dataset.qty);
       const sel=document.createElement('select');
       for(let i=1;i<=max;i++){const o=document.createElement('option');o.value=i;o.textContent=i;sel.appendChild(o);} 
@@ -110,7 +125,7 @@
       b.after(sel);sel.after(ok);b.disabled=true;
       ok.onclick=()=>{
         const n=parseInt(sel.value);
-        fetch(`/api/orders/${b.closest('div').querySelector('.refund').dataset.id}/refund-line`,{
+        fetch(`${BASE}/api/orders/${b.closest('div').querySelector('.refund').dataset.id}/refund-line`,{
           method:'POST',headers:{'Content-Type':'application/json'},
           body:JSON.stringify({priceId:b.dataset.pid,qty:n})}).then(r=>{
           if(!r.ok){r.json().then(d=>alert(d.error||'Error'));}
@@ -130,7 +145,7 @@
 
   async function loadLog(){
     const rows=document.querySelector('#logTable tbody');rows.innerHTML='';
-    const list=await fetch('/api/refund-log').then(r=>r.json());
+    const list=await fetch(`${BASE}/api/refund-log`).then(r=>r.json());
     list.forEach(t=>{
       const tr=document.createElement('tr');
       tr.innerHTML=`<td>${t.id}</td><td>${t.type}</td><td>${(t.amount/100).toFixed(2)}</td><td>${(t.fee/100).toFixed(2)}</td><td>${(t.net/100).toFixed(2)}</td><td>${new Date(t.created).toLocaleString()}</td><td>${new Date(t.available_on).toLocaleDateString()}</td><td>${t.description}</td>`;
