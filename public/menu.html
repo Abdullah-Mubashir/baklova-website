@@ -77,6 +77,18 @@
         padding-left: 1rem;
         padding-right: 1rem;
       }
+      #search.overlay-search.focused{
+        position:fixed;
+        bottom: calc(env(safe-area-inset-bottom) + 1rem);
+        left:50%;
+        transform:translateX(-50%);
+        max-width:600px;
+        background: rgba(40,40,40,0.9);
+        backdrop-filter: blur(14px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+        border: 1px solid rgba(255,255,255,0.25);
+        z-index:60;
+      }
       #products{
         gap:1rem;
       }
@@ -454,6 +466,16 @@
         }
         lastY=y;
       });
+    })();
+
+    // enhance search focus behaviour on mobile
+    (function(){
+      const search=document.getElementById('search');
+      if(!search) return;
+      const isMobile=window.matchMedia('(max-width: 640px)').matches;
+      if(!isMobile) return;
+      search.addEventListener('focus',()=>search.classList.add('focused'));
+      search.addEventListener('blur',()=>search.classList.remove('focused'));
     })();
   </script>
 </body>
