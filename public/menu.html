@@ -355,12 +355,16 @@
       const modal=document.getElementById('mediaModal');
       const slidesContainer=document.getElementById('slides');
       slidesContainer.innerHTML='';
+      
       const media=prod.media && prod.media.length?prod.media:[{url:prod.image,type:'image'}];
       document.getElementById('mediaInfo').innerHTML=`<h3 class="text-xl font-semibold">${prod.name}</h3>${prod.isDeal?`<p class='text-lg'><span class='line-through text-gray-500 mr-1'>${formatPrice(prod.originalPrice*100,'usd')}</span><span class='text-amber-700 font-bold'>${formatPrice(prod.unitAmount,'usd')}</span></p>`:`<p class='text-amber-700 font-bold text-lg'>${formatPrice(prod.unitAmount,'usd')}</p>`}<p class="text-sm">${prod.description||''}</p><button id="addCartMedia" class="glass-button px-4 py-2 rounded-full shadow mt-4">Add to Cart</button>`;
       // Add-to-cart from media modal
       document.getElementById('addCartMedia').onclick = () => {
         addToCart({price: prod.priceId, id: prod.id, name: prod.name, pricecents: prod.unitAmount, currency: prod.currency});
+        // close modal and restore scroll & pause videos
+        slidesContainer.querySelectorAll('video').forEach(v=>{v.pause(); v.currentTime=0;});
         modal.classList.add('hidden');
+        document.body.style.overflow='';
       };
       media.forEach((m,j)=>{
         const slide=document.createElement('div');
