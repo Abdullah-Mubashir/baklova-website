@@ -23,6 +23,37 @@
     #mediaModal .inner > .relative{width:100%;}
     #mediaModal #mediaInfo{width:100%;}
     #mediaModal #mediaInfo button{width:100%;}
+    /* Category Tabs Styling */
+    #catTabs {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem 0;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    #catTabs .cat {
+      padding: 0.5rem 1.5rem;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    #catTabs .cat:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    #catTabs .cat.underline {
+      background: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
