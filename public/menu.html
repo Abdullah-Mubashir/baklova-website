@@ -334,18 +334,30 @@
         }
         slidesContainer.appendChild(slide);
       });
+      show(0);
       let active=0;
       function show(idx){
-        slidesContainer.querySelectorAll('.slide').forEach((s,i)=>s.style.display=i===idx?'block':'none');
+        slidesContainer.querySelectorAll('.slide').forEach((s,i)=>{
+          const vid=s.querySelector('video');
+          if(i===idx){
+            s.style.display='block';
+            if(vid){vid.play();}
+          }else{
+            s.style.display='none';
+            if(vid){vid.pause(); vid.currentTime=0;}
+          }
+        });
       }
       document.getElementById('prevSlide').onclick=()=>{active=(active-1+media.length)%media.length;show(active);} ;
       document.getElementById('nextSlide').onclick=()=>{active=(active+1)%media.length;show(active);} ;
       document.getElementById('closeMedia').onclick=()=>{
+        // pause all videos when closing
+        slidesContainer.querySelectorAll('video').forEach(v=>{v.pause(); v.currentTime=0;});
         modal.classList.add('hidden');
         document.body.style.overflow='';
       };
       document.body.style.overflow='hidden';
-  modal.classList.remove('hidden');
+      modal.classList.remove('hidden');
     }
 
     // subscribe popup once
