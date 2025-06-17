@@ -1,0 +1,279 @@
+/* Homepage Styles */
+
+/* Welcome Section Styles */
+#welcome-section {
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  overflow: hidden;
+  background-color: #000;
+}
+
+/* Background is now removed, we'll use a centered image instead */
+.welcome-bg {
+  display: none;
+}
+
+.welcome-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.1);
+  width: 80%;
+  max-width: 900px;
+  height: auto;
+  opacity: 0;
+  z-index: -1;
+  animation: revealImage 6s forwards 0.5s;
+  box-shadow: 0 0 100px rgba(255, 255, 255, 0.2);
+}
+
+@keyframes revealImage {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.1);
+    filter: brightness(0.1) blur(20px);
+  }
+  30% {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(0.6);
+    filter: brightness(0.2) blur(10px);
+  }
+  70% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(0.9);
+    filter: brightness(0.3) blur(5px);
+  }
+  100% {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(1);
+    filter: brightness(0.4) blur(0);
+  }
+}
+
+.welcome-content {
+  text-align: center;
+  z-index: 1;
+  padding: 2rem;
+}
+
+.arabic-welcome {
+  font-size: 5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  transform: translateX(70px);
+  transition: all 1.8s ease;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.05em;
+  direction: rtl;
+}
+
+.welcome-subtitle {
+  font-size: 1.8rem;
+  opacity: 0;
+  transition: opacity 2s ease, transform 2s ease;
+  transform: translateY(20px);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  font-weight: 300;
+  letter-spacing: 0.1em;
+}
+
+.arabic-welcome.animate-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.welcome-subtitle.animate-in {
+  opacity: 0.9;
+  transform: translateY(0);
+}
+
+/* Glass Button */
+.glass-button {
+  background-color: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: white;
+  transition: all 0.5s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  animation: fadeIn 2s forwards 6s; /* Appear after image reveal completes */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.glass-button:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4), 
+    inset 0 1px 1px rgba(255, 255, 255, 0.2),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.05);
+  transform: translateY(-3px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .arabic-welcome {
+    font-size: 3.5rem;
+  }
+  
+  .welcome-subtitle {
+    font-size: 1.5rem;
+  }
+}
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'Amiri', sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .welcome-container {
+            text-align: center;
+            z-index: 10;
+            position: relative;
+            padding: 2rem;
+            animation: fadeOut 1s ease-out 6s forwards;
+        }
+
+        .main-text {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            position: relative;
+            animation: slideInRight 2s ease-out, revealText 3s ease-out;
+        }
+
+        .sub-text {
+            font-size: 2rem;
+            color: #ffffff;
+            font-weight: 400;
+            opacity: 0;
+            animation: slideInLeft 2s ease-out 1s forwards, revealTextSub 3s ease-out 1s forwards;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .decorative-line {
+            width: 0;
+            height: 3px;
+            background: #ffffff;
+            margin: 2rem auto;
+            animation: expandLine 2s ease-out 1.5s forwards;
+        }
+
+        /* Text reveal animations */
+        @keyframes slideInRight {
+            0% {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInLeft {
+            0% {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes revealText {
+            0% {
+                color: #000000;
+                text-shadow: 0 0 0px rgba(255, 255, 255, 0);
+            }
+            50% {
+                color: #333333;
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            }
+            100% {
+                color: #ffffff;
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            }
+        }
+
+        @keyframes revealTextSub {
+            0% {
+                color: #000000;
+                text-shadow: 0 0 0px rgba(255, 255, 255, 0);
+            }
+            50% {
+                color: #333333;
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            }
+            100% {
+                color: #ffffff;
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            }
+        }
+
+        @keyframes expandLine {
+            0% {
+                width: 0;
+            }
+            100% {
+                width: 300px;
+            }
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .main-text {
+                font-size: 2.5rem;
+            }
+            .sub-text {
+                font-size: 1.3rem;
+            }
+            .decorative-line {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-text {
+                font-size: 2rem;
+            }
+            .sub-text {
+                font-size: 1.1rem;
+            }
+            .decorative-line {
+                width: 150px;
+            }
+        }
+    

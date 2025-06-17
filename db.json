@@ -113,6 +113,136 @@
       "category": "Ice Cream",
       "stock": true,
       "cost": 2
+    },
+    {
+      "id": "prod_SVg7na2WU1sBQG",
+      "name": "Knafeh",
+      "priceId": "price_1RaelMA3g8IaVSP2CbngXKVk",
+      "unitAmount": 200,
+      "currency": "usd",
+      "image": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750086949431-knafeh-10.jpg",
+      "media": [
+        {
+          "url": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750086949431-knafeh-10.jpg",
+          "type": "image"
+        },
+        {
+          "url": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750086949450-knafeh-10.jpg",
+          "type": "image"
+        },
+        {
+          "url": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750086949513-vecteezy_turkish.mp4",
+          "type": "video"
+        }
+      ],
+      "estimatedTime": 4,
+      "category": "Desserts",
+      "stock": true,
+      "cost": 1
+    },
+    {
+      "id": "prod_SVgBA7JfDYUNbp",
+      "name": "Chocolate ice cream",
+      "priceId": "price_1RaetSA3g8IaVSP2RlzCbrE5",
+      "unitAmount": 200,
+      "currency": "usd",
+      "image": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750087181498-Chocolate.png",
+      "media": [
+        {
+          "url": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750087181498-Chocolate.png",
+          "type": "image"
+        },
+        {
+          "url": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750087181725-Chocolate.png",
+          "type": "image"
+        },
+        {
+          "url": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750087181819-vecteezy_close-up-slow-motion-scooping-ice-cream-chocolate-flavor_4444667.mov",
+          "type": "video"
+        }
+      ],
+      "estimatedTime": 1,
+      "category": "Ice Cream",
+      "stock": true,
+      "cost": 1
+    },
+    {
+      "id": "prod_SVgEDQmevVbDUW",
+      "name": "Pistachio Maamoul",
+      "priceId": "price_1RaesBA3g8IaVSP2QibODPuj",
+      "unitAmount": 400,
+      "currency": "usd",
+      "image": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750087377898-pistachio-maamoul.jpg",
+      "media": [
+        {
+          "url": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750087377898-pistachio-maamoul.jpg",
+          "type": "image"
+        },
+        {
+          "url": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750087377983-pistachio-maamoul.jpg",
+          "type": "image"
+        },
+        {
+          "url": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750087378018-Pistachio.mp4",
+          "type": "video"
+        }
+      ],
+      "estimatedTime": 3,
+      "category": "Desserts",
+      "stock": true,
+      "cost": 2
+    },
+    {
+      "id": "prod_SVgUHv9Eli6pXu",
+      "name": "Tiramisu Cake",
+      "priceId": "price_1Raf7pA3g8IaVSP2wt4a8Afj",
+      "unitAmount": 600,
+      "currency": "usd",
+      "image": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750088347690-181127110351-18-50-sweets-travel-tiramisu.jpg",
+      "media": [
+        {
+          "url": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750088347690-181127110351-18-50-sweets-travel-tiramisu.jpg",
+          "type": "image"
+        },
+        {
+          "url": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750088347760-181127110351-18-50-sweets-travel-tiramisu.jpg",
+          "type": "image"
+        },
+        {
+          "url": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750088347799-Firefly.mp4",
+          "type": "video"
+        }
+      ],
+      "estimatedTime": 2,
+      "category": "Specials",
+      "stock": true,
+      "cost": 4
+    },
+    {
+      "id": "prod_SVmIpBlSSgC4sV",
+      "name": "Atayef",
+      "priceId": "price_1RakjmA3g8IaVSP2rxgmvJ9m",
+      "unitAmount": 400,
+      "currency": "usd",
+      "image": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750109919967-Atayef-18.jpg",
+      "media": [
+        {
+          "url": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750109919967-Atayef-18.jpg",
+          "type": "image"
+        },
+        {
+          "url": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750109920093-Atayef1-scaled.jpg",
+          "type": "image"
+        },
+        {
+          "url": "https://restaurantarabic.s3.us-east-1.amazonaws.com/1750109920364-Firefly02.mp4",
+          "type": "video"
+        }
+      ],
+      "estimatedTime": 3,
+      "category": "Desserts",
+      "stock": true,
+      "cost": 5
     }
   ],
   "orders": [
@@ -247,19 +377,105 @@
       "created": 1749778113974,
       "prepMinutes": 4,
       "hasIceCream": true
+    },
+    {
+      "id": 1749832131563,
+      "sessionId": "cs_test_a1ymhhFUUH501Ud9f7QBBbdQcqgW8oWa95A0bBu9bgp8lOhJcvUcekyIVU",
+      "items": [
+        {
+          "priceId": "price_1RZ0umA3g8IaVSP2lGZL8Xae",
+          "name": "o3proi",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "done",
+      "created": 1749832131563,
+      "prepMinutes": 0,
+      "hasIceCream": false
+    },
+    {
+      "id": 1749833305550,
+      "sessionId": "cs_test_a1I8BCUSa8gvPIUQcfmFhSnjTvQW8Zkh3TntqNibcA5aDZOzYQrb8gzC1I",
+      "items": [
+        {
+          "priceId": "price_1RZ0umA3g8IaVSP2lGZL8Xae",
+          "name": "o3proi",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 2
+        }
+      ],
+      "status": "done",
+      "created": 1749833305550,
+      "prepMinutes": 0,
+      "hasIceCream": false
+    },
+    {
+      "id": 1749834023536,
+      "sessionId": "cs_test_a1yAFFFFNdHavoupGKmwenXpZmDCpRKczmnzh4QwsxWjJOcP97xxyQFHSr",
+      "items": [
+        {
+          "priceId": "price_1RZ0umA3g8IaVSP2lGZL8Xae",
+          "name": "o3proi",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 2
+        }
+      ],
+      "status": "done",
+      "created": 1749834023536,
+      "prepMinutes": 0,
+      "hasIceCream": false
+    },
+    {
+      "id": 1749834148382,
+      "sessionId": "cs_test_a1t3MIpjvFaXP6q9iLEfOmMQN5Ws7Q8UYlSDdNQWG21GH1qAzcbbRM1vaY",
+      "items": [
+        {
+          "priceId": "price_1RZ0umA3g8IaVSP2lGZL8Xae",
+          "name": "o3proi",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 3
+        }
+      ],
+      "status": "done",
+      "created": 1749834148382,
+      "prepMinutes": 0,
+      "hasIceCream": false
+    },
+    {
+      "id": 1749870920639,
+      "sessionId": "cs_test_a1ROaKum0NpHFpG5JGUYarD5afK7zG9HXzP8Mdf5Uepbs9rxBMReOsK5iz",
+      "items": [
+        {
+          "priceId": "price_1RZ0umA3g8IaVSP2lGZL8Xae",
+          "name": "o3proi",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "done",
+      "created": 1749870920639,
+      "prepMinutes": 0,
+      "hasIceCream": false,
+      "email": "abdullah.mubashir113@gmail.com"
     }
   ],
   "interactions": {
     "prod_STppISWeDiauSi": {
-      "views": 9,
-      "adds": 3
+      "views": 14,
+      "adds": 8
     },
     "prod_STcmO7xaL3Dvpo": {
-      "views": 4,
-      "adds": 1
+      "views": 32,
+      "adds": 9
     },
     "prod_STX3mil7vICQL2": {
-      "views": 3,
+      "views": 27,
       "adds": 1
     },
     "prod_STv3epSj0rLnAb": {
@@ -267,12 +483,32 @@
       "adds": 0
     },
     "prod_STzFal9NL7Jmv5": {
-      "views": 1,
+      "views": 5,
       "adds": 1
     },
     "prod_SUHeKiIB8xdgMU": {
-      "views": 2,
+      "views": 7,
       "adds": 1
+    },
+    "prod_SVg7na2WU1sBQG": {
+      "views": 5,
+      "adds": 0
+    },
+    "prod_SVgBA7JfDYUNbp": {
+      "views": 5,
+      "adds": 0
+    },
+    "prod_SVgEDQmevVbDUW": {
+      "views": 4,
+      "adds": 0
+    },
+    "prod_SVgUHv9Eli6pXu": {
+      "views": 2,
+      "adds": 0
+    },
+    "prod_SVmIpBlSSgC4sV": {
+      "views": 1,
+      "adds": 0
     }
   },
   "subscribers": [
