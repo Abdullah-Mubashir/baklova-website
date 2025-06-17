@@ -58,74 +58,33 @@
     /* Mobile specific tweaks */
     @media (max-width: 640px) {
       #products {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 2rem !important;
-        padding: 1rem;
-        overflow-x: hidden;
-        align-items: center;
-        max-width: 500px;
+        grid-template-columns: 1fr;
+        justify-items: center;
+        overflow-x: hidden;  /* Hide horizontal scrollbar */
+      }
+      #products > * {
+        width: 100%;  /* Further increased width for better mobile appearance */
+        max-width: none;
         margin: 0 auto;
       }
-      
-      #products.mobile-view {
-        max-height: calc(100vh - 200px);
-        overflow-y: auto;
-        scroll-snap-type: y mandatory;
-        -webkit-overflow-scrolling: touch;
+      #catTabs {
+        justify-content: center;
       }
-      
-      #products.mobile-view > * {
-        scroll-snap-align: start;
+      #search {
         width: 100%;
-        max-width: 450px;
-        margin: 0 auto;
+        padding: 0.5rem;
+        text-align: center;
       }
-      
-      #products.mobile-view .product-card {
-        height: auto;
-        aspect-ratio: 1/1.2;
-      }
-      
-      #products.mobile-view .product-card img {
-        height: 65%;
-        object-fit: cover;
-      }
-      
-      #search.overlay-search {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100% !important;
-        padding: 1rem;
-        background: rgba(40,40,40,0.95);
-        backdrop-filter: blur(10px);
-        border-top: 1px solid rgba(255,255,255,0.1);
-        z-index: 50;
-        transition: transform 0.3s ease;
-        transform: translateY(100%);
-      }
-      
       #search.overlay-search.focused {
-        transform: translateY(0);
-        padding-bottom: calc(env(safe-area-inset-bottom) + 1rem);
+        width: 90%;
+        left: 50%;
+        transform: translateX(-50%);
       }
-      
-      /* Adjust main content when search is focused */
-      .search-focused #products {
-        padding-bottom: 80px;
+      #products {
+        gap: 1rem;
       }
     }
   </style>
-  <script>
-    // Add mobile detection at the start of the script
-    const isMobile = () => window.innerWidth <= 640 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
-    // Add viewport meta tag for proper mobile scaling
-    document.head.insertAdjacentHTML('beforeend', `
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    `);
-  </script>
 </head>
 <body class="min-h-screen flex flex-col">
   <header class="text-white p-4 flex items-center justify-between relative">
@@ -229,15 +188,10 @@
     
     fetch('/api/products').then(r=>r.json()).then(data=>{allProducts=data;applyFilters();});
     
-    function renderProducts(items) {
-      productsCache = items;
-      const container = document.getElementById('products');
-      container.innerHTML = '';
-      
-      // Check for mobile and set appropriate class and items per page
-      const mobile = isMobile();
-      container.classList.toggle('mobile-view', mobile);
-      const itemsPerPage = mobile ? 4 : 9;
+    function renderProducts(items){
+      productsCache=items;
+      const container=document.getElementById('products');
+      container.innerHTML='';
       
       // Calculate pagination
       const totalPages = Math.ceil(items.length / itemsPerPage);
@@ -245,22 +199,23 @@
       const paginatedItems = items.slice(startIndex, startIndex + itemsPerPage);
       
       // Render paginated items
-      paginatedItems.forEach((p,i) => {
-        const div = document.createElement('div');
-        div.className = 'fade product-card';
-        div.dataset.idx = startIndex + i;
-        div.innerHTML = `
-          <img src="${(p.media?.[0]?.url)||p.image||'https://via.placeholder.com/300x200'}" alt="${p.name}" />
+      paginatedItems.forEach((p,i)=>{
+        const div=document.createElement('div');
+        div.className='fade';
+        div.dataset.idx=startIndex + i;
+        div.innerHTML=`<img src="${(p.media?.[0]?.url)||p.image||'https://via.placeholder.com/300x200'}" />
           <div class="product-info">
-            <h3 class="text-lg font-semibold">${p.name}</h3>
-            <p class="price text-amber-700 font-bold">${formatPrice(p.unitAmount,p.currency)}</p>
+            <h3>${p.name}</h3>
+            <p class="price">${formatPrice(p.unitAmount,p.currency)}</p>
           </div>
-        `;
+`;
         container.appendChild(div);
-        div.onclick = () => openMedia(startIndex + i);
-        setTimeout(() => div.classList.add('show'), 100 * i);
+        div.querySelector('img').onclick=()=>openMedia(startIndex + i);
+        // fade in stagger
+        setTimeout(()=>div.classList.add('show'),100*i);
       });
       
+      // Setup pagination controls
       renderPagination(totalPages);
       setupCartUI();
     }
@@ -512,26 +467,6 @@
       if(!isMobile) return;
       search.addEventListener('focus',()=>search.classList.add('focused'));
       search.addEventListener('blur',()=>search.classList.remove('focused'));
-    })();
-
-    // Update search behavior for mobile
-    (function(){
-      const search = document.getElementById('search');
-      const main = document.querySelector('main');
-      
-      if(!search) return;
-      
-      search.addEventListener('focus', () => {
-        search.classList.add('focused');
-        main.classList.add('search-focused');
-        // Scroll to bottom when search is focused
-        setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 100);
-      });
-      
-      search.addEventListener('blur', () => {
-        search.classList.remove('focused');
-        main.classList.remove('search-focused');
-      });
     })();
   </script>
 </body>

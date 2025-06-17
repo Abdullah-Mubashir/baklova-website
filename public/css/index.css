@@ -689,7 +689,7 @@ footer {
   
   #products > div {
     width: 100%;
-    max-width: 363px;
+    max-width: none;  /* Remove max-width to allow full width on mobile */
   }
   
   #catTabs {
