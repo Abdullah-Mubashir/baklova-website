@@ -43,16 +43,17 @@ body {
   margin: 2rem auto;
   position: relative;
   width: 618px;
-  max-width: 95vw;
-  padding: 0 1rem;
+  padding: 0;
 }
 
 /* Product card styling */
 #products > div {
   width: 618px;
   height: 900px;
+  min-width: 618px;
   min-height: 900px;
-  max-width: 95vw;
+  max-width: 618px;
+  max-height: 900px;
   border-radius: 16px;
   overflow: hidden;
   background: rgba(30, 30, 30, 0.6);
@@ -668,9 +669,8 @@ footer {
 
 @media (max-width: 768px) {
   #products {
-    width: 618px;
-    max-width: 95vw;
-    padding: 0 0.5rem;
+    transform: scale(0.85);
+    transform-origin: top center;
   }
   
   #products > div {
@@ -680,4 +680,9 @@ footer {
   }
 }
 
-/* Remove any other size-related media queries */
+@media (max-width: 640px) {
+  #products {
+    transform: scale(0.7);
+    transform-origin: top center;
+  }
+}
