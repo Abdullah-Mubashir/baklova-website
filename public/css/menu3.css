@@ -37,12 +37,13 @@ body {
 
 /* Menu section styling */
 #products {
-  display: grid;
-  grid-template-columns: 618px;
+  display: flex;
+  flex-direction: column;
   gap: 3rem;
   margin: 2rem auto;
   position: relative;
-  justify-content: center;
+  width: 618px;
+  max-width: 95vw;
   padding: 0 1rem;
 }
 
@@ -50,7 +51,8 @@ body {
 #products > div {
   width: 618px;
   height: 900px;
-  max-width: 100%;
+  min-height: 900px;
+  max-width: 95vw;
   border-radius: 16px;
   overflow: hidden;
   background: rgba(30, 30, 30, 0.6);
@@ -666,37 +668,16 @@ footer {
 
 @media (max-width: 768px) {
   #products {
-    grid-template-columns: 1fr;
-    padding: 0 1rem;
+    width: 618px;
+    max-width: 95vw;
+    padding: 0 0.5rem;
   }
   
   #products > div {
-    width: 100%;
-    height: calc((100vw - 2rem) * 1.457); /* Maintains 618:900 ratio */
-    max-height: 900px;
-  }
-  
-  .product-info {
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
+    width: 618px;
+    max-width: 95vw;
+    height: 900px;
   }
 }
 
-@media (max-width: 640px) {
-  #products {
-    grid-template-columns: repeat(1, 1fr);
-  }
-  
-  #products > div {
-    width: 100%;
-    max-width: none;  /* Remove max-width to allow full width on mobile */
-  }
-  
-  #catTabs {
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-  }
-}
+/* Remove any other size-related media queries */
