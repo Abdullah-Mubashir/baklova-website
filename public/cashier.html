@@ -58,10 +58,10 @@
         return false;
       })();
 
-      const color = isToGo ? 'bg-orange-100' : 'bg-green-100';
+      const color = isToGo ? 'bg-orange-200' : 'bg-green-100';
       div.className='p-4 shadow rounded '+(o.hasIceCream?'bg-yellow-100':color);
-      const badgeTxt = isToGo?'TO GO':'STAY';
-      div.innerHTML=`<div class=\"flex justify-between items-center mb-2\"><span>Order #${o.id}</span><span class=\"text-xs font-semibold px-2 py-0.5 rounded ${isToGo?'bg-orange-500 text-white':'bg-green-600 text-white'}\">${badgeTxt}</span><button data-id=\"${o.id}\" class=\"done bg-green-600 text-white px-3 py-1 rounded ml-2\">Done</button></div>`;
+      const badge = isToGo ? `<span class=\"text-xs font-semibold px-2 py-0.5 rounded bg-orange-600 text-white\">TO&nbsp;GO</span>` : '';
+      div.innerHTML=`<div class=\"flex justify-between items-center mb-2\"><span>Order #${o.id}</span>${badge}<button data-id=\"${o.id}\" class=\"done bg-green-600 text-white px-3 py-1 rounded ml-2\">Done</button></div>`;
       o.items.forEach(it=>{
         if(it.name.includes(' + ') && it.name.endsWith(' Deal')){
           const names=it.name.replace(' Deal','').split(' + ');
