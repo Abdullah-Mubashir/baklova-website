@@ -615,7 +615,7 @@
           "quantity": 1
         }
       ],
-      "status": "paid",
+      "status": "done",
       "created": 1750268416808,
       "prepMinutes": 3,
       "hasIceCream": false,
@@ -633,7 +633,7 @@
           "quantity": 1
         }
       ],
-      "status": "paid",
+      "status": "done",
       "created": 1750271452671,
       "prepMinutes": 4,
       "hasIceCream": false,
@@ -651,7 +651,7 @@
           "quantity": 1
         }
       ],
-      "status": "paid",
+      "status": "done",
       "created": 1750271613302,
       "prepMinutes": 4,
       "hasIceCream": false,
@@ -669,10 +669,28 @@
           "quantity": 1
         }
       ],
-      "status": "paid",
+      "status": "done",
       "created": 1750272654018,
       "prepMinutes": 4,
       "hasIceCream": false,
+      "email": "abdullah.mubashir113@gmail.com"
+    },
+    {
+      "id": 1750274912762,
+      "sessionId": "cs_test_a16pq35B9HBa7g0yvjl5uAxc8Qw6njG9xMD9vcFnSKk0izjcRzq5LNUCDo",
+      "items": [
+        {
+          "priceId": "price_1RZMPVA3g8IaVSP2PIpWH7o5",
+          "name": "i9i8",
+          "unitAmount": 400,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "paid",
+      "created": 1750274912762,
+      "prepMinutes": 2,
+      "hasIceCream": true,
       "email": "abdullah.mubashir113@gmail.com"
     }
   ],
@@ -698,7 +716,7 @@
       "adds": 1
     },
     "prod_SUHeKiIB8xdgMU": {
-      "views": 28,
+      "views": 29,
       "adds": 1
     },
     "prod_SVg7na2WU1sBQG": {

@@ -92,6 +92,9 @@ db.data.products ||= [];
 db.data.orders ||= [];
 db.data.interactions ||= {};
 db.data.subscribers ||= [];
+// UPDATED: Initialize the order counter if it doesn't exist
+db.data.orderCounter ||= { prefix: 'A', number: 0 };
+
 
 // try load persisted db.json from S3 so data survives restarts without paid disk
 async function fetchRemoteDb() {
@@ -106,6 +109,8 @@ async function fetchRemoteDb() {
     console.log('Loaded db.json from S3');
     await db.read();
     db.data.subscribers ||= [];
+    // UPDATED: Initialize the order counter if it doesn't exist after fetching from S3
+    db.data.orderCounter ||= { prefix: 'A', number: 0 };
   } catch (err) {
     console.log('No remote db.json found – starting fresh');
   }
@@ -283,6 +288,9 @@ app.delete('/api/products/:id', async (req, res) => {
   res.json({ success: true });
 });
 
+// ##################################################################
+// #################### ID GENERATION UPDATED HERE ####################
+// ##################################################################
 // Checkout
 app.post('/api/checkout', async (req, res) => {
   try {
@@ -325,10 +333,35 @@ app.post('/api/checkout', async (req, res) => {
       const prod = db.data.products.find(p => p.priceId === it.priceId);
       return prod && prod.category && prod.category.toLowerCase().includes('ice');
     });
+    
+    // --- BEGIN NEW ID LOGIC ---
+    // Function to generate the next simple order ID
+    const generateNextOrderId = () => {
+        db.data.orderCounter ||= { prefix: 'A', number: 0 };
+        let { prefix, number } = db.data.orderCounter;
+
+        number++;
+        
+        if (number > 100) {
+            number = 1;
+            prefix = String.fromCharCode(prefix.charCodeAt(0) + 1);
+            // Handle wrap-around from Z if necessary, for now it will go to '[' etc.
+            // A simple app is unlikely to exceed 2600 orders quickly.
+        }
+
+        // Update the counter in the database object for the next order
+        db.data.orderCounter = { prefix, number };
+        
+        return `${prefix}${number}`;
+    }
+
+    const newOrderId = generateNextOrderId();
+    // --- END NEW ID LOGIC ---
+
 
     // Save order locally with pending status
     const order = {
-      id: Date.now(),
+      id: newOrderId, // UPDATED: Use the new simple ID
       sessionId: session.id,
       items: orderItems,
       status: 'pending',
@@ -337,7 +370,7 @@ app.post('/api/checkout', async (req, res) => {
       hasIceCream
     };
     db.data.orders.push(order);
-    await saveDb();
+    await saveDb(); // This saves both the new order and the updated orderCounter
 
     res.json({ url: session.url, sessionId: session.id });
   } catch (err) {
