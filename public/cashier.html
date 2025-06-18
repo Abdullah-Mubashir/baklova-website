@@ -44,12 +44,20 @@
       active.forEach(o=>{
       const div=document.createElement('div');
       const isToGo = (()=>{
-        if(o.toGo!==undefined) return o.toGo===true || o.toGo==='true' || o.toGo===1;
-        if(o.togo!==undefined) return o.togo===true || o.togo==='true' || o.togo===1;
-        if(o.to_go!==undefined) return o.to_go===true || o.to_go==='true' || o.to_go===1;
-        if(o.metadata && (o.metadata.toGo!==undefined)) return o.metadata.toGo==='true' || o.metadata.toGo===true;
+        // canonical value true/"true"/1 or string forms "to-go","to go","go"
+        const truthy=(v)=>v===true||v===1||v==='1'||(typeof v==='string'&&v.toLowerCase().includes('go'));
+        if(truthy(o.toGo)) return true;
+        if(truthy(o.togo)) return true;
+        if(truthy(o.to_go)) return true;
+        if(truthy(o.orderType)) return true;
+        if(o.metadata){
+          for(const k of ['toGo','togo','to_go','orderType']){
+            if(truthy(o.metadata[k])) return true;
+          }
+        }
         return false;
       })();
+
       const color = isToGo ? 'bg-orange-100' : 'bg-green-100';
       div.className='p-4 shadow rounded '+(o.hasIceCream?'bg-yellow-100':color);
       div.innerHTML=`<div class="flex justify-between items-center mb-2"><span>Order #${o.id}</span><span class="text-xs font-semibold px-2 py-0.5 rounded ${isToGo?'bg-orange-500 text-white':'bg-green-600 text-white'}">${isToGo?'TO&nbsp;GO':'STAY'}</span><button data-id="${o.id}" class="done bg-green-600 text-white px-3 py-1 rounded ml-2">Done</button></div>`;
