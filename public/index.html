@@ -662,7 +662,7 @@
                 <p class="section-subtitle">Discover our exquisite collection of traditional Middle Eastern delicacies, crafted with authentic flavors and premium ingredients.</p>
                 
                 <div class="button-container">
-                    <button class="button-primary" onclick="window.location.href='menu.html'">
+                    <button class="button-primary" onclick="viewMenu()">
                         <span>View Our Menu</span>
                     </button>
                 </div>
@@ -860,6 +860,12 @@
             // Update every minute
             setInterval(updateCurrentDay, 60000);
         });
+
+        // Redirect based on device
+        function viewMenu(){
+            const mobile = window.matchMedia('(max-width: 640px)').matches || /android|iphone|ipad|ipod|mobile|blackberry|iemobile|opera mini/i.test(navigator.userAgent);
+            window.location.href = mobile ? 'menu3.html' : 'menu.html';
+        }
 
         // Parallax effect for background
         window.addEventListener('scroll', () => {
