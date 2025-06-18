@@ -9,7 +9,7 @@
   <style>
     .fade{opacity:0;transform:translateY(20px);transition:all .4s ease}.fade.show{opacity:1;transform:none}
     /* Centered rectangular media modal */
-    #mediaModal .inner{
+   /* #mediaModal .inner{
       max-width:700px;
       width:90%;
       border-radius:18px;
@@ -19,10 +19,12 @@
     }
     #mediaModal .slide{min-width:0;}
     /* Vertical stacking for media modal */
-    #mediaModal .inner{flex-direction:column;}
+   /* #mediaModal .inner{flex-direction:column;}
     #mediaModal .inner > .relative{width:100%;}
     #mediaModal #mediaInfo{width:100%;}
-    #mediaModal #mediaInfo button{width:100%;}
+    #mediaModal #mediaInfo button{width:100%;} */
+
+
     /* Category Tabs Styling */
     #catTabs {
       width: 100%;
@@ -99,10 +101,6 @@
   <main class="flex-1 max-w-5xl mx-auto px-4 py-10">
     <div class="flex flex-col items-center gap-4 mb-8">
       <h2 class="text-2xl font-semibold">Menu</h2>
-      <!-- Simple search input -->
-      <div class="search-wrapper">
-        <input id="search" class="overlay-search" type="text" placeholder="Search menu items..." />
-      </div>
     </div>
 
     <div class="flex flex-wrap items-center gap-4 mb-4">
@@ -264,8 +262,8 @@
     }
     
     function applyFilters(){
-      const term=document.getElementById('search').value.toLowerCase();
-      const items=allProducts.filter(p=> (currentCat==='All'||p.category===currentCat) && p.name.toLowerCase().includes(term) );
+      // Remove search term filtering
+      const items = allProducts.filter(p => currentCat === 'All' || p.category === currentCat);
       renderProducts(items);
     }
     document.querySelectorAll('.cat').forEach(b=>b.onclick=()=>{
@@ -275,10 +273,7 @@
       currentPage = 1; // Reset to first page when changing category
       applyFilters();
     });
-    document.getElementById('search').oninput=()=>{
-      currentPage = 1; // Reset to first page when searching
-      applyFilters();
-    };
+    
 
     let cart=[];
     // load cart from localStorage if exists
@@ -332,6 +327,216 @@
         cart=[];saveCart();
         location.href=res.url;
       };
+    }
+
+    function optimizeImageDisplay(img, slide) {
+      // Add this to your existing openMedia function, right after creating the slide elements
+
+function optimizeImageDisplay(img, slide) {
+  img.onload = function() {
+    const imgWidth = this.naturalWidth;
+    const imgHeight = this.naturalHeight;
+    const aspectRatio = imgWidth / imgHeight;
+    
+    // Get container dimensions
+    const container = slide.parentElement;
+    const containerWidth = container.clientWidth - 40; // minus padding
+    const containerHeight = container.clientHeight - 40; // minus padding
+    const containerRatio = containerWidth / containerHeight;
+    
+    // Remove any existing aspect ratio classes
+    this.classList.remove('landscape', 'portrait', 'square', 'ultra-wide', 'ultra-tall');
+    
+    // Classify image type and apply optimal sizing
+    if (Math.abs(aspectRatio - 1) < 0.1) {
+      // Square images (ratio close to 1:1)
+      this.classList.add('square');
+      this.style.width = 'auto';
+      this.style.height = '85%';
+      this.style.maxWidth = '85%';
+    } else if (aspectRatio > 2) {
+      // Ultra-wide images (panoramic, etc.)
+      this.classList.add('ultra-wide');
+      this.style.width = '95%';
+      this.style.height = 'auto';
+      this.style.maxHeight = '70%';
+    } else if (aspectRatio < 0.5) {
+      // Ultra-tall images (very vertical)
+      this.classList.add('ultra-tall');
+      this.style.width = 'auto';
+      this.style.height = '95%';
+      this.style.maxWidth = '70%';
+    } else if (aspectRatio > containerRatio) {
+      // Landscape images (wider than container ratio)
+      this.classList.add('landscape');
+      if (aspectRatio > 1.5) {
+        this.style.width = '90%';
+        this.style.height = 'auto';
+        this.style.maxHeight = '80%';
+      } else {
+        this.style.width = '80%';
+        this.style.height = 'auto';
+        this.style.maxHeight = '85%';
+      }
+    } else {
+      // Portrait images (taller than container ratio)
+      this.classList.add('portrait');
+      this.style.width = 'auto';
+      this.style.height = '90%';
+      this.style.maxWidth = '80%';
+    }
+    
+    // Add subtle animation
+    this.style.opacity = '0';
+    this.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+      this.style.transition = 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      this.style.opacity = '1';
+      this.style.transform = 'scale(1)';
+    }, 50);
+  };
+}
+
+// Updated openMedia function with image optimization
+function openMedia(idx) {
+  const prod = productsCache[idx];
+  
+  // Track view
+  fetch('/api/track-view', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({productId: prod.id})
+  });
+  
+  const modal = document.getElementById('mediaModal');
+  const slidesContainer = document.getElementById('slides');
+  slidesContainer.innerHTML = '';
+  
+  const media = prod.media && prod.media.length ? prod.media : [{url: prod.image, type: 'image'}];
+  
+  // Update media info
+  document.getElementById('mediaInfo').innerHTML = `
+    <h3 class="text-xl font-semibold">${prod.name}</h3>
+    ${prod.isDeal ? 
+      `<p class='text-lg'>
+        <span class='line-through text-gray-500 mr-1'>${formatPrice(prod.originalPrice*100,'usd')}</span>
+        <span class='text-amber-700 font-bold'>${formatPrice(prod.unitAmount,'usd')}</span>
+      </p>` : 
+      `<p class='text-amber-700 font-bold text-lg'>${formatPrice(prod.unitAmount,'usd')}</p>`
+    }
+    <p class="text-sm">${prod.description || ''}</p>
+    <button id="addCartMedia" class="glass-button px-4 py-2 rounded-full shadow mt-4">Add to Cart</button>
+  `;
+  
+  // Add-to-cart from media modal
+  document.getElementById('addCartMedia').onclick = () => {
+    addToCart({
+      price: prod.priceId, 
+      id: prod.id, 
+      name: prod.name, 
+      pricecents: prod.unitAmount, 
+      currency: prod.currency
+    });
+    
+    // Close modal and restore scroll & pause videos
+    slidesContainer.querySelectorAll('video').forEach(v => {
+      v.pause(); 
+      v.currentTime = 0;
+    });
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  };
+  
+  // Create slides with optimized display
+  media.forEach((m, j) => {
+    const slide = document.createElement('div');
+    slide.className = 'slide';
+    slide.style.display = j === 0 ? 'block' : 'none';
+    
+    if (m.type === 'video') {
+      const video = document.createElement('video');
+      video.src = m.url;
+      video.autoplay = true;
+      video.loop = true;
+      video.muted = true;
+      video.playsInline = true;
+      video.className = 'w-full';
+      video.style.objectFit = 'contain';
+      video.style.borderRadius = '12px';
+      slide.appendChild(video);
+    } else {
+      const img = document.createElement('img');
+      img.src = m.url;
+      img.className = 'w-full';
+      img.alt = prod.name;
+      
+      // Apply image optimization
+      optimizeImageDisplay(img, slide);
+      
+      slide.appendChild(img);
+    }
+    
+    slidesContainer.appendChild(slide);
+  });
+  
+  // Navigation logic
+  let active = 0;
+  
+  function show(idx) {
+    slidesContainer.querySelectorAll('.slide').forEach((s, i) => {
+      const vid = s.querySelector('video');
+      if (i === idx) {
+        s.style.display = 'block';
+        if (vid) {
+          vid.play();
+        }
+      } else {
+        s.style.display = 'none';
+        if (vid) {
+          vid.pause();
+          vid.currentTime = 0;
+        }
+      }
+    });
+  }
+  
+  // Navigation buttons (only show if multiple images)
+  const prevBtn = document.getElementById('prevSlide');
+  const nextBtn = document.getElementById('nextSlide');
+  
+  if (media.length > 1) {
+    prevBtn.style.display = 'flex';
+    nextBtn.style.display = 'flex';
+    
+    prevBtn.onclick = () => {
+      active = (active - 1 + media.length) % media.length;
+      show(active);
+    };
+    
+    nextBtn.onclick = () => {
+      active = (active + 1) % media.length;
+      show(active);
+    };
+  } else {
+    prevBtn.style.display = 'none';
+    nextBtn.style.display = 'none';
+  }
+  
+  // Close modal
+  document.getElementById('closeMedia').onclick = () => {
+    slidesContainer.querySelectorAll('video').forEach(v => {
+      v.pause();
+      v.currentTime = 0;
+    });
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  };
+  
+  // Show modal
+  show(0);
+  document.body.style.overflow = 'hidden';
+  modal.classList.remove('hidden');
+}
     }
 
     function openMedia(idx){
@@ -438,13 +643,6 @@
       }
       listDiv.innerHTML=rows.join('');
     }
-
-    // Basic search handler
-    document.getElementById('search').oninput=()=>{
-      currentPage = 1;
-      applyFilters();
-    };
-
   </script>
 </body>
 </html>
