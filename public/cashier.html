@@ -14,6 +14,16 @@
   <!-- New -->
   <div id="newSec">
     <h1 class="text-2xl font-bold mb-4">New Orders</h1>
+    <div class="flex items-center gap-4 mb-4">
+      <span class="inline-flex items-center">
+        <span class="text-xs font-semibold px-2 py-0.5 rounded" style="background:#22c55e;color:#fff;margin-right:0.25rem;">TO STAY</span>
+        <span class="text-gray-700 text-sm">= Dine In</span>
+      </span>
+      <span class="inline-flex items-center">
+        <span class="text-xs font-semibold px-2 py-0.5 rounded" style="background:#ff8800;color:#fff;margin-right:0.25rem;">TO GO</span>
+        <span class="text-gray-700 text-sm">= Take Out</span>
+      </span>
+    </div>
     <div id="orders" class="space-y-4"></div>
   </div>
   <!-- History -->
@@ -58,10 +68,9 @@
         return false;
       })();
 
-      const color = isToGo ? 'bg-orange-200' : 'bg-green-100';
+      const color = isToGo ? 'bg-green-100' : 'bg-orange-200';
       div.className='p-4 shadow rounded '+(o.hasIceCream?'bg-yellow-100':color);
-      const badge = isToGo ? `<span class=\"text-xs font-semibold px-2 py-0.5 rounded bg-orange-600 text-white\">TO&nbsp;GO</span>` : '';
-      div.innerHTML=`<div class=\"flex justify-between items-center mb-2\"><span>Order #${o.id}</span>${badge}<button data-id=\"${o.id}\" class=\"done bg-green-600 text-white px-3 py-1 rounded ml-2\">Done</button></div>`;
+      div.innerHTML=`<div class=\"flex justify-between items-center mb-2\"><span>Order #${o.id}</span><button data-id=\"${o.id}\" class=\"done bg-green-600 text-white px-3 py-1 rounded ml-2\">Done</button></div>`;
       o.items.forEach(it=>{
         if(it.name.includes(' + ') && it.name.endsWith(' Deal')){
           const names=it.name.replace(' Deal','').split(' + ');
