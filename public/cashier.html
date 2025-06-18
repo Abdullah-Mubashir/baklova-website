@@ -43,9 +43,16 @@
       document.getElementById('newCount').textContent=active.length;
       active.forEach(o=>{
       const div=document.createElement('div');
-      const color = o.toGo ? 'bg-orange-100' : 'bg-green-100';
+      const isToGo = (()=>{
+        if(o.toGo!==undefined) return o.toGo===true || o.toGo==='true' || o.toGo===1;
+        if(o.togo!==undefined) return o.togo===true || o.togo==='true' || o.togo===1;
+        if(o.to_go!==undefined) return o.to_go===true || o.to_go==='true' || o.to_go===1;
+        if(o.metadata && (o.metadata.toGo!==undefined)) return o.metadata.toGo==='true' || o.metadata.toGo===true;
+        return false;
+      })();
+      const color = isToGo ? 'bg-orange-100' : 'bg-green-100';
       div.className='p-4 shadow rounded '+(o.hasIceCream?'bg-yellow-100':color);
-      div.innerHTML=`<div class="flex justify-between items-center mb-2"><span>Order #${o.id}</span><span class="text-xs font-semibold px-2 py-0.5 rounded ${o.toGo?'bg-orange-500 text-white':'bg-green-600 text-white'}">${o.toGo?'TO&nbsp;GO':'STAY'}</span><button data-id="${o.id}" class="done bg-green-600 text-white px-3 py-1 rounded ml-2">Done</button></div>`;
+      div.innerHTML=`<div class="flex justify-between items-center mb-2"><span>Order #${o.id}</span><span class="text-xs font-semibold px-2 py-0.5 rounded ${isToGo?'bg-orange-500 text-white':'bg-green-600 text-white'}">${isToGo?'TO&nbsp;GO':'STAY'}</span><button data-id="${o.id}" class="done bg-green-600 text-white px-3 py-1 rounded ml-2">Done</button></div>`;
       o.items.forEach(it=>{
         if(it.name.includes(' + ') && it.name.endsWith(' Deal')){
           const names=it.name.replace(' Deal','').split(' + ');
