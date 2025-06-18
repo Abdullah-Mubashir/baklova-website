@@ -212,41 +212,39 @@ body {
   background-color: rgba(135, 135, 135, 0.7);
 }
 
-/* Category tabs styling */
-#catTabs {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 1rem;
-  margin: 1.5rem 0;
-  padding: 0.5rem;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  width: 100%;
+/* Header styling */
+header {
+  padding: 2rem 3rem;
+  background: rgba(30, 30, 30, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-#catTabs::-webkit-scrollbar {
-  display: none;
+header span.font-bold {
+  font-size: 2.5rem;
+  letter-spacing: -0.02em;
+}
+
+header nav a {
+  font-size: 1.4rem;
+  padding: 0.75rem 1.5rem;
+  margin-right: 1.5rem;
+  border-radius: 12px;
+}
+
+/* Category tabs styling */
+#catTabs {
+  margin: 2rem 0;
+  padding: 1rem;
+  gap: 1.5rem;
 }
 
 #catTabs button {
-  padding: 0.75rem 1.5rem;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 1.1rem;
-  font-weight: 500;
-  white-space: nowrap;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  min-width: max-content;
-}
-
-#catTabs button.underline {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  padding: 1rem 2rem;
+  font-size: 1.4rem;
+  border-radius: 30px;
 }
 
 /* Subscribe Strip Styling */
@@ -352,7 +350,7 @@ body {
   /* Larger category tabs */
   #catTabs button {
     padding: 1.2rem 2.5rem;
-    font-size: 1.25rem;
+    font-size: 1.6rem;
     border-radius: 30px;
   }
 
@@ -374,73 +372,34 @@ body {
 
   /* Bigger search button */
   .overlay-search {
-    width: 64px;
-    height: 64px;
+    width: 72px;
+    height: 72px;
   }
 
   /* Product info text */
   .product-info h3 {
-    font-size: 1.2rem;
-    padding: 0.6rem 1rem;
+    font-size: 1.6rem;
+    padding: 0.8rem 1.5rem;
   }
 
   .product-info p.price {
-    font-size: 1.15rem;
-    padding: 0.6rem 1rem;
+    font-size: 1.5rem;
+    padding: 0.8rem 1.5rem;
   }
 }
 
-/* Header styling */
-header {
-  padding: 1.5rem 2rem;
-  background: rgba(30, 30, 30, 0.4);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0);
-}
-
-header span.font-bold {
-  font-size: 1.75rem;
-  letter-spacing: -0.02em;
-}
-
-header nav a {
-  font-size: 1.1rem;
-  padding: 0.5rem 1rem;
-  margin-right: 1rem;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-header nav a:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-/* Mobile header adjustments */
-@media (max-width: 768px) {
-  header {
-    padding: 1.25rem 1rem;
+@media (max-width: 480px) {
+  #products {
+    transform: scale(0.65);
   }
   
   header span.font-bold {
     font-size: 2rem;
   }
   
-  header nav a {
-    font-size: 1.25rem;
-    padding: 0.75rem 1.25rem;
-  }
-  
-  #myOrdersBtn {
-    padding: 0.75rem 1.5rem;
-    font-size: 1.2rem;
-  }
-  
-  #cartBtn {
-    width: 56px !important;
-    height: 56px !important;
-    font-size: 1.5rem !important;
+  #catTabs button {
+    padding: 1.4rem 3rem;
+    font-size: 1.8rem;
   }
 }
 
@@ -749,33 +708,6 @@ footer {
   }
 }
 
-/* Pagination styling */
-.pagination {
-  display: flex;
-  justify-content: center;
-  gap: 0.8rem;
-  margin-top: 3rem;
-  margin-bottom: 2rem;
-}
-
-.pagination button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  border: none;
-  background: rgba(135, 135, 135, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: white;
-  font-weight: 500;
-  font-size: 1.1rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
 /* Update mobile styles */
 @media (max-width: 768px) {
   /* Bigger pagination for mobile */
@@ -794,7 +726,7 @@ footer {
   /* Larger category tabs */
   #catTabs button {
     padding: 1.2rem 2.5rem;
-    font-size: 1.25rem;
+    font-size: 1.6rem;
     border-radius: 30px;
   }
 
@@ -816,18 +748,33 @@ footer {
 
   /* Bigger search button */
   .overlay-search {
-    width: 64px;
-    height: 64px;
+    width: 72px;
+    height: 72px;
   }
 
   /* Product info text */
   .product-info h3 {
-    font-size: 1.2rem;
-    padding: 0.6rem 1rem;
+    font-size: 1.6rem;
+    padding: 0.8rem 1.5rem;
   }
 
   .product-info p.price {
-    font-size: 1.15rem;
-    padding: 0.6rem 1rem;
+    font-size: 1.5rem;
+    padding: 0.8rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #products {
+    transform: scale(0.65);
+  }
+  
+  header span.font-bold {
+    font-size: 2rem;
+  }
+  
+  #catTabs button {
+    padding: 1.4rem 3rem;
+    font-size: 1.8rem;
   }
 }
