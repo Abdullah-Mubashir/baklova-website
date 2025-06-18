@@ -38,8 +38,8 @@ body {
 /* Menu section styling */
 #products {
   display: grid;
-  grid-template-columns: repeat(3, 363px);
-  gap: 1.5rem;
+  grid-template-columns: repeat(1, 860px);
+  gap: 2rem;
   margin-top: 2rem;
   position: relative;
   justify-content: center;
@@ -47,8 +47,8 @@ body {
 
 /* Product card styling */
 #products > div {
-  width: 363px;
-  height: 300px;
+  width: 860px;
+  height: 1270px;
   border-radius: 12px;
   overflow: hidden;
   background: rgba(30, 30, 30, 0.6);
@@ -630,34 +630,29 @@ body {
 
 @media (max-width: 992px) {
   #products {
-    grid-template-columns: repeat(2, 363px);
+    grid-template-columns: repeat(1, min(860px, 90vw));
+  }
+  
+  #products > div {
+    width: 100%;
+    height: calc((100vw * 1270) / 860);
+    max-width: 860px;
   }
 }
 
 @media (max-width: 768px) {
   #products {
-    grid-template-columns: repeat(2, 320px);
-  }
-  
-  #products > div {
-    width: 320px;
+    grid-template-columns: repeat(1, 90vw);
   }
 }
 
 @media (max-width: 640px) {
   #products {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(1, 95vw);
   }
   
   #products > div {
     width: 100%;
-    max-width: none;  /* Remove max-width to allow full width on mobile */
-  }
-  
-  #catTabs {
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
+    height: calc((95vw * 1270) / 860);
   }
 }
