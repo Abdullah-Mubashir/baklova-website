@@ -68,7 +68,7 @@
         return false;
       })();
 
-      const color = isToGo ? 'bg-green-100' : 'bg-orange-200';
+      const color = isToGo ? 'bg-green-300' : 'bg-orange-200';
       div.className='p-4 shadow rounded '+(o.hasIceCream?'bg-yellow-100':color);
       div.innerHTML=`<div class=\"flex justify-between items-center mb-2\"><span>Order #${o.id}</span><button data-id=\"${o.id}\" class=\"done bg-green-600 text-white px-3 py-1 rounded ml-2\">Done</button></div>`;
       o.items.forEach(it=>{

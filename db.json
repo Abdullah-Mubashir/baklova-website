@@ -463,6 +463,217 @@
       "prepMinutes": 0,
       "hasIceCream": false,
       "email": "abdullah.mubashir113@gmail.com"
+    },
+    {
+      "id": 1750267595800,
+      "sessionId": "cs_test_b1kO3Xf9XwNvPFc5R9udBFplzSBwFFRl4QEhSNLk3tFFmFcDRHh46kUluv",
+      "items": [
+        {
+          "priceId": "price_1RZ1j6A3g8IaVSP2myNA7U5B",
+          "name": "item08",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 1
+        },
+        {
+          "priceId": "price_1RZMPVA3g8IaVSP2PIpWH7o5",
+          "name": "i9i8",
+          "unitAmount": 400,
+          "currency": "usd",
+          "quantity": 1
+        },
+        {
+          "priceId": "price_1RaetSA3g8IaVSP2RlzCbrE5",
+          "name": "Chocolate ice cream",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "done",
+      "created": 1750267595800,
+      "prepMinutes": 5,
+      "hasIceCream": true,
+      "email": "abdullah.mubashir113@gmail.com"
+    },
+    {
+      "id": 1750267802806,
+      "sessionId": "cs_test_a12v611wsGi91QpXTALDkzudUKA5ZzaxSHYjzCbgWtIqsgE48NwLxIyB0V",
+      "items": [
+        {
+          "priceId": "price_1RaelMA3g8IaVSP2CbngXKVk",
+          "name": "Knafeh",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "done",
+      "created": 1750267802806,
+      "prepMinutes": 4,
+      "hasIceCream": false,
+      "email": "abdullah.mubashir113@gmail.com"
+    },
+    {
+      "id": 1750267970843,
+      "sessionId": "cs_test_a1uH0DZGPvREZ4aC7tLId5akeDh929TGnvtyRrA1LVMjwOgEuGH7lTJWIq",
+      "items": [
+        {
+          "priceId": "price_1RaelMA3g8IaVSP2CbngXKVk",
+          "name": "Knafeh",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "pending",
+      "created": 1750267970843,
+      "prepMinutes": 4,
+      "hasIceCream": false
+    },
+    {
+      "id": 1750267988025,
+      "sessionId": "cs_test_a12mlam7RdNJ6Dxp9ONsGG39wsARQ1x7hUOjXmigQIg13B10FBbc9UQECw",
+      "items": [
+        {
+          "priceId": "price_1RaelMA3g8IaVSP2CbngXKVk",
+          "name": "Knafeh",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "done",
+      "created": 1750267988025,
+      "prepMinutes": 4,
+      "hasIceCream": false,
+      "email": "abdullah.mubashir113@gmail.com"
+    },
+    {
+      "id": 1750268020715,
+      "sessionId": "cs_test_a1r5m40psDCGpZ6uO2wDerwEFG2NL54bL66ILan2IubQ8kdn7ZrpHDXVgA",
+      "items": [
+        {
+          "priceId": "price_1RaelMA3g8IaVSP2CbngXKVk",
+          "name": "Knafeh",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "done",
+      "created": 1750268020715,
+      "prepMinutes": 4,
+      "hasIceCream": false,
+      "email": "abdullah.mubashir113@gmail.com"
+    },
+    {
+      "id": 1750268215481,
+      "sessionId": "cs_test_a1fvTpXEjSgDU43dZpOHqGedholua5e4onwj2YMPvvCGDe8agF3Vo4qGXG",
+      "items": [
+        {
+          "priceId": "price_1RaelMA3g8IaVSP2CbngXKVk",
+          "name": "Knafeh",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "done",
+      "created": 1750268215481,
+      "prepMinutes": 4,
+      "hasIceCream": false,
+      "email": "abdullah.mubashir113@gmail.com"
+    },
+    {
+      "id": 1750268248462,
+      "sessionId": "cs_test_a1ZaN1DtfA6Kcmz6wJe0tFeQifehiBhNJTmSkeiNusYde0gBypl9l4vU2e",
+      "items": [
+        {
+          "priceId": "price_1RaesBA3g8IaVSP2QibODPuj",
+          "name": "Pistachio Maamoul",
+          "unitAmount": 400,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "done",
+      "created": 1750268248462,
+      "prepMinutes": 3,
+      "hasIceCream": false,
+      "email": "abdullah.mubashir113@gmail.com"
+    },
+    {
+      "id": 1750268416808,
+      "sessionId": "cs_test_a1DibixE2f7UALsih3LBnSAKb37KxipE5LmNsONi4zAefolZ90pOPCZU2u",
+      "items": [
+        {
+          "priceId": "price_1RaesBA3g8IaVSP2QibODPuj",
+          "name": "Pistachio Maamoul",
+          "unitAmount": 400,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "paid",
+      "created": 1750268416808,
+      "prepMinutes": 3,
+      "hasIceCream": false,
+      "email": "abdullah.mubashir113@gmail.com"
+    },
+    {
+      "id": 1750271452671,
+      "sessionId": "cs_test_a120noW1vwofdFVk6brroYd4E30UuRADR03FRVF6uOjlb4QnxCqv482aXb",
+      "items": [
+        {
+          "priceId": "price_1RaelMA3g8IaVSP2CbngXKVk",
+          "name": "Knafeh",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "paid",
+      "created": 1750271452671,
+      "prepMinutes": 4,
+      "hasIceCream": false,
+      "email": "abdullah.mubashir113@gmail.com"
+    },
+    {
+      "id": 1750271613302,
+      "sessionId": "cs_test_a1vhSeSBY6StSzdH5JHHeA68QoVYn50p2Jp8eqV9NuccseArtbVLt2xf07",
+      "items": [
+        {
+          "priceId": "price_1RYxXYA3g8IaVSP23JVkwtoh",
+          "name": "new timer",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "paid",
+      "created": 1750271613302,
+      "prepMinutes": 4,
+      "hasIceCream": false,
+      "email": "abdullah.mubashir113@gmail.com"
+    },
+    {
+      "id": 1750272654018,
+      "sessionId": "cs_test_a1cGYpdACAZW9VZPGVImgovGjEUsxXAylCpBTWBgP2YfRrntOK3mY3aylF",
+      "items": [
+        {
+          "priceId": "price_1RaelMA3g8IaVSP2CbngXKVk",
+          "name": "Knafeh",
+          "unitAmount": 200,
+          "currency": "usd",
+          "quantity": 1
+        }
+      ],
+      "status": "paid",
+      "created": 1750272654018,
+      "prepMinutes": 4,
+      "hasIceCream": false,
+      "email": "abdullah.mubashir113@gmail.com"
     }
   ],
   "interactions": {
@@ -475,11 +686,11 @@
       "adds": 9
     },
     "prod_STX3mil7vICQL2": {
-      "views": 72,
+      "views": 73,
       "adds": 1
     },
     "prod_STv3epSj0rLnAb": {
-      "views": 10,
+      "views": 11,
       "adds": 0
     },
     "prod_STzFal9NL7Jmv5": {
@@ -487,19 +698,19 @@
       "adds": 1
     },
     "prod_SUHeKiIB8xdgMU": {
-      "views": 27,
+      "views": 28,
       "adds": 1
     },
     "prod_SVg7na2WU1sBQG": {
-      "views": 21,
+      "views": 29,
       "adds": 0
     },
     "prod_SVgBA7JfDYUNbp": {
-      "views": 28,
+      "views": 30,
       "adds": 0
     },
     "prod_SVgEDQmevVbDUW": {
-      "views": 24,
+      "views": 28,
       "adds": 0
     },
     "prod_SVgUHv9Eli6pXu": {
