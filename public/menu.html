@@ -339,12 +339,9 @@
       const drawer=document.getElementById('cartDrawer');
       document.getElementById('cartBtn').onclick=()=>{drawer.classList.toggle('translate-x-full');renderCart();};
       document.getElementById('closeCart').onclick=()=>drawer.classList.add('translate-x-full');
-      document.getElementById('checkoutBtn').onclick=async()=>{
-        if(!cart.length)return alert('Cart is empty');
-        const res=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:cart})}).then(r=>r.json());
-        localStorage.setItem('lastOrderSession',res.sessionId);
-        cart=[];saveCart();
-        location.href=res.url;
+      document.getElementById('checkoutBtn').onclick=()=>{
+        if(!cart.length){alert('Cart is empty');return;}
+        document.getElementById('dineModal').classList.remove('hidden');
       };
     }
 
@@ -482,5 +479,38 @@
       search.addEventListener('blur',()=>search.classList.remove('focused'));
     })();
   </script>
+  <!-- Dine / To-Go Modal -->
+  <div id="dineModal" class="fixed inset-0 bg-black/70 hidden flex items-center justify-center z-50">
+    <div class="bg-white dark:bg-[#1b1b1b] rounded-xl shadow-xl p-6 w-11/12 max-w-sm text-center flex flex-col gap-4">
+      <h3 class="text-xl font-semibold">Is this order to go or stay?</h3>
+      <div class="flex gap-4 justify-center">
+        <button id="stayBtn" class="glass-button px-4 py-2 rounded-full flex-1">Stay</button>
+        <button id="toGoBtn" class="glass-button px-4 py-2 rounded-full flex-1">To&nbsp;Go</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+// dine / to go modal logic
+(function(){
+  const modal=document.getElementById('dineModal');
+  const stay=document.getElementById('stayBtn');
+  const togo=document.getElementById('toGoBtn');
+  async function proceedCheckout(toGoFlag){
+    modal.classList.add('hidden');
+    if(!cart.length){alert('Cart is empty');return;}
+    const res=await fetch('/api/checkout',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({items:cart,toGo:!!toGoFlag})
+    }).then(r=>r.json());
+    localStorage.setItem('lastOrderSession',res.sessionId);
+    cart=[];saveCart();
+    location.href=res.url;
+  }
+  stay.onclick=()=>proceedCheckout(false);
+  togo.onclick=()=>proceedCheckout(true);
+})();
+</script>
 </body>
 </html>
