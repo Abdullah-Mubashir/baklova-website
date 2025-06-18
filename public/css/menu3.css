@@ -37,24 +37,19 @@ body {
 
 /* Menu section styling */
 #products {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-  margin: 2rem auto;
+  display: grid;
+  grid-template-columns: repeat(3, 363px);
+  gap: 1.5rem;
+  margin-top: 2rem;
   position: relative;
-  width: 618px;
-  padding: 0;
+  justify-content: center;
 }
 
 /* Product card styling */
 #products > div {
-  width: 618px;
-  height: 900px;
-  min-width: 618px;
-  min-height: 900px;
-  max-width: 618px;
-  max-height: 900px;
-  border-radius: 16px;
+  width: 363px;
+  height: 300px;
+  border-radius: 12px;
   overflow: hidden;
   background: rgba(30, 30, 30, 0.6);
   border: none;
@@ -86,13 +81,13 @@ body {
   border-color: rgba(255, 255, 255, 0.15);
 }
 
-/* Update image sizing */
+/* Product image styling */
 #products > div img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-  border-radius: 16px;
+  border-radius: 12px;
   filter: brightness(1) contrast(1.0);
   position: absolute;
   top: 0;
@@ -108,9 +103,9 @@ body {
 /* Product info styling */
 .product-info {
   position: absolute;
-  bottom: 25px;
-  left: 25px;
-  right: 25px;
+  bottom: 15px;
+  left: 15px;
+  right: 15px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -212,255 +207,221 @@ body {
   background-color: rgba(135, 135, 135, 0.7);
 }
 
-/* Header styling */
-header {
-  padding: 2rem 3rem;
-  background: rgba(30, 30, 30, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-}
-
-header span.font-bold {
-  font-size: 2.5rem;
-  letter-spacing: -0.02em;
-}
-
-header nav a {
-  font-size: 3.4rem;
-  padding: 0.75rem 1.5rem;
-  margin-right: 1.5rem;
-  border-radius: 12px;
-}
-
 /* Category tabs styling */
 #catTabs {
-  margin: 2rem 0;
-  padding: 1rem;
-  gap: 1.5rem;
+  margin: 4.8rem 0;
+  padding: 2.4rem;
+  gap: 3rem;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  justify-content: center;
+  width: 100%;
 }
 
 #catTabs button {
-  padding: 1rem 2rem;
-  font-size: 2.4rem;
-  border-radius: 30px;
-}
-
-/* Subscribe Strip Styling */
-.subscribe-strip {
-  background: rgba(96, 96, 96, 0.4);
+  padding: 2.4rem 4.8rem;
+  font-size: 3.84rem;  /* 3.2 * 1.2 */
+  border-radius: 48px;  /* 40 * 1.2 */
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 32px;
-  padding: 1.25rem 2rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  max-width: 90%;
-  width: 600px;
-  margin: 2rem auto;
-}
-
-.subscribe-input {
-  background: rgba(80, 80, 80, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 0.75rem 1.25rem;
-  border-radius: 24px;
-  font-size: 3rem;
-  width: 340px;
-}
-
-.subscribe-button {
-  padding: 0.75rem 1.5rem;
-  border-radius: 24px;
-  font-size: 2.8rem;
-  font-weight: 500;
-}
-
-/* Search input styling */
-.search-container {
-  margin-bottom: 2rem;
-  position: relative;
-}
-
-#search {
-  padding: 0.5rem 1rem;
-  border-radius: 27px;
-  border: none;
-  background: rgba(109, 109, 109, 0.607);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  color: white;
-  font-size: 3.05rem;
-  outline: none;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  min-width: max-content;
   transition: all 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  color: white;
 }
 
-#search::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+@media (max-width: 768px) {
+  #catTabs {
+    padding: 2.4rem 1.2rem;
+    gap: 2.4rem;
+  }
+  
+  #catTabs button {
+    padding: 2.64rem 5.4rem;
+    font-size: 4.08rem;
+    border-radius: 57.6px;
+  }
 }
 
-#search:focus {
-  background: rgba(120, 120, 120, 0.818);
-  border-radius: 9px;
+/* Style specifically for cart and orders buttons */
+#cartBtn, #myOrdersBtn {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+#cartBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.8rem;
+}
+
+/* Remove old cart and orders button styles */
+
+/* Search Bar Styling */
+.search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.overlay-search {
+  width: 100%;
+  height: 46px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 23px;
+  padding: 0 1.5rem;
+  color: white;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.overlay-search:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.overlay-search:focus {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.overlay-search::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 768px) {
+  .search-wrapper {
+    width: 90%;
+  }
+  
+  .overlay-search {
+    height: 42px;
+    font-size: 0.9rem;
+  }
 }
 
 /* Pagination styling */
 .pagination {
   display: flex;
   justify-content: center;
-  gap: 0.8rem;
-  margin-top: 3rem;
-  margin-bottom: 2rem;
+  gap: 0.5rem;
+  margin-top: 0;  /* Remove top margin since it's now at the top */
 }
 
 .pagination button {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 240px;
-  height: 210px;
-  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
   border: none;
   background: rgba(135, 135, 135, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   color: white;
   font-weight: 500;
-  font-size: 3.1rem;
+  font-size: 0.95rem;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Update mobile styles */
-@media (max-width: 768px) {
-  /* Bigger pagination for mobile */
-  .pagination {
-    gap: 1rem;
-    padding: 1rem;
-  }
-  
-  .pagination button {
-    width: 206px;
-    height: 206px;
-    font-size: 1.4rem;
-    border-radius: 12px;
-  }
-
-  /* Larger category tabs */
-  #catTabs button {
-    padding: 1.2rem 2.5rem;
-    font-size: 1.6rem;
-    border-radius: 30px;
-  }
-
-  /* Bigger close buttons */
-  #closeCart,
-  #closeOrders,
-  #closeMedia {
-    width: 44px !important;
-    height: 44px !important;
-    font-size: 1.5rem !important;
-  }
-
-  /* Larger inputs and buttons */
-  .subscribe-input,
-  .subscribe-button {
-    height: 56px;
-    font-size: 1.15rem;
-  }
-
-  /* Bigger search button */
-  .overlay-search {
-    width: 72px;
-    height: 72px;
-  }
-
-  /* Product info text */
-  .product-info h3 {
-    font-size: 1.6rem;
-    padding: 0.8rem 1.5rem;
-  }
-
-  .product-info p.price {
-    font-size: 1.5rem;
-    padding: 0.8rem 1.5rem;
-  }
+.pagination button:hover {
+  background: rgba(135, 135, 135, 0.7);
 }
 
-@media (max-width: 480px) {
-  #products {
-    transform: scale(0.65);
-  }
-  
-  header span.font-bold {
-    font-size: 2rem;
-  }
-  
-  #catTabs button {
-    padding: 1.4rem 3rem;
-    font-size: 1.8rem;
-  }
+.pagination button.active {
+  background: rgba(135, 135, 135, 0.7);
+  color: #71bb46;
 }
 
-/* Footer Styling */
-footer {
-  padding: 2rem 0 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+/* Glass Button Styling */
+.glass-button {
+  background: rgba(96, 96, 96, 0.4);
+  color: white;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.glass-button:hover {
+  background: rgba(110, 110, 110, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Overlay Search Bar */
 .overlay-search {
   position: fixed;
-  left: 20px;
-  bottom: 20px;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
   z-index: 65;
-  width: 56px;
-  height: 56px;
-  background: rgba(255, 255, 255, 0.12);
+  width: clamp(220px, 43vw, 1000px);
+  height: 62px;
+  /* no explicit max-width, handled by clamp above */
+  background: rgba(255, 255, 255, 0.15);
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  padding: 0.8rem;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  outline: none;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 0.95rem;
-  cursor: pointer;
-  box-shadow: 
-    0 4px 20px rgba(0, 0, 0, 0.15),
-    inset 0 1px 1px rgba(255, 255, 255, 0.15);
-}
-
-.overlay-search:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px);
-  box-shadow: 
-    0 8px 24px rgba(0, 0, 0, 0.2),
-    inset 0 1px 1px rgba(255, 255, 255, 0.2);
-}
-
-.overlay-search:focus {
-  width: 300px;
-  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 30px;
   padding: 0.8rem 1.5rem;
-  cursor: text;
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  outline: none;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.05);
 }
 
 /* Mobile-specific search bar styles */
 @media (max-width: 768px) {
   .overlay-search {
-    left: 16px;
-    bottom: 16px;
+    width: clamp(220px, 80vw, 500px);
+    height: 56px;
+    border-radius: 26px;
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+    bottom: 0.8rem;
   }
-  
-  .overlay-search:focus {
-    width: calc(100vw - 32px);
-    max-width: 300px;
-  }
+}
+
+.overlay-search::placeholder {
+  color: rgba(255, 255, 255, 0.65);
+  font-style: italic;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.overlay-search:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.overlay-search:focus {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.12),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+  transform: translateX(-50%) translateY(-2px);
+}
+
+.overlay-search.overlay-hidden {
+  opacity: 0;
+  transform: translate(-50%, 150%);
 }
 
 /* Orders Modal Dialog */
@@ -471,7 +432,7 @@ footer {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
   max-height: 80vh;
   overflow-y: auto;
 }
@@ -499,7 +460,7 @@ footer {
 }
 
 .orders-dialog h3 {
-  font-size: 4.5rem;
+  font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
@@ -675,106 +636,28 @@ footer {
 
 @media (max-width: 768px) {
   #products {
-    transform: scale(0.9);
-    transform-origin: top center;
-    margin-top: 1rem;
+    grid-template-columns: repeat(2, 320px);
+  }
+  
+  #products > div {
+    width: 320px;
+  }
+}
+
+@media (max-width: 640px) {
+  #products {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  
+  #products > div {
+    width: 100%;
+    max-width: none;  /* Remove max-width to allow full width on mobile */
   }
   
   #catTabs {
-    padding: 1rem 0.5rem;
-    justify-content: flex-start;
-    margin: 0.5rem -0.5rem 2rem;
-  }
-  
-  #catTabs button {
-    padding: 1rem 2rem;
-    font-size: 1.15rem;
-  }
-  
-  .subscribe-strip {
-    padding: 1.5rem;
-    border-radius: 24px;
-    margin: 1rem auto;
-  }
-  
-  .subscribe-input {
-    width: 100%;
-    margin-bottom: 1rem;
-  }
-  
-  .subscribe-button {
-    width: 100%;
-    padding: 1rem;
-  }
-}
-
-/* Update mobile styles */
-@media (max-width: 768px) {
-  /* Bigger pagination for mobile */
-  .pagination {
-    gap: 1rem;
-    padding: 1rem;
-  }
-  
-  .pagination button {
-    width: 56px;
-    height: 56px;
-    font-size: 1.4rem;
-    border-radius: 12px;
-  }
-
-  /* Larger category tabs */
-  #catTabs button {
-    padding: 1.2rem 2.5rem;
-    font-size: 1.6rem;
-    border-radius: 30px;
-  }
-
-  /* Bigger close buttons */
-  #closeCart,
-  #closeOrders,
-  #closeMedia {
-    width: 44px !important;
-    height: 44px !important;
-    font-size: 1.5rem !important;
-  }
-
-  /* Larger inputs and buttons */
-  .subscribe-input,
-  .subscribe-button {
-    height: 56px;
-    font-size: 1.15rem;
-  }
-
-  /* Bigger search button */
-  .overlay-search {
-    width: 72px;
-    height: 72px;
-  }
-
-  /* Product info text */
-  .product-info h3 {
-    font-size: 1.6rem;
-    padding: 0.8rem 1.5rem;
-  }
-
-  .product-info p.price {
-    font-size: 1.5rem;
-    padding: 0.8rem 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  #products {
-    transform: scale(0.65);
-  }
-  
-  header span.font-bold {
-    font-size: 2rem;
-  }
-  
-  #catTabs button {
-    padding: 1.4rem 3rem;
-    font-size: 1.8rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
   }
 }

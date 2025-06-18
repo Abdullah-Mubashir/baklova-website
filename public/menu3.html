@@ -56,48 +56,55 @@
       border-color: rgba(255, 255, 255, 0.3);
     }
     /* Mobile specific tweaks */
-    @media (max-width: 940px) {
-      #products {
-        gap: 2rem;
-      }
+    @media (max-width: 640px) {
+      /* center product cards */
       #products > * {
-        width: 100%;
-        margin: 0 auto;
+        width: 90%;
+        max-width: 320px;
+        margin-left: auto;
+        margin-right: auto;
       }
       #catTabs {
-        justify-content: center;
-      }
-      #search {
-        width: 100%;
+        /* keep full width, allow wrap so page scrolls vertically */
+        overflow-x: visible;
+        justify-content: flex-start;
         padding: 0.5rem;
-        text-align: center;
+        gap: 0.5rem;
       }
-      #search.overlay-search.focused {
-        width: 90%;
-        left: 50%;
-        transform: translateX(-50%);
+      #catTabs::-webkit-scrollbar{display:none;}
+      #search.overlay-search{
+        width: 100% !important;
+        padding-left: 1rem;
+        padding-right: 1rem;
       }
-      #products {
-        gap: 1rem;
+      #search.overlay-search.focused{
+        position:fixed;
+        bottom: calc(env(safe-area-inset-bottom) + 1rem);
+        left:50%;
+        transform:translateX(-50%);
+        max-width:600px;
+        background: rgba(40,40,40,0.9);
+        backdrop-filter: blur(14px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+        border: 1px solid rgba(255,255,255,0.25);
+        z-index:60;
+      }
+      #products{
+        gap:1rem;
       }
     }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
-  <header class="text-white p-4 flex items-center justify-between relative">
-  <span class="font-bold">Baklava House</span>
-  <div class="flex items-center gap-4">
-    <nav>
-      <a href="/" class="mr-4">Home</a>
-      <a href="/menu.html" class="mr-4">Menu</a>
-      <a href="/order.html" id="orderTab" style="display:none;">Placed Order</a>
-    </nav>
-    <button id="myOrdersBtn" class="glass-button px-4 py-2 rounded-full shadow hidden sm:inline-flex">My Orders</button>
-    <button id="cartBtn" class="glass-button rounded-full w-12 h-12 shadow-lg text-xl flex items-center justify-center">🛒</button>
-  </div>
-</header>
   <main class="flex-1 max-w-5xl mx-auto px-4 py-10">
-    <h2 class="text-2xl font-semibold mb-6">Menu</h2>
+    <div class="flex flex-col items-center gap-4 mb-8">
+      <h2 class="text-2xl font-semibold">Menu</h2>
+      <!-- Simple search input -->
+      <div class="search-wrapper">
+        <input id="search" class="overlay-search" type="text" placeholder="Search menu items..." />
+      </div>
+    </div>
+
     <div class="flex flex-wrap items-center gap-4 mb-4">
       <div class="space-x-3" id="catTabs">
         <button data-cat="All" class="cat font-semibold underline">All</button>
@@ -106,11 +113,13 @@
         <button data-cat="Ice Cream" class="cat">Ice Cream</button>
         <button data-cat="Cake" class="cat">Cake</button>
         <button data-cat="Deals" class="cat">Deals</button>
+        <button id="myOrdersBtn" class="cat">My Orders</button>
+        <button id="cartBtn" class="cat">🛒 Cart</button>
       </div>
-      <input id="search" class="border p-2 overlay-search" placeholder="Search menu items..." />
     </div>
-    <div id="products" class="flex flex-col gap-6"></div>
-    <div id="pagination" class="pagination mt-8"></div>
+    
+    <div id="pagination" class="pagination mb-6"></div>
+    <div id="products" class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3"></div>
     <!-- Media Modal -->
     <div id="mediaModal" class="fixed inset-0 bg-black/70 hidden flex items-center justify-center z-50">
       <div class="inner bg-white rounded shadow-lg overflow-hidden relative flex flex-col md:flex-row">
@@ -160,17 +169,6 @@
       </div>
     </div>
   </main>
-  <footer class="text-white text-center text-sm flex flex-col items-center">
-    <div id="subscribeStrip" class="subscribe-strip flex flex-col sm:flex-row items-center gap-2 w-full">
-      <div class="text-xs font-medium flex-1 text-white opacity-90">Get deals & news</div>
-      <form id="stripForm" class="flex gap-2 w-full sm:w-auto">
-        <input name="email" type="email" placeholder="Email address" required class="subscribe-input" />
-        <button class="subscribe-button">Subscribe</button>
-      </form>
-      <div id="stripMsg" class="text-green-400 text-xs"></div>
-    </div>
-    <span class="mt-3 opacity-60 text-xs">© 2025 Baklava House</span>
-  </footer>
   <script>
     const formatPrice=(c,curr)=>new Intl.NumberFormat('en-US',{style:'currency',currency:curr}).format(c/100);
     let productsCache=[];
@@ -343,12 +341,16 @@
       const modal=document.getElementById('mediaModal');
       const slidesContainer=document.getElementById('slides');
       slidesContainer.innerHTML='';
+      
       const media=prod.media && prod.media.length?prod.media:[{url:prod.image,type:'image'}];
       document.getElementById('mediaInfo').innerHTML=`<h3 class="text-xl font-semibold">${prod.name}</h3>${prod.isDeal?`<p class='text-lg'><span class='line-through text-gray-500 mr-1'>${formatPrice(prod.originalPrice*100,'usd')}</span><span class='text-amber-700 font-bold'>${formatPrice(prod.unitAmount,'usd')}</span></p>`:`<p class='text-amber-700 font-bold text-lg'>${formatPrice(prod.unitAmount,'usd')}</p>`}<p class="text-sm">${prod.description||''}</p><button id="addCartMedia" class="glass-button px-4 py-2 rounded-full shadow mt-4">Add to Cart</button>`;
       // Add-to-cart from media modal
       document.getElementById('addCartMedia').onclick = () => {
         addToCart({price: prod.priceId, id: prod.id, name: prod.name, pricecents: prod.unitAmount, currency: prod.currency});
+        // close modal and restore scroll & pause videos
+        slidesContainer.querySelectorAll('video').forEach(v=>{v.pause(); v.currentTime=0;});
         modal.classList.add('hidden');
+        document.body.style.overflow='';
       };
       media.forEach((m,j)=>{
         const slide=document.createElement('div');
@@ -389,9 +391,13 @@
 
     // subscribe popup once
     if(!localStorage.getItem('subSeen')){
-      const modal=document.getElementById('subModal');modal.style.display='flex';
+      const modal=document.getElementById('subModal');
+      modal.style.display='flex';
     }
-    document.getElementById('closeSub').onclick=()=>{document.getElementById('subModal').style.display='none';localStorage.setItem('subSeen','1');};
+    document.getElementById('closeSub').onclick=()=>{
+      document.getElementById('subModal').style.display='none';
+      localStorage.setItem('subSeen','1');
+    };
     document.getElementById('subForm').onsubmit=async e=>{
       e.preventDefault();
       const fd=new FormData(e.target);
@@ -401,25 +407,17 @@
       localStorage.setItem('subSeen','1');
       setTimeout(()=>document.getElementById('subModal').style.display='none',1000);
     };
-    // inline subscribe strip handler
-    document.getElementById('stripForm').onsubmit=async e=>{
-      e.preventDefault();
-      const fd=new FormData(e.target);
-      const body=Object.fromEntries(fd.entries());
-      const res=await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-      if(res.ok){
-        document.getElementById('stripMsg').textContent='Thank you!';
-        e.target.reset();
-      }else{
-        alert('Subscribe failed');
-      }
-    };
 
-    const btnMy=document.getElementById('myOrdersBtn');const modal=document.getElementById('ordersModal');const closeO=document.getElementById('closeOrders');
-    btnMy.onclick=()=>{modal.classList.remove('hidden');loadMy();};closeO.onclick=()=>modal.classList.add('hidden');
+    // Orders handling
+    const btnMy=document.getElementById('myOrdersBtn');
+    const modal=document.getElementById('ordersModal');
+    const closeO=document.getElementById('closeOrders');
+    btnMy.onclick=()=>{modal.classList.remove('hidden');loadMy();};
+    closeO.onclick=()=>modal.classList.add('hidden');
 
     async function loadMy(){
-      const listDiv=document.getElementById('ordersList');listDiv.innerHTML='Loading...';
+      const listDiv=document.getElementById('ordersList');
+      listDiv.innerHTML='Loading...';
       const ids=(function(){
         try{return JSON.parse(localStorage.getItem('orders')||'[]');}catch{}
         const m=document.cookie.match(/(^|;)\s*orders=([^;]+)/);
@@ -440,20 +438,13 @@
       }
       listDiv.innerHTML=rows.join('');
     }
-    // Update search behavior
-    (function(){
-      const search = document.getElementById('search');
-      if(!search) return;
-      
-      // On blur, if empty reset width
-      search.addEventListener('blur', () => {
-        if(!search.value) {
-          search.style.width = '';
-          search.style.borderRadius = '';
-          search.style.padding = '';
-        }
-      });
-    })();
+
+    // Basic search handler
+    document.getElementById('search').oninput=()=>{
+      currentPage = 1;
+      applyFilters();
+    };
+
   </script>
 </body>
 </html>
