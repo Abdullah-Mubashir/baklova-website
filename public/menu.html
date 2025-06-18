@@ -502,7 +502,7 @@
     const res=await fetch('/api/checkout',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({items:cart,toGo:!!toGoFlag})
+      body:JSON.stringify({items:cart,toGo:!!toGoFlag,togo:!!toGoFlag,to_go:!!toGoFlag})
     }).then(r=>r.json());
     localStorage.setItem('lastOrderSession',res.sessionId);
     cart=[];saveCart();
