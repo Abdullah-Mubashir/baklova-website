@@ -85,8 +85,11 @@
       function tick(){
         const total=o.prepMinutes?o.prepMinutes*60000:240000;
         const remaining= total - (Date.now()-o.created);
-        if(remaining>0){timeDiv.textContent='Remaining: '+fmtTime(remaining);timeDiv.classList.remove('text-red-600');}
-        else{timeDiv.textContent='Overdue: '+fmtTime(-remaining);timeDiv.classList.add('text-red-600');}
+        if(remaining>0){
+          timeDiv.innerHTML='Remaining: <span>'+fmtTime(remaining)+'</span>';
+        }else{
+          timeDiv.innerHTML='Overdue: <span class="text-red-600">'+fmtTime(-remaining)+'</span>';
+        }
       }
       tick();
       setInterval(tick,1000);
