@@ -395,9 +395,11 @@
         slidesContainer.querySelectorAll('video').forEach(v=>{v.pause(); v.currentTime=0;});
         modal.classList.add('hidden');
         document.body.style.overflow='';
+        document.getElementById('search').style.display = ''; // Show search bar when modal is closed
       };
       document.body.style.overflow='hidden';
       modal.classList.remove('hidden');
+      document.getElementById('search').style.display = 'none'; // Hide search bar when modal is open
     }
 
     // subscribe popup once

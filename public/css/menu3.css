@@ -117,7 +117,7 @@ body {
 .product-info h3 {
   color: white;
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 2.13rem;
   font-weight: 500;
   letter-spacing: -0.01em;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
@@ -136,7 +136,7 @@ body {
 .product-info p.price {
   color: #71bb46;
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 2.13rem;
   margin: 0;
   letter-spacing: 0.02em;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
