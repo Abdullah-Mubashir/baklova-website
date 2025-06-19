@@ -687,7 +687,7 @@
           "quantity": 1
         }
       ],
-      "status": "paid",
+      "status": "done",
       "created": 1750274912762,
       "prepMinutes": 2,
       "hasIceCream": true,
@@ -700,11 +700,11 @@
       "adds": 8
     },
     "prod_STcmO7xaL3Dvpo": {
-      "views": 56,
+      "views": 57,
       "adds": 9
     },
     "prod_STX3mil7vICQL2": {
-      "views": 73,
+      "views": 77,
       "adds": 1
     },
     "prod_STv3epSj0rLnAb": {
@@ -720,7 +720,7 @@
       "adds": 1
     },
     "prod_SVg7na2WU1sBQG": {
-      "views": 29,
+      "views": 30,
       "adds": 0
     },
     "prod_SVgBA7JfDYUNbp": {

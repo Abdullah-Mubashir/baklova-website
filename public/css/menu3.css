@@ -209,9 +209,9 @@ body {
 
 /* Category tabs styling */
 #catTabs {
-  margin: 6.24rem 0;  /* Increased from 4.8rem */
-  padding: 3.12rem;   /* Increased from 2.4rem */
-  gap: 3.9rem;        /* Increased from 3rem */
+  margin: 7.488rem 0;  /* 6.24rem * 1.2 */
+  padding: 3.744rem;   /* 3.12rem * 1.2 */
+  gap: 4.68rem;        /* 3.9rem * 1.2 */
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
@@ -221,9 +221,9 @@ body {
 }
 
 #catTabs button {
-  padding: 3.12rem 6.24rem;  /* Increased from 2.4rem 4.8rem */
-  font-size: 4.992rem;       /* Increased from 3.84rem */
-  border-radius: 62.4px;     /* Increased from 48px */
+  padding: 3.744rem 7.488rem;  /* 3.12rem 6.24rem * 1.2 */
+  font-size: 7.1904rem;        /* 5.992rem * 1.2 */
+  border-radius: 74.88px;      /* 62.4px * 1.2 */
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -231,19 +231,20 @@ body {
   min-width: max-content;
   transition: all 0.3s ease;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  text-decoration: none;
   color: white;
 }
 
 @media (max-width: 768px) {
   #catTabs {
-    padding: 3.12rem 1.56rem;  /* Increased from 2.4rem 1.2rem */
-    gap: 3.12rem;              /* Increased from 2.4rem */
+    padding: 3.744rem 1.872rem;  /* 3.12rem 1.56rem * 1.2 */
+    gap: 3.744rem;               /* 3.12rem * 1.2 */
   }
   
   #catTabs button {
-    padding: 3.432rem 7.02rem;  /* Increased from 2.64rem 5.4rem */
-    font-size: 5.304rem;        /* Increased from 4.08rem */
-    border-radius: 74.88px;     /* Increased from 57.6px */
+    padding: 4.1184rem 8.424rem;  /* 3.432rem 7.02rem * 1.2 */
+    font-size: 6.3648rem;         /* 5.304rem * 1.2 */
+    border-radius: 89.856px;      /* 74.88px * 1.2 */
   }
 }
 
@@ -261,16 +262,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 4px;
+  width: 46px;         /* Increased from 32px */
+  height: 46px;        /* Increased from 32px */
+  border-radius: 6px; /* Increased from 4px */
   border: none;
   background: rgba(135, 135, 135, 0.5);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
   color: white;
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 2rem;     /* Increased from 0.95rem */
   transition: all 0.3s ease;
 }
 
@@ -279,8 +280,8 @@ body {
 }
 
 .pagination button.active {
-  background: rgba(135, 135, 135, 0.7);
-  color: #71bb46;
+  background: rgba(255, 255, 255, 0.7);
+  color: #696969;
 }
 
 /* Glass Button Styling */
@@ -394,13 +395,57 @@ body {
 
 /* Desktop header positioning for Cart & My Orders buttons */
 @media (min-width: 769px) {
-  #cartBtn, #myOrdersBtn {
-    position: static !important; /* follow normal flow */
-    margin-left: 0.5rem;
-  }
   #cartBtn {
-    width: 48px;
-    height: 48px;
+    position: fixed !important;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: white;
+    z-index: 10;
+  }
+  #cartBtn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  #myOrdersBtn {
+    position: fixed !important;
+    top: 1.5rem;
+    left: 1.5rem;
+    width: auto;
+    padding: 0.5rem 1.5rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    border-radius: 12px;
+    background: rgba(0, 51, 102, 0.5) !important; /* Darker blue */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 2px solid rgba(218, 165, 32, 0.6) !important; /* Richer gold border */
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: rgba(218, 165, 32, 1) !important; /* Richer gold text */
+    z-index: 10;
+  }
+  #myOrdersBtn:hover {
+    background: rgba(0, 51, 102, 0.7) !important; /* Even darker blue on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border-color: rgba(218, 165, 32, 0.8) !important; /* Brighter gold border on hover */
   }
 }
 
@@ -650,12 +695,16 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   margin-top: auto;
+  padding: 0.8rem 1.5rem;
+  font-size: 1.2rem;
+  border-radius: 10px;
 }
 
 #addCartMedia:hover {
   background: rgba(55, 55, 55, 0.95);
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
 }
 
 /* Mobile responsive */
