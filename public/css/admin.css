@@ -1,0 +1,272 @@
+/* Admin page styling */
+body {
+  font-family: Arial, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.tabBtn {
+  padding: 6px 12px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  font-weight: normal;
+  margin-right: 3px;
+  font-size: 13px;
+  color: #000000; /* Black text */
+}
+
+.tabBtn:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.tabBtn.font-semibold {
+  font-weight: bold;
+  border-bottom: 2px solid #000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Style for the Interaction Data table */
+#statsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+#statsTable thead {
+  background-color: #ffc107; /* Amber background for header */
+  color: #333;
+}
+
+#statsTable th {
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: bold;
+  border: 1px solid #ddd;
+}
+
+#statsTable tbody tr {
+  border-bottom: 1px solid #ddd;
+}
+
+#statsTable tbody tr:nth-child(even) {
+  background-color: #f9f9f9; /* Light gray for alternating rows */
+}
+
+#statsTable tbody tr:hover {
+  background-color: #f1f1f1; /* Hover effect */
+}
+
+#statsTable td {
+  padding: 10px 15px;
+  text-align: left;
+}
+
+/* Style for the Manage Products table */
+#prodTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+#prodTable thead {
+  background-color: transparent;
+}
+
+#prodTable th {
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: bold;
+  border: 1px solid transparent;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#prodTable tbody tr {
+  border-bottom: 1px solid transparent;
+}
+
+#prodTable tbody tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.03); /* Very subtle gray for alternating rows */
+}
+
+#prodTable tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* Subtle hover effect */
+}
+
+#prodTable td {
+  padding: 10px 15px;
+  text-align: left;
+}
+
+/* Style for the Analytics table */
+#analytics table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+#analytics thead {
+  background-color: transparent;
+}
+
+#analytics th {
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: bold;
+  border: 1px solid transparent;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#analytics tbody tr {
+  border-bottom: 1px solid transparent;
+}
+
+#analytics tbody tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.03); /* Very subtle gray for alternating rows */
+}
+
+#analytics tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* Subtle hover effect */
+}
+
+#analytics td {
+  padding: 10px 15px;
+  text-align: left;
+}
+
+/* Style for Send Ad tab */
+#send input, #send textarea {
+  border: 1px solid #e0e0e0; /* Subtle gray border */
+  background-color: #f8f8f8; /* Very light gray background */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+#send textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+#send button {
+  padding: 8px 16px;
+  border: 1px solid #e0e0e0; /* Subtle gray border */
+  background-color: #1e3a8a; /* Dark blue background */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #ffffff; /* White text for contrast */
+}
+
+#send button:hover {
+  background-color: #152c70; /* Slightly darker blue on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+/* Style for Insights tab tables */
+#insights table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+#insights thead {
+  background-color: #f5f5f5; /* Very light gray for header */
+}
+
+#insights th {
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: bold;
+  border: 1px solid #e0e0e0; /* Subtle gray border */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+#insights tbody tr {
+  border-bottom: 1px solid #e0e0e0; /* Subtle gray border */
+}
+
+#insights tbody tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.03); /* Very subtle gray for alternating rows */
+}
+
+#insights tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* Subtle hover effect */
+}
+
+#insights td {
+  padding: 8px 10px;
+  text-align: left;
+}
+
+/* Style for forms and inputs in general */
+form input, form textarea, form select {
+  border: 1px solid #e0e0e0; /* Subtle gray border */
+  background-color: #f8f8f8; /* Very light gray background */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+}
+
+form button[type="submit"], form button:not(#closeModal, #closeDeal) {
+  padding: 8px 16px;
+  border: 1px solid #e0e0e0; /* Subtle gray border */
+  background-color: #f0f0f0; /* Light gray background */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #000000; /* Black text */
+}
+
+form button[type="submit"]:hover, form button:not(#closeModal, #closeDeal):hover {
+  background-color: #e8e8e8; /* Slightly darker on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+/* Style for modals */
+#modal, #dealModal {
+  z-index: 1000;
+}
+
+#modal > div, #dealModal > div {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  border: 1px solid #e0e0e0; /* Subtle gray border */
+}
+
+/* Responsive design for all tables */
+@media (max-width: 768px) {
+  #statsTable, #prodTable, #analytics table, #insights table {
+    font-size: 12px;
+  }
+  
+  #statsTable th, #statsTable td, #prodTable th, #prodTable td, #analytics th, #analytics td, #insights th, #insights td {
+    padding: 8px 10px;
+  }
+  
+  form input, form textarea, form select, #send input, #send textarea {
+    padding: 6px;
+    font-size: 12px;
+  }
+  
+  form button[type="submit"], form button:not(#closeModal, #closeDeal), #send button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}

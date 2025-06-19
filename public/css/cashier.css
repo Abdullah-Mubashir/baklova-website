@@ -1,0 +1,271 @@
+/* Cashier page styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding: 20px;
+  margin: 0;
+}
+
+/* Tab navigation styling */
+/* Tab navigation container */
+div[class="flex gap-4 mb-4"] {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+button[id^="tab"] {
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  color: #333;
+  border-bottom: 2px solid transparent;
+}
+
+button[id^="tab"]:hover {
+  background-color: #e0e0e0;
+}
+
+button[id^="tab"].border-b-2.border-gray-800 {
+  border-bottom: 2px solid #333;
+  font-weight: bold;
+}
+
+#newCount {
+  display: inline-block;
+  margin-left: 5px;
+  background-color: #ef4444; /* Red for urgency */
+  color: white;
+  border-radius: 12px;
+  padding: 2px 6px;
+  font-size: 11px;
+}
+
+/* New Orders Section */
+#newSec h1 {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #222;
+}
+
+/* Status indicators container */
+div[class="flex items-center gap-4 mb-4"] {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Status indicator badges */
+span[class="text-xs font-semibold px-2 py-0.5 rounded"] {
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-right: 5px;
+}
+
+/* Status description text */
+span[class="text-gray-700 text-sm"] {
+  font-size: 0.875rem;
+  color: #555;
+}
+
+#orders {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#orders > div {
+  background-color: white;
+  padding: 15px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
+.bg-yellow-100 {
+  background-color: #fefcbf; /* Highlight for ice cream orders */
+}
+
+.bg-green-300 {
+  background-color: white; /* Neutral for TO GO */
+}
+
+.bg-orange-200 {
+  background-color: white; /* Neutral for TO STAY */
+}
+
+/* Order header container */
+div[class="flex justify-between items-center mb-2"] {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Order ID text */
+div[class="flex justify-between items-center mb-2"] span:first-child {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #111;
+}
+
+.done {
+  background-color: #22c55e; /* Green for done */
+  color: white;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: all 0.3s ease;
+}
+
+.done:hover {
+  background-color: #16a34a;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+/* Time remaining container */
+div[class="mt-2 font-semibold"] {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #000;
+}
+
+.text-red-600 {
+  color: #dc2626; /* Red for overdue */
+}
+
+/* History Section */
+#histSec input {
+  border: 1px solid #e0e0e0;
+  background-color: white;
+  padding: 10px;
+  margin-bottom: 15px;
+  width: 100%;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  font-size: 0.875rem;
+}
+
+#history {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#history > div {
+  background-color: white;
+  padding: 15px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
+.refund {
+  background-color: #ef4444; /* Red for refund */
+  color: white;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.refund:hover {
+  background-color: #dc2626;
+}
+
+.refund:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.refundLine {
+  color: #3b82f6; /* Blue for line refund */
+  margin-left: 10px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+/* Refund Log Section */
+#logSec h2 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #222;
+}
+
+#logTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  background-color: white;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+#logTable thead {
+  background-color: #f5f5f5;
+}
+
+#logTable th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: bold;
+  border: 1px solid #e0e0e0;
+}
+
+#logTable tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+#logTable tbody tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+#logTable tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+#logTable td {
+  padding: 10px 12px;
+  text-align: left;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+  
+  #newSec h1, #logSec h2 {
+    font-size: 1.5rem;
+  }
+  
+  .flex.justify-between.items-center.mb-2 span:first-child {
+    font-size: 1.1rem;
+  }
+  
+  .mt-2.font-semibold {
+    font-size: 0.9rem;
+  }
+  
+  #logTable, #logTable td, #logTable th {
+    font-size: 0.75rem;
+    padding: 8px 10px;
+  }
+}
